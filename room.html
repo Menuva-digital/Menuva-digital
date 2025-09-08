@@ -5,180 +5,180 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Reservasi Room</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin:0; padding:0;
-      background: linear-gradient(to right,#2a5298,#1e3c72);
-      transition: background 0.3s, color 0.3s;
-    }
+   body {
+  font-family: Arial, sans-serif;
+  margin:0; padding:0;
+  background: linear-gradient(to right,#2a5298,#1e3c72);
+  transition: background 0.3s, color 0.3s;
+}
 
-    /* ===== HEADER ===== */
-    header {
-      text-align:center;
-      padding:20px;
-      position: relative;
-    }
-    #restoLogo {
-      max-height:80px;
-      margin-bottom:10px;
-    }
-    #restoName {
-      font-size:26px;
-      margin:0;
-      color:#d1d1d1;
-      font-weight:bold;
-    }
-    .contact-info p {
-      margin:2px 0;
-      font-size:14px;
-      font-weight:bold;
-      color:#f1eeee;
-    }
+/* ===== HEADER ===== */
+header {
+  text-align:center;
+  padding:20px;
+  position: relative;
+}
+#restoLogo {
+  max-height:80px;
+  margin-bottom:10px;
+}
+#restoName {
+  font-size:26px;
+  margin:0;
+  color:#d1d1d1;
+  font-weight:bold;
+}
+.contact-info p {
+  margin:2px 0;
+  font-size:14px;
+  font-weight:bold;
+  color:#f1eeee;
+}
 
-    /* ===== Dark Mode Toggle ===== */
-    .dark-toggle {
-      position:absolute;
-      top:20px;
-      right:20px;
-      background:#fff;
-      border:none;
-      border-radius:20px;
-      padding:6px 14px;
-      cursor:pointer;
-      font-size:14px;
-      box-shadow:0 2px 6px rgba(0,0,0,0.2);
-    }
+/* ===== Dark Mode Toggle ===== */
+.dark-toggle {
+  position:absolute;
+  top:20px;
+  right:20px;
+  background:#fff;
+  border:none;
+  border-radius:20px;
+  padding:6px 14px;
+  cursor:pointer;
+  font-size:14px;
+  box-shadow:0 2px 6px rgba(0,0,0,0.2);
+}
 
-   /* Container lebih ramping */
+/* ===== Container ===== */
 .main-container, .reservasi-container {
   width: 95%;
-  max-width: 900px; /* tadinya 1600px → gue kecilin */
+  max-width: 900px;
   margin: auto;
 }
 
-/* Grid card lebih kecil */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); /* tadinya 220px */
-  gap: 12px;
+/* ===== Tabs ===== */
+.tabs {
+  display:flex; 
+  justify-content:center; 
+  gap:10px; 
+  margin-bottom:20px; 
+  flex-wrap:wrap; 
+}
+.tabs button {
+  padding:8px 16px;
+  border:none; border-radius:8px;
+  cursor:pointer;
+  background:#eee;
+  transition: background 0.3s;
+}
+.tabs button.active { background:#007bff; color:#fff; }
 
-    .tabs { display:flex; justify-content:center; gap:10px; margin-bottom:20px; flex-wrap:wrap; }
-    .tabs button {
-      padding:8px 16px;
-      border:none; border-radius:8px;
-      cursor:pointer;
-      background:#eee;
-      transition: background 0.3s;
-    }
-    .tabs button.active { background:#007bff; color:#fff; }
+/* ===== Grid / Room Card ===== */
+.grid { 
+  display:grid; 
+  grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); 
+  gap:16px; 
+}
+.hidden { display:none; }
 
-    .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:16px; }
-    .hidden { display:none; }
+.room-card {
+  border:1px solid #ddd; border-radius:12px; overflow:hidden;
+  background:#fafafa; padding:12px; text-align:center;
+  transition: background 0.3s, color 0.3s;
+}
+.room-card img { max-width:100%; border-radius:8px; margin-bottom:8px; }
 
-    .room-card {
-      border:1px solid #ddd; border-radius:12px; overflow:hidden;
-      background:#fafafa; padding:12px; text-align:center;
-      transition: background 0.3s, color 0.3s;
-    }
-    .room-card img { max-width:100%; border-radius:8px; margin-bottom:8px; }
+.room-card button {
+  margin-top:8px;
+  background:#28a745; color:#fff;
+  border:none; border-radius:8px;
+  padding:6px 12px; cursor:pointer;
+}
+.room-card button:hover { background:#218838; }
 
-    .room-card button {
-      margin-top:8px;
-      background:#28a745; color:#fff;
-      border:none; border-radius:8px;
-      padding:6px 12px; cursor:pointer;
-    }
-    .room-card button:hover { background:#218838; }
+/* ====== Cart Preview ====== */
+.reservasi-container {
+  margin: -90px auto 20px;
+  padding: 20px;
+  padding-bottom: 80px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  transition: background 0.3s, color 0.3s;
+}
+.reservasi-container h3 { margin-top:0; }
 
-    /* ====== Cart Preview ====== */
-    .reservasi-container {
-      width: 95%;
-      max-width: 1200px;
-      margin: -90px auto 20px;
-      padding: 20px;
-      padding-bottom: 80px;
-      background: #fff;
-      border-radius: 16px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
-      transition: background 0.3s, color 0.3s;
-    }
-    .reservasi-container h3 { margin-top:0; }
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+  border-bottom: 1px solid #eee;
+}
+.cart-item span { flex: 1; text-align:left; }
+.cart-item button {
+  border: none;
+  background: #dc3545;
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  margin-left: 5px;
+}
+.cart-item button:hover { background: #a71d2a; }
 
-    .cart-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 6px 0;
-      border-bottom: 1px solid #eee;
-    }
-    .cart-item span { flex: 1; text-align:left; }
-    .cart-item button {
-      border: none;
-      background: #dc3545;
-      color: #fff;
-      padding: 4px 10px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 13px;
-      margin-left: 5px;
-    }
-    .cart-item button:hover { background: #a71d2a; }
+#cartTotal {
+  font-weight:bold;
+  text-align:right;
+  margin-top:10px;
+}
 
-    #cartTotal {
-      font-weight:bold;
-      text-align:right;
-      margin-top:10px;
-    }
+.form-input { margin-top:12px; }
+.form-input label { display:block; margin-bottom:4px; font-weight:bold; }
+.form-input input, .form-input textarea {
+  width:100%; padding:8px; border:1px solid #ccc;
+  border-radius:6px; box-sizing:border-box;
+}
 
-    .form-input { margin-top:12px; }
-    .form-input label { display:block; margin-bottom:4px; font-weight:bold; }
-    .form-input input, .form-input textarea {
-      width:100%; padding:8px; border:1px solid #ccc;
-      border-radius:6px; box-sizing:border-box;
-    }
-
-   /* Bottom buttons berjajar kanan-kiri */
+/* ===== Bottom Buttons ===== */
 .bottom-buttons {
   position: fixed;
   bottom: 0;
   left: 0;
-  width: 100%;
-  max-width: 900px; /* ikut container */
-  margin: auto;
+  right: 0;               /* penting biar full lebar */
   display: flex;
-  justify-content: space-between; /* tombol kanan-kiri */
+  justify-content: space-between;
   padding: 10px 20px;
   background: #fff;
 }
-
 .bottom-buttons button {
-  flex: none;          /* biar ga full */
-  min-width: 120px;    /* biar enak diklik */
+  min-width: 120px;
   padding: 10px;
   font-size: 16px;
 }
-    .btn-wa { background:#25d366; color:#fff; }
-    .btn-back { background:#d8cd33; color:#fff; }
+.btn-wa { background:#25d366; color:#fff; }
+.btn-back { background:#d8cd33; color:#fff; }
 
-    /* ===== DARK MODE STYLE ===== */
-    body.dark {
-      background: #121212;
-      color: #f1f1f1;
-    }
-    body.dark .main-container,
-    body.dark .reservasi-container {
-      background:#1e1e1e;
-      color:#eaeaea;
-    }
-    body.dark .room-card {
-      background:#2a2a2a;
-      border-color:#444;
-    }
-    body.dark .tabs button { background:#333; color:#ddd; }
-    body.dark .tabs button.active { background:#007bff; color:#fff; }
+/* ===== Dark Mode Style ===== */
+body.dark {
+  background: #121212;
+  color: #f1f1f1;
+}
+body.dark .main-container,
+body.dark .reservasi-container {
+  background:#1e1e1e;
+  color:#eaeaea;
+}
+body.dark .room-card {
+  background:#2a2a2a;
+  border-color:#444;
+}
+body.dark .tabs button { background:#333; color:#ddd; }
+body.dark .tabs button.active { background:#007bff; color:#fff; }
 
-    /* ===== Responsive ===== */
-   @media (max-width: 600px) {
+/* ===== Responsive ===== */
+@media (max-width: 600px) {
   .grid {
     grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
   }
@@ -429,4 +429,5 @@
 </script>
 </body>
 </html>
+
 
