@@ -75,25 +75,37 @@
   body.dark .main-container { background: var(--card-dark); }
 
   /* ===================== TABS ===================== */
-  .tabs {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 16px;
-  }
-  .tabs button {
-    padding: 6px 14px;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-    background: #eee;
-    font-size: 0.9rem;
-    transition: background .3s;
-  }
-  .tabs button.active { background: var(--primary); color: #fff; }
-  body.dark .tabs button { background: #2a2f3d; color: #ddd; }
-  body.dark .tabs button.active { background: var(--primary); color: #fff; }
+ /* ===================== TABS ===================== */
+.tabs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* selalu 3 kolom */
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.tabs button {
+  width: 100%;
+  padding: 10px 16px;
+  border-radius: 999px;      /* bikin oval/pill */
+  border: 1px solid #ccc;
+  cursor: pointer;
+  background: #f5f5f5;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+/* efek hover */
+.tabs button:hover {
+  background: #e0e0e0;
+}
+
+/* tab aktif */
+.tabs button.active {
+  background: #007bff;
+  color: #fff;
+  border-color: #007bff;
+}
 
   /* ===================== GRID ===================== */
   .grid {
@@ -390,3 +402,4 @@
 
 </body>
 </html>
+
