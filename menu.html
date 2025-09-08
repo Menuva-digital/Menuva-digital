@@ -177,58 +177,56 @@
     margin: 5px 0;
     line-height: 1.5;
   }
-
-    /* Fixed button bar bawah layar */
     .fixed-bar {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      background: linear-gradient(135deg, #1e3c72, #2a5298); /* biru elegan */
-      box-shadow: 0 -2px 6px rgba(0,0,0,0.1);
-      display: flex;
-      justify-content: center;
-      gap: 15px;
-      padding: 10px 20px;
-      z-index: 10000;
-    }
-    .fixed-bar button {
-      flex: 1;
-      padding: 14px 0;
-      font-size: 16px;
-      font-weight: bold;
-      border-radius: 8px;
-      border: none;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-      color: white;
-    }
-    .btn-order {
-      background-color: #007bff;
-    }
-    .btn-order:hover {
-      background-color: #0056b3;
-    }
-    .btn-room {
-      background-color: #28a745;
-    }
-    .btn-room:hover {
-      background-color: #1e7e34;
-    }
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: linear-gradient(135deg, #1e3c72, #2a5298);
+  box-shadow: 0 -2px 6px rgba(0,0,0,0.1);
+  display: flex;          /* row by default */
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 15px;
+  z-index: 1000;
+}
 
-    @media (max-width: 480px) {
-      .fixed-bar {
-        flex-direction: column;
-        padding: 10px;
-      }
-      .fixed-bar button {
-        width: 95%;
-        margin-bottom: 8px;
-      }
-      .fixed-bar button:last-child {
-        margin-bottom: 0;
-      }
-    }
+.fixed-bar button {
+  flex: 1;                /* sama-sama lebar */
+  padding: 12px 0;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  color: white;
+  transition: background-color 0.3s ease;
+}
+
+/* warna tombol */
+.btn-book { background: #6c63ff; }
+.btn-order { background: #007bff; }
+.btn-room { background: #28a745; }
+
+/* hover effect */
+.fixed-bar button:hover { opacity: 0.85; }
+
+/* padding bawah konten supaya nggak tertutup bar */
+main, .container { padding-bottom: 70px; }
+
+/* Mobile view */
+@media (max-width: 480px) {
+  .fixed-bar {
+    flex-direction: row; /* tetap row */
+    padding: 8px 10px;
+    gap: 5px;
+  }
+  .fixed-bar button {
+    font-size: 14px;
+    padding: 10px 0;
+  }
+}
+
    .flipbook-gallery img {
   border: 2px solid #ccc;        /* Outline abu-abu terang */
   border-radius: 6px;            /* Ujung agak bulat */
@@ -464,3 +462,4 @@ function startCountdown(tanggalAkhir, elementId) {
 
 </body>
 </html>
+
