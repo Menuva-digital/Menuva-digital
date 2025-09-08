@@ -49,16 +49,18 @@
       box-shadow:0 2px 6px rgba(0,0,0,0.2);
     }
 
-    .main-container {
-      width: 95%;
-      max-width: 1200px;
-      margin: 20px auto 100px auto;
-      padding: 20px;
-      background:#fff;
-      border-radius:16px;
-      box-shadow:0 4px 16px rgba(0,0,0,0.15);
-      transition: background 0.3s, color 0.3s;
-    }
+   /* Container lebih ramping */
+.main-container, .reservasi-container {
+  width: 95%;
+  max-width: 900px; /* tadinya 1600px → gue kecilin */
+  margin: auto;
+}
+
+/* Grid card lebih kecil */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); /* tadinya 220px */
+  gap: 12px;
 
     .tabs { display:flex; justify-content:center; gap:10px; margin-bottom:20px; flex-wrap:wrap; }
     .tabs button {
@@ -135,22 +137,26 @@
       border-radius:6px; box-sizing:border-box;
     }
 
-    .bottom-buttons {
-      position:fixed; bottom:0; left:0; right:0;
-      background: linear-gradient(to right,#2a5298,#1e3c72);
-      padding:10px;
-      max-width: 1200px;
-      width: 100%;
-      display:flex; justify-content:center; gap:10px;
-      border-top:1px solid #4423bb;
-    }
-    .bottom-buttons button {
-      flex:1; max-width:750px;
-      padding:12px;
-      border:none; border-radius:8px;
-      cursor:pointer;
-      font-size:16px;
-    }
+   /* Bottom buttons berjajar kanan-kiri */
+.bottom-buttons {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  max-width: 900px; /* ikut container */
+  margin: auto;
+  display: flex;
+  justify-content: space-between; /* tombol kanan-kiri */
+  padding: 10px 20px;
+  background: #fff;
+}
+
+.bottom-buttons button {
+  flex: none;          /* biar ga full */
+  min-width: 120px;    /* biar enak diklik */
+  padding: 10px;
+  font-size: 16px;
+}
     .btn-wa { background:#25d366; color:#fff; }
     .btn-back { background:#d8cd33; color:#fff; }
 
@@ -172,12 +178,15 @@
     body.dark .tabs button.active { background:#007bff; color:#fff; }
 
     /* ===== Responsive ===== */
-    @media (max-width: 600px) {
-      #restoName { font-size: 20px; }
-      .tabs button { flex: 1; font-size: 14px; padding: 6px; }
-      .grid { grid-template-columns: 1fr; }
-      .bottom-buttons { flex-direction: column; gap: 8px; }
-    }
+   @media (max-width: 600px) {
+  .grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  }
+  .bottom-buttons button {
+    min-width: 100px;
+    font-size: 14px;
+  }
+}
   </style>
   <script src="lang.js"></script>
 </head>
@@ -420,3 +429,4 @@
 </script>
 </body>
 </html>
+
