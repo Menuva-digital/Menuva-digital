@@ -4,8 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Reservasi Room</title>
- <style>
-  /* ===================== THEME ===================== */
+<style>
+  /* ===================== RESET & THEME ===================== */
+  * { box-sizing: border-box; margin:0; padding:0; }
   :root {
     --bg: #f4f8ff;
     --surface: #ffffff;
@@ -13,17 +14,11 @@
     --muted: #6b7a99;
     --border: #d8e1ff;
     --brand: #1f70ff;
-    --brand-2: #2a5298;
-    --brand-3: #1e3c72;
-    --chip: #eef4ff;
-    --danger: #e54646;
+    --primary: #1f70ff;
     --success: #25d366;
-    --shadow: 0 6px 24px rgba(0,0,0,.08);
-
-    /* Tambahan yang kemarin kosong */
     --card-light: #ffffff;
     --card-dark: #1c2333;
-    --primary: #1f70ff;
+    --shadow: 0 6px 24px rgba(0,0,0,.08);
   }
   body.dark {
     --bg: #0e1116;
@@ -37,136 +32,163 @@
   }
 
   body {
-    margin: 0;
     font-family: system-ui, sans-serif;
     background: var(--bg);
     color: var(--text);
     transition: background .3s, color .3s;
+    padding-bottom: 80px; /* biar fixed bar ga nutup konten */
   }
 
-  /* ============ Main container ============ */
-  .main-container {
-    width: 88%;
-    max-width: 850px;
-    margin: 0 auto 20px;
-    background: var(--card-light);
+  /* ===================== HEADER ===================== */
+  header .header-inner {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 20px;
+  }
+  header img#restoLogo {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
     border-radius: 8px;
-    padding: 20px;
-    padding-bottom: 80px; /* biar konten nggak ketutup fixbar */
-    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  }
+  header h1 {
+    font-size: 1.2rem;
+  }
+  header .contact-info {
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+  header .dark-toggle {
+    margin-left: auto;
+    font-size: 1.2rem;
+    cursor: pointer;
+    background: none;
+    border: none;
+  }
+
+  /* ===================== MAIN CONTAINER ===================== */
+  .main-container {
+    width: 95%;
+    max-width: 900px;
+    margin: 20px auto;
+    background: var(--card-light);
+    border-radius: 10px;
+    padding: 16px;
+    box-shadow: var(--shadow);
     transition: background .3s, color .3s;
   }
-  body.dark .main-container {
-    background: var(--card-dark);
-  }
+  body.dark .main-container { background: var(--card-dark); }
 
-  /* ============ Tabs ============ */
+  /* ===================== TABS ===================== */
   .tabs {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     gap: 10px;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
-    position: sticky;
-    top: 0;
-    background: inherit;
-    padding: 10px 0;
-    z-index: 5;
+    margin-bottom: 16px;
   }
   .tabs button {
-    padding: 8px 16px;
-    border: none;
+    padding: 6px 14px;
     border-radius: 8px;
+    border: none;
     cursor: pointer;
     background: #eee;
+    font-size: 0.9rem;
     transition: background .3s;
   }
-  .tabs button.active {
-    background: var(--primary);
-    color: #fff;
-  }
-  body.dark .tabs button {
-    background: #2a2f3d;
-    color: #ddd;
-  }
-  body.dark .tabs button.active {
-    background: var(--primary);
-    color: #fff;
-  }
+  .tabs button.active { background: var(--primary); color: #fff; }
+  body.dark .tabs button { background: #2a2f3d; color: #ddd; }
+  body.dark .tabs button.active { background: var(--primary); color: #fff; }
 
-  /* ============ Grid ============ */
+  /* ===================== GRID ===================== */
   .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill,minmax(150px,1fr));
-    gap: 14px;
+    grid-template-columns: repeat(auto-fill,minmax(140px,1fr));
+    gap: 12px;
   }
-  .hidden { display: none; }
 
-  /* ============ Card ============ */
+  /* ===================== ROOM CARD ===================== */
   .room-card {
-    border: 1px solid #ddd;
-    border-radius: 12px;
     background: var(--card-light);
+    border-radius: 10px;
     padding: 10px;
     text-align: center;
+    font-size: 0.85rem;
+    border: 1px solid #ddd;
     transition: background .3s, color .3s;
-    font-size: 14px;
   }
-  .room-card img {
-    max-width: 100%;
-    border-radius: 8px;
-    margin-bottom: 8px;
-  }
-  .room-card h3 { font-size: 15px; margin: 6px 0; }
-  .room-card p { margin: 4px 0; font-size: 13px; }
-  .room-card button {
-    margin-top: 8px;
-    background: var(--success);
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    padding: 6px 12px;
-    cursor: pointer;
-    font-size: 13px;
-  }
-  .room-card button:hover { background: #218838; }
-
-  /* Dark mode cards */
   body.dark .room-card {
     background: var(--card-dark);
     border-color: #444;
   }
+  .room-card img { width: 100%; height: 100px; object-fit: cover; border-radius: 6px; margin-bottom: 6px; }
+  .room-card h3 { font-size: 0.95rem; margin: 4px 0; }
+  .room-card p { margin: 2px 0; font-size: 0.8rem; }
+  .room-card button {
+    margin-top: 6px;
+    padding: 6px 10px;
+    font-size: 0.8rem;
+    background: var(--success);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+  }
 
-  /* ============ Fixed bar ============ */
+  /* ===================== RESERVASI FORM ===================== */
+  .reservasi-container { margin-top: 20px; }
+  #cartPreview { background: var(--chip); padding: 10px; border-radius: 8px; margin-bottom: 8px; font-size: 0.85rem; }
+  .cart-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; gap: 4px; flex-wrap: wrap; }
+
+  .form-input {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+  }
+  .form-input label { font-size: 0.85rem; margin-bottom: 4px; }
+  .form-input input,
+  .form-input textarea {
+    padding: 6px 8px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 0.85rem;
+    width: 100%;
+  }
+  .form-input textarea { resize: vertical; min-height: 60px; }
+
+  /* ===================== FIXED BAR ===================== */
   .fixed-bar {
     position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: linear-gradient(135deg, #1e3c72, #2a5298);
-    box-shadow: 0 -2px 6px rgba(0,0,0,0.1);
+    bottom: 0; left:0; right:0;
     display: flex;
-    justify-content: center;
     gap: 10px;
-    padding: 10px;
-    z-index: 1000;
+    padding: 8px;
+    background: linear-gradient(135deg,#1e3c72,#2a5298);
+    box-shadow: 0 -2px 6px rgba(0,0,0,.1);
+    z-index: 999;
   }
   .fixed-bar button {
     flex: 1;
-    height: 50px;
-    font-size: 14px;
-    font-weight: bold;
+    padding: 10px 0;
+    font-size: 0.85rem;
     border-radius: 8px;
     border: none;
     cursor: pointer;
-    color: white;
-    transition: background-color 0.3s ease;
+    color: #fff;
   }
-  .btn-wa { background: #25d366; }
-  .btn-back { background: #d8cd33; }
-</style>
+  .btn-wa { background: var(--success); }
+  .btn-back { background: #d8cd33; color:#000; }
 
-  <script src="lang.js"></script>
+  /* ===================== RESPONSIVE ===================== */
+  @media (max-width: 500px) {
+    header .header-inner { flex-direction: column; align-items: flex-start; gap: 6px; }
+    header h1 { font-size: 1rem; }
+    .room-card img { height: 80px; }
+    .fixed-bar { flex-direction: column; gap: 6px; padding: 6px; }
+    .fixed-bar button { width: 100%; padding: 10px 0; }
+  }
+</style>
 </head>
 <body>
   <!-- ===================== HEADER ===================== -->
@@ -413,6 +435,7 @@
 
 </body>
 </html>
+
 
 
 
