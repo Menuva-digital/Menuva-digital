@@ -177,7 +177,8 @@
     margin: 5px 0;
     line-height: 1.5;
   }
-  .fixed-bar {
+    /* ===================== Fixed Button Bar ===================== */
+.fixed-bar {
   position: fixed;
   bottom: 0;
   left: 0;
@@ -186,13 +187,13 @@
   box-shadow: 0 -2px 6px rgba(0,0,0,0.1);
   display: flex;
   justify-content: space-between;
-  gap: 10px;
-  padding: 10px 15px;  /* <-- kasih padding kiri/kanan */
+  gap: 10px; /* jarak antar tombol */
+  padding: 10px 15px; /* padding kiri/kanan biar nggak nempel tepi */
   z-index: 1000;
 }
 
 .fixed-bar button {
-  flex: 1;
+  flex: 1 1 auto; /* tombol berbagi space sama rata */
   padding: 12px 0;
   font-size: 14px;
   font-weight: bold;
@@ -201,31 +202,32 @@
   cursor: pointer;
   color: white;
   transition: background-color 0.3s ease;
-  box-sizing: border-box; /* <- ini penting */
+  box-sizing: border-box; /* penting agar padding dihitung dalam width */
 }
 
-/* warna tombol */
+/* Warna tombol */
 .btn-book { background: #6c63ff; }
 .btn-order { background: #007bff; }
 .btn-room { background: #28a745; }
 
-/* hover effect */
+/* Hover effect */
 .fixed-bar button:hover { opacity: 0.85; }
 
-/* padding bawah konten supaya nggak tertutup bar */
+/* Padding bawah konten supaya tidak tertutup bar */
 main, .container { padding-bottom: 70px; }
 
-/* Mobile view */
+/* ===================== Mobile View ===================== */
 @media (max-width: 480px) {
   .fixed-bar {
-    padding: 8px 15px; /* lebih lebar biar tombol nggak nempel tepi */
-    gap: 5px;
+    flex-direction: row; /* tetap row */
+    padding: 8px 15px;   /* pastikan ada jarak kiri/kanan */
+    gap: 5px;            /* jarak antar tombol */
+  }
+  .fixed-bar button {
+    font-size: 14px;
+    padding: 10px 0;
   }
 }
-  .fixed-bar button {
-  flex: 0 1 calc((100% - 20px) / 3); /* 3 tombol + gap 10px * 2 */
-}
-
 
    .flipbook-gallery img {
   border: 2px solid #ccc;        /* Outline abu-abu terang */
@@ -283,12 +285,13 @@ main, .container { padding-bottom: 70px; }
   <img id="fullscreenImage" alt="Fullscreen Image" />
 </div>
 
-<!-- Fixed Button Bar -->
+<!-- ===================== Fixed Button Bar ===================== -->
 <div class="fixed-bar">
   <button class="btn-book" onclick="window.location.href='book.html'">📖 Dine-in Menu Book</button>
   <button class="btn-order" onclick="window.location.href='order.html'">🛒 Reserve/Booking</button>
   <button class="btn-room" onclick="window.location.href='room.html'">🏢 Room/Meeting Room/Package</button>
 </div>
+
 
 <script>
   const DB_NAME = "MenuvaDB";
@@ -462,6 +465,7 @@ function startCountdown(tanggalAkhir, elementId) {
 
 </body>
 </html>
+
 
 
 
