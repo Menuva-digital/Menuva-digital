@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Reservasi Room</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin:0; padding:0;
+      background: linear-gradient(to right,#2a5298,#1e3c72);
+    }
+
+    /* ===== HEADER LANGSUNG DI BODY ===== */
+    header {
+      text-align:center;
+      padding:20px;
+    }
+    #restoLogo {
+      max-height:80px;
+      margin-bottom:10px;
+    }
+    #restoName {
+      font-size:26px;
+      margin:0;
+      color:#d1d1d1;
+      font-weight:bold;
+    }
+    .contact-info p {
+      margin:2px 0;
+      font-size:14px;
+      font-weight:bold;
+      color:#f1eeee;
+    }
+
+    .main-container {
+      width: 95%;
+      max-width: 1600px;
+      margin: 20px auto 100px auto;
+      padding: 20px;
+      background:#fff;
+      border-radius:16px;
+      box-shadow:0 4px 16px rgba(0,0,0,0.15);
+    }
+
+    .tabs { display:flex; justify-content:center; gap:10px; margin-bottom:20px; }
+    .tabs button {
+      padding:8px 16px;
+      border:none; border-radius:8px;
+      cursor:pointer;
+      background:#eee;
+    }
+    .tabs button.active { background:#007bff; color:#fff; }
+
+    .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:16px; }
+    .hidden { display:none; }
+
+    .room-card {
+      border:1px solid #ddd; border-radius:12px; overflow:hidden;
+      background:#fafafa; padding:12px; text-align:center;
+    }
+    .room-card img { max-width:100%; border-radius:8px; margin-bottom:8px; }
+
+    .room-card button {
+      margin-top:8px;
+      background:#28a745; color:#fff;
+      border:none; border-radius:8px;
+      padding:6px 12px; cursor:pointer;
+    }
+    .room-card button:hover { background:#218838; }
+
+    /* ====== Cart Preview ====== */
+    .reservasi-container {
+      width: 95%;
+      max-width: 1600px;
+      margin: -90px auto 20px;
+      padding: 20px;
+      padding-bottom: 80px;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    }
+    .reservasi-container h3 { margin-top:0; }
+
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 0;
+      border-bottom: 1px solid #eee;
+    }
+    .cart-item span { flex: 1; text-align:left; }
+    .cart-item button {
+      border: none;
+      background: #dc3545;
+      color: #fff;
+      padding: 4px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+      margin-left: 5px;
+    }
+    .cart-item button:hover { background: #a71d2a; }
+
+    #cartTotal {
+      font-weight:bold;
+      text-align:right;
+      margin-top:10px;
+    }
+
+    .form-input { margin-top:12px; }
+    .form-input label { display:block; margin-bottom:4px; font-weight:bold; }
+    .form-input input, .form-input textarea {
+      width:100%; padding:8px; border:1px solid #ccc;
+      border-radius:6px; box-sizing:border-box;
+    }
+
+    .bottom-buttons {
+      position:fixed; bottom:0; left:0; right:0;
+      background: linear-gradient(to right,#2a5298,#1e3c72);
+      padding:10px;
+      max-width: 1600px;
+      width: 100%;
+      display:flex; justify-content:center; gap:10px;
+      border-top:1px solid #4423bb;
+    }
+    .bottom-buttons button {
+      flex:1; max-width:750px;
+      padding:12px;
+      border:none; border-radius:8px;
+      cursor:pointer;
+      font-size:16px;
+    }
+    .btn-wa { background:#25d366; color:#fff; }
+    .btn-back { background:#d8cd33; color:#fff; }
+  </style>
+  <script src="lang.js"></script>
+</head>
+<body>
+  <!-- HEADER LANGSUNG DI BODY -->
+  <header>
+    <img id="restoLogo" alt="Logo" />
+    <h1 id="restoName"></h1>
+    <div class="contact-info">
+      <p id="alamatRestoranDisplay"></p>
+      <p id="teleponRestoranDisplay"></p>
+    </div>
+  </header>
+
+  <div class="main-container" id="app">
+    <div class="tabs">
+      <button class="active" data-target="rooms">Rooms</button>
+      <button data-target="meetings">Meeting Rooms</button>
+      <button data-target="packages">Packages</button>
+    </div>
+
+    <section id="rooms" class="grid"></section>
+    <section id="meetings" class="grid hidden"></section>
+    <section id="packages" class="grid hidden"></section>
+    <p id="empty" class="hidden" style="text-align:center;color:#666;margin-top:8px">Belum ada data.</p>
+  </div>
+
+  <!-- Preview Pesanan -->
+  <div class="reservasi-container">
+    <h3>Preview Pesanan</h3>
+    <div id="cartPreview"><p><i>No choice</i></p></div>
+    <p id="cartTotal">Total: 0</p>
+
+    <div class="form-input">
+      <label>Orderer Name</label>
+      <input type="text" id="custName">
+    </div>
+    <div class="form-input">
+      <label>Address</label>
+      <input type="text" id="custAddress">
+    </div>
+    <div class="form-input">
+      <label>Telephone Number</label>
+      <input type="text" id="custPhone">
+    </div>
+    <div class="form-input">
+      <label>Date Used</label>
+      <input type="date" id="custDate">
+    </div>
+    <div class="form-input">
+      <label>Notes</label>
+      <textarea id="custNote"></textarea>
+    </div>
+  </div>
+
+  <div class="bottom-buttons" id="bottomBar">
+    <button class="btn-wa" id="btnSend">📤 Send Request</button>
+    <button class="btn-back" onclick="history.back()">🔙 Back To Menu</button>
+  </div>
+
+<script>
+  /* === DB dan fungsi sama kaya sebelumnya === */
+  const DB_NAME = "MenuvaDB";
+  const STORE_NAME = "menuvaData";
+  const DB_VERSION = 1;
+
+  let restoData = {};
+  let cart = [];
+
+  function openDB() {
+    return new Promise((resolve, reject) => {
+      const request = indexedDB.open(DB_NAME, DB_VERSION);
+      request.onerror = () => reject("❌ Gagal buka DB");
+      request.onsuccess = () => resolve(request.result);
+    });
+  }
+
+  function loadDataFromDB() {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const db = await openDB();
+        const tx = db.transaction(STORE_NAME, "readonly");
+        const store = tx.objectStore(STORE_NAME);
+        const request = store.get(1);
+        request.onsuccess = () => resolve(request.result || {});
+        request.onerror = () => reject("❌ Failed to retrieve data");
+      } catch (e) { reject(e); }
+    });
+  }
+
+  function buatCard(room) {
+    return `
+      <div class="room-card">
+        <img src="${room.image || ""}" alt="${room.nama}">
+        <h3>${room.nama}</h3>
+        <p><b>Price:</b> ${room.harga.toLocaleString()}</p>
+        <p><b>Capacity:</b> ${room.kapasitas} person</p>
+        <p><b>Room size:</b> ${room.luas} m²</p>
+        <p>${room.deskripsi}</p>
+        <button onclick='tambahKeCart(${JSON.stringify(room)})'>Add To Chart</button>
+      </div>
+    `;
+  }
+
+  function updateCart() {
+    const preview = document.getElementById("cartPreview");
+    const totalEl = document.getElementById("cartTotal");
+    if (cart.length === 0) {
+      preview.innerHTML = "<p><i>There are no selected items.</i></p>";
+      totalEl.innerText = "Total:  0";
+      return;
+    }
+    let total = 0;
+    preview.innerHTML = "";
+    cart.forEach((item, idx) => {
+      const subtotal = item.harga * item.qty;
+      total += subtotal;
+      const div = document.createElement("div");
+      div.className = "cart-item";
+      div.innerHTML = `
+        <span>${item.nama} -  ${item.harga.toLocaleString()} x ${item.qty} = <b> ${subtotal.toLocaleString()}</b></span>
+        ${item.kategori === "package" ? `
+          <button onclick="ubahQty(${idx},-1)">-</button>
+          <button onclick="ubahQty(${idx},1)">+</button>
+        ` : ""}
+        <button onclick="hapusDariCart(${idx})">❌</button>
+      `;
+      preview.appendChild(div);
+    });
+    totalEl.innerText = "Total:  " + total.toLocaleString();
+  }
+
+  function tambahKeCart(room) {
+    const idx = cart.findIndex(r => r.nama === room.nama);
+    if (idx >= 0) {
+      cart[idx].qty++;
+    } else {
+      cart.push({ ...room, qty: 1 });
+    }
+    updateCart();
+  }
+
+  function hapusDariCart(index) {
+    cart.splice(index,1);
+    updateCart();
+  }
+
+  function ubahQty(index, delta) {
+    cart[index].qty += delta;
+    if (cart[index].qty < 1) cart[index].qty = 1;
+    updateCart();
+  }
+
+  async function tampilkanData() {
+    try {
+      const data = await loadDataFromDB();
+      restoData = data;
+
+      document.getElementById("restoLogo").src = data.logo || "";
+      document.getElementById("restoName").innerText = data.namaRestoran || "Nama Resto";
+      document.getElementById("alamatRestoranDisplay").innerText = data.restoAddress || "";
+      document.getElementById("teleponRestoranDisplay").innerText = data.restoPhone || "";
+
+      ["rooms","meetings","packages"].forEach(id=>{
+        document.getElementById(id).innerHTML="";
+      });
+
+      let total = 0;
+      if (data.rooms && data.rooms.length > 0) {
+        data.rooms.forEach(room=>{
+          total++;
+          if(room.kategori==="hotel"){
+            document.getElementById("rooms").innerHTML += buatCard(room);
+          } else if(room.kategori==="meeting"){
+            document.getElementById("meetings").innerHTML += buatCard(room);
+          } else if(room.kategori==="package"){
+            document.getElementById("packages").innerHTML += buatCard(room);
+          }
+        });
+      }
+      document.getElementById("empty").classList.toggle("hidden", total>0);
+    } catch(e){
+      console.error("❌ Error:", e);
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", ()=>{
+    document.querySelectorAll(".tabs button").forEach(btn=>{
+      btn.addEventListener("click", ()=>{
+        document.querySelectorAll(".tabs button").forEach(b=>b.classList.remove("active"));
+        btn.classList.add("active");
+
+        document.querySelectorAll("section").forEach(sec=>sec.classList.add("hidden"));
+        document.getElementById(btn.dataset.target).classList.remove("hidden");
+      });
+    });
+
+    document.getElementById("btnSend").addEventListener("click", ()=>{
+      if(!restoData.nomorWaAdmin || restoData.nomorWaAdmin.length===0){
+        alert("Admin's WhatsApp number has not been set.");
+        return;
+      }
+      if(cart.length === 0){
+        alert("Cart is still empty.");
+        return;
+      }
+
+      const adminNo = restoData.nomorWaAdmin[0].replace(/[^0-9]/g,"");
+
+      let pesan = `Hello ${restoData.namaRestoran || "Admin"}, I want a reservation:\n\n`;
+      cart.forEach((item,i)=>{
+        pesan += `${i+1}. ${item.nama} - Rp ${item.harga.toLocaleString()} x ${item.qty} = Rp ${(item.harga*item.qty).toLocaleString()}\n`;
+      });
+      let total = cart.reduce((a,b)=>a+(b.harga*b.qty),0);
+      pesan += `\nTotal: Rp ${total.toLocaleString()}\n\n`;
+
+      pesan += `Name: ${document.getElementById("custName").value}\n`;
+      pesan += `Address: ${document.getElementById("custAddress").value}\n`;
+      pesan += `Phone Number: ${document.getElementById("custPhone").value}\n`;
+      pesan += `Date: ${document.getElementById("custDate").value}\n`;
+      pesan += `Notes: ${document.getElementById("custNote").value}\n`;
+
+      const url = `https://wa.me/${adminNo}?text=${encodeURIComponent(pesan)}`;
+      window.open(url,"_blank");
+    });
+
+    tampilkanData();
+  });
+</script>
+</body>
+</html>
