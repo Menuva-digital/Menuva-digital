@@ -41,32 +41,45 @@ body {
   padding-bottom: 80px;
 }
 
-  /* ===================== HEADER ===================== */
- header .
-  header-inner 
-  { display: flex; 
-   align-items: center; 
-   gap: 12px; 
-   padding: 12px 20px; } 
-  header img#restoLogo { 
-  width: 60px; height: 60px; 
-  object-fit: contain; 
-  border-radius: 8px; 
-  } 
-  header h1 { 
-  font-size: 1.2rem; 
-  } 
-  header .contact-info { 
-  font-size: 0.8rem; color: var(--muted); 
-  } 
-  header .dark-toggle { 
-  right: 20px; 
-  font-size: 1.2rem; 
-  cursor: pointer; 
-  background: none; 
-  border: none; 
-  }
-  
+/* ===== HEADER ===== */
+header .header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* kiri vs kanan */
+  padding: 12px 20px;
+}
+
+header .left-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+header img#restoLogo {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+header h1 {
+  font-size: 1.2rem;
+  color: #fff; /* biar putih di default maupun dark */
+}
+
+header .contact-info {
+  font-size: 0.8rem;
+  color: #fff; /* selalu putih */
+}
+
+header .dark-toggle {
+  font-size: 1.2rem;
+  cursor: pointer;
+  background: none;
+  border: none;
+  color: #fff; /* selalu putih */
+}
+
   #restoName,
 .contact-info,
 .contact-info div {
@@ -210,15 +223,14 @@ body {
 
 <header>
   <div class="header-inner">
-    <img id="restoLogo" alt="Logo" />
-    <div>
-      <h1 id="restoName">Nama Restoran</h1>
-      <div class="contact-info">
-        <div id="alamatRestoranDisplay"></div>
-        <div id="teleponRestoranDisplay"></div>
+    <div class="left-info">
+      <img id="restoLogo" src="logo.png" alt="Logo Resto">
+      <div>
+        <h1>Nama Resto</h1>
+        <div class="contact-info">+62 812-3456-7890</div>
       </div>
     </div>
-    <button class="dark-toggle" onclick="toggleDark()">🌙</button>
+    <button class="dark-toggle">🌙</button>
   </div>
 </header>
 
@@ -234,13 +246,13 @@ body {
   <section id="rooms" class="grid"></section>
   <section id="meetings" class="grid hidden"></section>
   <section id="packages" class="grid hidden"></section>
-  <p id="empty" class="hidden" style="text-align:center;color:#666;margin-top:8px">Belum ada data.</p>
+  <p id="empty" class="hidden" style="text-align:center;color:#666;margin-top:8px">Data Empty.</p>
 
   <!-- Cart + Form -->
   <div class="reservasi-container">
     <div id="cartPreview"><p><i>No choice</i></p></div>
     <p id="cartTotal">Total: 0</p>
-
+    <br>
     <div class="form-input"><label>Orderer Name</label><input type="text" id="custName"></div>
     <div class="form-input"><label>Address</label><input type="text" id="custAddress"></div>
     <div class="form-input"><label>Telephone Number</label><input type="text" id="custPhone"></div>
@@ -300,7 +312,7 @@ body {
       <div class="room-card">
         <img src="${room.image}" alt="${room.nama}">
         <h3>${room.nama}</h3>
-        <p><b>Price:</b> Rp ${room.harga.toLocaleString()}</p>
+        <p><b>Price:</b> ${room.harga.toLocaleString()}</p>
         <p><b>Capacity:</b> ${room.kapasitas} person</p>
         <p><b>Room size:</b> ${room.luas} m²</p>
         <p>${room.deskripsi}</p>
@@ -325,7 +337,7 @@ body {
       total += subtotal;
       const div = document.createElement("div");
       div.className = "cart-item";
-      div.innerHTML = `<span>${item.nama} - Rp ${item.harga.toLocaleString()} x ${item.qty} = <b>${subtotal.toLocaleString()}</b></span>
+      div.innerHTML = `<span>${item.nama} - ${item.harga.toLocaleString()} x ${item.qty} = <b>${subtotal.toLocaleString()}</b></span>
         ${item.kategori==="package"?`<button onclick="ubahQty(${idx},-1)">-</button><button onclick="ubahQty(${idx},1)">+</button>`:""}
         <button onclick="hapusDariCart(${idx})">❌</button>`;
       preview.appendChild(div);
@@ -351,7 +363,7 @@ body {
 
     // Header
     document.getElementById("restoLogo").src = restoData.logo || "";
-    document.getElementById("restoName").innerText = restoData.namaRestoran || "Nama Restoran";
+    document.getElementById("restoName").innerText = restoData.namaRestoran || "Resto Name";
     document.getElementById("alamatRestoranDisplay").innerText = restoData.restoAddress || "";
     document.getElementById("teleponRestoranDisplay").innerText = restoData.restoPhone || "";
 
@@ -391,7 +403,7 @@ body {
       let pesan = `Hello ${restoData.namaRestoran || "Admin"}, I want a reservation:\n\n`;
       cart.forEach((item,i)=>{ pesan += `${i+1}. ${item.nama} - Rp ${item.harga.toLocaleString()} x ${item.qty} = Rp ${(item.harga*item.qty).toLocaleString()}\n`; });
       let total = cart.reduce((a,b)=>a+(b.harga*b.qty),0);
-      pesan += `\nTotal: Rp ${total.toLocaleString()}\n\n`;
+      pesan += `\nTotal: ${total.toLocaleString()}\n\n`;
       pesan += `Name: ${document.getElementById("custName").value}\n`;
       pesan += `Address: ${document.getElementById("custAddress").value}\n`;
       pesan += `Phone Number: ${document.getElementById("custPhone").value}\n`;
@@ -414,6 +426,7 @@ body {
 
 </body>
 </html>
+
 
 
 
