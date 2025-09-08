@@ -3,17 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Reservasi Room</title>
+<title>Reserve Room</title>
 <style>
   /* ===================== RESET & THEME ===================== */
   * { box-sizing: border-box; margin:0; padding:0; }
   :root {
-    --bg: #eaf1ff;          /* biru lembut */
+    --bg: #f4f8ff;
     --surface: #ffffff;
     --text: #1f2a44;
-    --muted: #5c6b8a;
-    --border: #c2d4ff;
-    --primary: #1f70ff;      /* biru elegan */
+    --muted: #6b7a99;
+    --border: #d8e1ff;
+    --primary: #1f70ff;
     --success: #25d366;
     --card-light: #ffffff;
     --card-dark: #1c2333;
@@ -53,6 +53,13 @@
   }
   header h1 { font-size: 1.2rem; }
   header .contact-info { font-size: 0.8rem; color: var(--muted); }
+  header .dark-toggle {
+    margin-left: auto;
+    font-size: 1.2rem;
+    cursor: pointer;
+    background: none;
+    border: none;
+  }
 
   /* ===================== MAIN CONTAINER ===================== */
   .main-container {
@@ -69,13 +76,13 @@
 
   /* ===================== TABS ===================== */
   .tabs {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /* selalu 3 sejajar */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 10px;
     margin-bottom: 16px;
   }
   .tabs button {
-    width: 100%;
     padding: 6px 14px;
     border-radius: 8px;
     border: none;
@@ -165,29 +172,6 @@
   .btn-wa { background: var(--success); }
   .btn-back { background: #d8cd33; color:#000; }
 
-  /* ===================== FLOATING DARK TOGGLE ===================== */
-  .dark-float {
-    position: fixed;
-    bottom: 100px;
-    right: 20px;
-    z-index: 1000;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background: var(--primary);
-    color: #fff;
-    font-size: 1.4rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: grab;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    user-select: none;
-  }
-  .dark-float:active {
-    cursor: grabbing;
-  }
-
   /* ===================== RESPONSIVE ===================== */
   @media (max-width: 500px) {
     header .header-inner { flex-direction: column; align-items: flex-start; gap: 6px; }
@@ -210,11 +194,9 @@
         <div id="teleponRestoranDisplay"></div>
       </div>
     </div>
+    <button class="dark-toggle" onclick="toggleDark()">🌙</button>
   </div>
 </header>
-
-<!-- Floating Dark Toggle -->
-<button id="darkToggle" class="dark-float">🌙</button>
 
 <div class="main-container" id="app">
   <!-- Tabs -->
@@ -248,6 +230,7 @@
     </div>
   </div>
 </div>
+
 <script>
   let db;
   const DB_NAME = "MenuvaDB";
@@ -407,4 +390,3 @@
 
 </body>
 </html>
-
