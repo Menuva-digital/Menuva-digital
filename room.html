@@ -223,14 +223,15 @@ header .dark-toggle {
 
 <header>
   <div class="header-inner">
-    <div class="left-info">
-      <img id="restoLogo" src="logo.png" alt="Logo Resto">
-      <div>
-        <h1>Nama Resto</h1>
-        <div class="contact-info">+62 812-3456-7890</div>
+    <img id="restoLogo" alt="Logo" />
+    <div>
+      <h1 id="restoName">Nama Restoran</h1>
+      <div class="contact-info">
+        <div id="alamatRestoranDisplay"></div>
+        <div id="teleponRestoranDisplay"></div>
       </div>
     </div>
-    <button class="dark-toggle">🌙</button>
+    <button class="dark-toggle" onclick="toggleDark()">🌙</button>
   </div>
 </header>
 
@@ -426,6 +427,7 @@ header .dark-toggle {
 
 </body>
 </html>
+
 
 
 
