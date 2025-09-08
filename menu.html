@@ -201,8 +201,8 @@
   cursor: pointer;
   color: white;
   transition: background-color 0.3s ease;
+  box-sizing: border-box; /* <- ini penting */
 }
-
 
 /* warna tombol */
 .btn-book { background: #6c63ff; }
@@ -218,15 +218,14 @@ main, .container { padding-bottom: 70px; }
 /* Mobile view */
 @media (max-width: 480px) {
   .fixed-bar {
-    flex-direction: row; /* tetap row */
-    padding: 8px 10px;
+    padding: 8px 15px; /* lebih lebar biar tombol nggak nempel tepi */
     gap: 5px;
   }
-  .fixed-bar button {
-    font-size: 14px;
-    padding: 10px 0;
-  }
 }
+  .fixed-bar button {
+  flex: 0 1 calc((100% - 20px) / 3); /* 3 tombol + gap 10px * 2 */
+}
+
 
    .flipbook-gallery img {
   border: 2px solid #ccc;        /* Outline abu-abu terang */
@@ -463,5 +462,6 @@ function startCountdown(tanggalAkhir, elementId) {
 
 </body>
 </html>
+
 
 
