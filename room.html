@@ -5,38 +5,41 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Reserve Room</title>
 <style>
-  /* ===================== RESET & THEME ===================== */
-  * { box-sizing: border-box; margin:0; padding:0; }
-  :root {
-    --bg: #f4f8ff;
-    --surface: #ffffff;
-    --text: #1f2a44;
-    --muted: #6b7a99;
-    --border: #d8e1ff;
-    --primary: #1f70ff;
-    --success: #25d366;
-    --card-light: #ffffff;
-    --card-dark: #1c2333;
-    --shadow: 0 6px 24px rgba(0,0,0,.08);
-  }
-  body.dark {
-    --bg: #0e1116;
-    --surface: #141922;
-    --text: #e6ebff;
-    --muted: #aab6db;
-    --border: #263148;
-    --primary: #4da3ff;
-    --chip: #0f1a2a;
-    --shadow: 0 8px 28px rgba(0,0,0,.5);
-  }
+/* ===================== RESET & THEME ===================== */
+* { box-sizing: border-box; margin:0; padding:0; }
 
-  body {
-    font-family: system-ui, sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    transition: background .3s, color .3s;
-    padding-bottom: 80px; /* biar fixed bar ga nutup konten */
-  }
+:root {
+  --bg: #eaf1fb;          /* biru muda elegan buat background */
+  --surface: #ffffff;     /* putih bersih untuk card/surface */
+  --text: #1c2d4f;        /* biru gelap elegan untuk teks utama */
+  --muted: #5c6f91;       /* biru keabu-abuan untuk teks sekunder */
+  --border: #c3d4f7;      /* biru soft untuk border */
+  --primary: #1f70ff;     /* biru utama (elegan, tidak terlalu neon) */
+  --success: #25d366;     /* hijau WhatsApp-style */
+  --card-light: #ffffff;
+  --card-dark: #1c2333;
+  --shadow: 0 6px 24px rgba(0,0,0,.08);
+}
+
+body.dark {
+  --bg: #0e1116;
+  --surface: #141922;
+  --text: #e6ebff;
+  --muted: #aab6db;
+  --border: #263148;
+  --primary: #4da3ff;     /* biru lebih terang untuk mode gelap */
+  --chip: #0f1a2a;
+  --shadow: 0 8px 28px rgba(0,0,0,.5);
+}
+
+body {
+  font-family: system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  transition: background .3s, color .3s;
+  padding-bottom: 80px; /* biar fixed bar ga nutup konten */
+}
+
 
   /* ===================== HEADER ===================== */
   header .header-inner {
@@ -402,4 +405,5 @@
 
 </body>
 </html>
+
 
