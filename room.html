@@ -5,50 +5,46 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Reservasi Room</title>
   <style>
+    /* =====================
+       THEME (Light / Dark)
+       ===================== */
     :root {
-      --bg-light: #f9f9f9;
-      --bg-dark: #121212;
-      --card-light: #ffffff;
-      --card-dark: #2a2a2a;
-      --text-light: #222;
-      --text-dark: #eaeaea;
-      --primary: #007bff;
-      --success: #28a745;
-      --danger: #dc3545;
+      --bg: #f4f8ff;
+      --surface: #ffffff;
+      --text: #1f2a44;
+      --muted: #6b7a99;
+      --border: #d8e1ff;
+      --brand: #1f70ff;
+      --brand-2: #2a5298;
+      --brand-3: #1e3c72;
+      --chip: #eef4ff;
+      --danger: #e54646;
+      --success: #25d366;
+      --shadow: 0 6px 24px rgba(0,0,0,.08);
     }
-
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0; padding: 0;
-      background: var(--bg-light);
-      background: linear-gradient(to right,#2a5298,#1e3c72);
-      color: var(--text-light);
-      transition: background 0.3s, color 0.3s;
+    body.dark {
+      --bg: #0e1116;
+      --surface: #141922;
+      --text: #e6ebff;
+      --muted: #aab6db;
+      --border: #263148;
+      --brand: #4da3ff;
+      --chip: #0f1a2a;
+      --shadow: 0 8px 28px rgba(0,0,0,.5);
     }
-
-    /* ===== HEADER ===== */
-    header {
-      text-align: center;
-      padding: 20px;
-      position: relative;
-      background: linear-gradient(to right,#2a5298,#1e3c72);
-      color: #fff;
+   header {
+      background: linear-gradient(90deg, var(--brand-2), var(--brand-3));
+      color: #fff; padding: 22px 0 18px; position: sticky; top: 0; z-index: 50; box-shadow: var(--shadow);
     }
-    #restoLogo { max-height: 70px; margin-bottom: 10px; }
-    #restoName { font-size: 22px; margin: 0; font-weight: bold; }
-    .contact-info p { margin: 2px 0; font-size: 14px; }
-
-    /* ===== Dark Mode Toggle ===== */
+    .header-inner { display: grid; grid-template-columns: 80px 1fr 48px; gap: 12px; align-items: center; }
+    #restoLogo { height: 64px; width: 64px; object-fit: contain; border-radius: 12px; background: rgba(255,255,255,.1); }
+    #restoName { margin: 0; font-size: 26px; letter-spacing: .2px; }
+    .contact-info { font-size: 12px; opacity: .9; }
     .dark-toggle {
-      position: absolute;
-      top: 20px; right: 20px;
-      background: #fff;
-      border: none; border-radius: 20px;
-      padding: 6px 14px;
-      cursor: pointer; font-size: 14px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      width: 44px; height: 44px; border-radius: 50%; border: 1px solid rgba(255,255,255,.35);
+      background: transparent; color: #fff; cursor: pointer; font-size: 18px;
     }
-
+    
     /* ===== Container ===== */
     .main-container {
       width: 88%;
@@ -193,15 +189,19 @@
   <script src="lang.js"></script>
 </head>
 <body>
-  <!-- HEADER -->
+  <!-- ===================== HEADER ===================== -->
   <header>
-    <img id="restoLogo" alt="Logo" />
-    <h1 id="restoName"></h1>
-    <div class="contact-info">
-      <p id="alamatRestoranDisplay"></p>
-      <p id="teleponRestoranDisplay"></p>
+    <div class="container header-inner">
+      <img id="restoLogo" alt="Logo" />
+      <div>
+        <h1 id="restoName">Nama Restoran</h1>
+        <div class="contact-info">
+          <div id="alamatRestoranDisplay"></div>
+          <div id="teleponRestoranDisplay"></div>
+        </div>
+      </div>
+      <button class="dark-toggle" onclick="toggleDark()" title="Toggle theme">🌙</button>
     </div>
-    <button class="dark-toggle" id="darkToggle">🌙 Dark Mode</button>
   </header>
 
   <!-- MAIN -->
@@ -403,22 +403,21 @@
       window.open(url,"_blank");
     });
 
-    // Toggle Dark Mode
-    const toggleBtn = document.getElementById("darkToggle");
-    toggleBtn.addEventListener("click", ()=>{
-      document.body.classList.toggle("dark");
-      if(document.body.classList.contains("dark")){
-        toggleBtn.textContent = "☀️ Light Mode";
-      } else {
-        toggleBtn.textContent = "🌙 Dark Mode";
-      }
-    });
-
-    tampilkanData();
-  });
+    // ===================== DARK MODE =====================
+    function applyTheme() {
+      const saved = localStorage.getItem('menuva_theme');
+      if (saved === 'dark') document.body.classList.add('dark');
+      document.querySelector('.dark-toggle').textContent = document.body.classList.contains('dark') ? '☀️' : '🌙';
+    }
+    function toggleDark() {
+      document.body.classList.toggle('dark');
+      localStorage.setItem('menuva_theme', document.body.classList.contains('dark') ? 'dark' : 'light');
+      document.querySelector('.dark-toggle').textContent = document.body.classList.contains('dark') ? '☀️' : '🌙';
+    }
 </script>
 </body>
 </html>
+
 
 
 
