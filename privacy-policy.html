@@ -18,9 +18,11 @@
       padding: 40px 20px;
     }
     header img {
-      height: 100px;
-      margin-bottom: 10px;
-    }
+    max-width: 180px;   /* batas lebar maksimum */
+    height: auto;       /* biar proporsional */
+    margin-bottom: 10px;
+   }
+
     header p {
       color: white;
       font-size: 20px;
@@ -64,6 +66,15 @@
         font-size: 16px;
       }
     }
+    @media (max-width:600px) {
+  header img {
+    max-width: 120px; /* logo lebih kecil di HP */
+  }
+  header p {
+    font-size: 16px;
+  }
+}
+
     .contact-info {
     font-size: 14px; 
     color: #070707; /* putih */
@@ -135,3 +146,4 @@
   </div>
 </body>
 </html>
+
