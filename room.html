@@ -5,188 +5,174 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Reservasi Room</title>
   <style>
-   body {
-  font-family: Arial, sans-serif;
-  margin:0; padding:0;
-  background: linear-gradient(to right,#2a5298,#1e3c72);
-  transition: background 0.3s, color 0.3s;
-}
+    :root {
+      --bg-light: #f9f9f9;
+      --bg-dark: #121212;
+      --card-light: #ffffff;
+      --card-dark: #2a2a2a;
+      --text-light: #222;
+      --text-dark: #eaeaea;
+      --primary: #007bff;
+      --success: #28a745;
+      --danger: #dc3545;
+    }
 
-/* ===== HEADER ===== */
-header {
-  text-align:center;
-  padding:20px;
-  position: relative;
-}
-#restoLogo {
-  max-height:80px;
-  margin-bottom:10px;
-}
-#restoName {
-  font-size:26px;
-  margin:0;
-  color:#d1d1d1;
-  font-weight:bold;
-}
-.contact-info p {
-  margin:2px 0;
-  font-size:14px;
-  font-weight:bold;
-  color:#f1eeee;
-}
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0; padding: 0;
+      background: var(--bg-light);
+      color: var(--text-light);
+      transition: background 0.3s, color 0.3s;
+    }
 
-/* ===== Dark Mode Toggle ===== */
-.dark-toggle {
-  position:absolute;
-  top:20px;
-  right:20px;
-  background:#fff;
-  border:none;
-  border-radius:20px;
-  padding:6px 14px;
-  cursor:pointer;
-  font-size:14px;
-  box-shadow:0 2px 6px rgba(0,0,0,0.2);
-}
+    /* ===== HEADER ===== */
+    header {
+      text-align: center;
+      padding: 20px;
+      position: relative;
+      background: linear-gradient(to right,#2a5298,#1e3c72);
+      color: #fff;
+    }
+    #restoLogo { max-height: 70px; margin-bottom: 10px; }
+    #restoName { font-size: 22px; margin: 0; font-weight: bold; }
+    .contact-info p { margin: 2px 0; font-size: 14px; }
 
-/* ===== Container ===== */
-.main-container, .reservasi-container {
-  width: 95%;
-  max-width: 900px;
-  margin: auto;
-}
+    /* ===== Dark Mode Toggle ===== */
+    .dark-toggle {
+      position: absolute;
+      top: 20px; right: 20px;
+      background: #fff;
+      border: none; border-radius: 20px;
+      padding: 6px 14px;
+      cursor: pointer; font-size: 14px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
 
-/* ===== Tabs ===== */
-.tabs {
-  display:flex; 
-  justify-content:center; 
-  gap:10px; 
-  margin-bottom:20px; 
-  flex-wrap:wrap; 
-}
-.tabs button {
-  padding:8px 16px;
-  border:none; border-radius:8px;
-  cursor:pointer;
-  background:#eee;
-  transition: background 0.3s;
-}
-.tabs button.active { background:#007bff; color:#fff; }
+    /* ===== Container ===== */
+    .main-container {
+      width: 95%;
+      max-width: 850px;
+      margin: -40px auto 20px;
+      background: var(--card-light);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+      transition: background 0.3s, color 0.3s;
+    }
 
-/* ===== Grid / Room Card ===== */
-.grid { 
-  display:grid; 
-  grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); 
-  gap:16px; 
-}
-.hidden { display:none; }
+    /* ===== Tabs ===== */
+    .tabs {
+      display: flex; justify-content: center;
+      gap: 10px; margin-bottom: 20px;
+      flex-wrap: wrap;
+      position: sticky; top: 0;
+      background: inherit;
+      padding: 10px 0;
+      z-index: 5;
+    }
+    .tabs button {
+      padding: 8px 16px;
+      border: none; border-radius: 8px;
+      cursor: pointer;
+      background: #eee;
+      transition: background 0.3s;
+    }
+    .tabs button.active { background: var(--primary); color: #fff; }
 
-.room-card {
-  border:1px solid #ddd; border-radius:12px; overflow:hidden;
-  background:#fafafa; padding:12px; text-align:center;
-  transition: background 0.3s, color 0.3s;
-}
-.room-card img { max-width:100%; border-radius:8px; margin-bottom:8px; }
+    /* ===== Grid / Room Card ===== */
+    .grid { 
+      display: grid;
+      grid-template-columns: repeat(auto-fill,minmax(150px,1fr));
+      gap: 14px;
+    }
+    .hidden { display: none; }
 
-.room-card button {
-  margin-top:8px;
-  background:#28a745; color:#fff;
-  border:none; border-radius:8px;
-  padding:6px 12px; cursor:pointer;
-}
-.room-card button:hover { background:#218838; }
+    .room-card {
+      border: 1px solid #ddd; border-radius: 12px;
+      background: var(--card-light);
+      padding: 10px; text-align: center;
+      transition: background 0.3s, color 0.3s;
+      font-size: 14px;
+    }
+    .room-card img { max-width: 100%; border-radius: 8px; margin-bottom: 8px; }
+    .room-card h3 { font-size: 15px; margin: 6px 0; }
+    .room-card p { margin: 4px 0; font-size: 13px; }
+    .room-card button {
+      margin-top: 8px;
+      background: var(--success); color: #fff;
+      border: none; border-radius: 8px;
+      padding: 6px 12px; cursor: pointer;
+      font-size: 13px;
+    }
+    .room-card button:hover { background: #218838; }
 
-/* ====== Cart Preview ====== */
-.reservasi-container {
-  margin: -90px auto 20px;
-  padding: 20px;
-  padding-bottom: 80px;
-  background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
-  transition: background 0.3s, color 0.3s;
-}
-.reservasi-container h3 { margin-top:0; }
+    /* ====== Cart Preview & Form ====== */
+    .reservasi-container h3 { margin-top: 0; }
 
-.cart-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 6px 0;
-  border-bottom: 1px solid #eee;
-}
-.cart-item span { flex: 1; text-align:left; }
-.cart-item button {
-  border: none;
-  background: #dc3545;
-  color: #fff;
-  padding: 4px 10px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 13px;
-  margin-left: 5px;
-}
-.cart-item button:hover { background: #a71d2a; }
+    .cart-item {
+      display: flex; justify-content: space-between;
+      align-items: center;
+      padding: 6px 0;
+      border-bottom: 1px solid #eee;
+      font-size: 13px;
+    }
+    .cart-item span { flex: 1; text-align: left; }
+    .cart-item button {
+      border: none; background: var(--danger);
+      color: #fff; padding: 4px 10px;
+      border-radius: 6px; cursor: pointer;
+      font-size: 12px;
+      margin-left: 5px;
+    }
+    .cart-item button:hover { background: #a71d2a; }
 
-#cartTotal {
-  font-weight:bold;
-  text-align:right;
-  margin-top:10px;
-}
+    #cartTotal { font-weight: bold; text-align: right; margin-top: 10px; }
 
-.form-input { margin-top:12px; }
-.form-input label { display:block; margin-bottom:4px; font-weight:bold; }
-.form-input input, .form-input textarea {
-  width:100%; padding:8px; border:1px solid #ccc;
-  border-radius:6px; box-sizing:border-box;
-}
+    .form-input { margin-top: 12px; font-size: 14px; }
+    .form-input label { display: block; margin-bottom: 4px; font-weight: bold; }
+    .form-input input, .form-input textarea {
+      width: 100%; padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      box-sizing: border-box;
+      font-size: 14px;
+    }
 
-/* ===== Bottom Buttons ===== */
-.bottom-buttons {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;               /* penting biar full lebar */
-  display: flex;
-  justify-content: space-between;
-  padding: 10px 20px;
-  background: #fff;
-}
-.bottom-buttons button {
-  min-width: 120px;
-  padding: 10px;
-  font-size: 16px;
-}
-.btn-wa { background:#25d366; color:#fff; }
-.btn-back { background:#d8cd33; color:#fff; }
+    /* ===== Bottom Buttons ===== */
+    .bottom-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 16px;
+      padding-top: 12px;
+      border-top: 1px solid #ddd;
+    }
+    .bottom-buttons button {
+      min-width: 120px;
+      padding: 10px;
+      font-size: 15px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .btn-wa { background: #25d366; color: #fff; }
+    .btn-back { background: #d8cd33; color: #fff; }
 
-/* ===== Dark Mode Style ===== */
-body.dark {
-  background: #121212;
-  color: #f1f1f1;
-}
-body.dark .main-container,
-body.dark .reservasi-container {
-  background:#1e1e1e;
-  color:#eaeaea;
-}
-body.dark .room-card {
-  background:#2a2a2a;
-  border-color:#444;
-}
-body.dark .tabs button { background:#333; color:#ddd; }
-body.dark .tabs button.active { background:#007bff; color:#fff; }
+    /* ===== Dark Mode ===== */
+    body.dark {
+      background: var(--bg-dark);
+      color: var(--text-dark);
+    }
+    body.dark .main-container { background: var(--card-dark); color: var(--text-dark); }
+    body.dark .room-card { background: var(--card-dark); border-color: #444; }
+    body.dark .tabs button { background: #333; color: #ddd; }
+    body.dark .tabs button.active { background: var(--primary); color: #fff; }
+    body.dark .bottom-buttons { border-top: 1px solid #444; }
 
-/* ===== Responsive ===== */
-@media (max-width: 600px) {
-  .grid {
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-  }
-  .bottom-buttons button {
-    min-width: 100px;
-    font-size: 14px;
-  }
-}
+    /* ===== Responsive ===== */
+    @media (max-width: 600px) {
+      .grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
+      .bottom-buttons button { min-width: 100px; font-size: 13px; }
+    }
   </style>
   <script src="lang.js"></script>
 </head>
@@ -202,53 +188,41 @@ body.dark .tabs button.active { background:#007bff; color:#fff; }
     <button class="dark-toggle" id="darkToggle">🌙 Dark Mode</button>
   </header>
 
+  <!-- MAIN -->
   <div class="main-container" id="app">
+    <!-- Tabs -->
     <div class="tabs">
       <button class="active" data-target="rooms">Rooms</button>
       <button data-target="meetings">Meeting Rooms</button>
       <button data-target="packages">Packages</button>
     </div>
 
+    <!-- Grid -->
     <section id="rooms" class="grid"></section>
     <section id="meetings" class="grid hidden"></section>
     <section id="packages" class="grid hidden"></section>
     <p id="empty" class="hidden" style="text-align:center;color:#666;margin-top:8px">Belum ada data.</p>
 
-    <!-- ⬇️ sekarang cart & form ikut di dalam main-container -->
+    <!-- Cart + Form -->
     <div class="reservasi-container">
       <h3>Preview Pesanan</h3>
       <div id="cartPreview"><p><i>No choice</i></p></div>
       <p id="cartTotal">Total: 0</p>
 
-      <div class="form-input">
-        <label>Orderer Name</label>
-        <input type="text" id="custName">
-      </div>
-      <div class="form-input">
-        <label>Address</label>
-        <input type="text" id="custAddress">
-      </div>
-      <div class="form-input">
-        <label>Telephone Number</label>
-        <input type="text" id="custPhone">
-      </div>
-      <div class="form-input">
-        <label>Date Used</label>
-        <input type="date" id="custDate">
-      </div>
-      <div class="form-input">
-        <label>Notes</label>
-        <textarea id="custNote"></textarea>
+      <div class="form-input"><label>Orderer Name</label><input type="text" id="custName"></div>
+      <div class="form-input"><label>Address</label><input type="text" id="custAddress"></div>
+      <div class="form-input"><label>Telephone Number</label><input type="text" id="custPhone"></div>
+      <div class="form-input"><label>Date Used</label><input type="date" id="custDate"></div>
+      <div class="form-input"><label>Notes</label><textarea id="custNote"></textarea></div>
+
+      <!-- Bottom Buttons -->
+      <div class="bottom-buttons" id="bottomBar">
+        <button class="btn-wa" id="btnSend">📤 Send Request</button>
+        <button class="btn-back" onclick="history.back()">🔙 Back To Menu</button>
       </div>
     </div>
   </div>
 
-  <!-- Bottom Buttons -->
-  <div class="bottom-buttons" id="bottomBar">
-    <button class="btn-wa" id="btnSend">📤 Send Request</button>
-    <button class="btn-back" onclick="history.back()">🔙 Back To Menu</button>
-  </div>
-</body>
 <script>
   const DB_NAME = "MenuvaDB";
   const STORE_NAME = "menuvaData";
@@ -287,7 +261,7 @@ body.dark .tabs button.active { background:#007bff; color:#fff; }
         <p><b>Capacity:</b> ${room.kapasitas} person</p>
         <p><b>Room size:</b> ${room.luas} m²</p>
         <p>${room.deskripsi}</p>
-        <button onclick='tambahKeCart(${JSON.stringify(room)})'>Add To Chart</button>
+        <button onclick='tambahKeCart(${JSON.stringify(room)})'>Add To Cart</button>
       </div>
     `;
   }
@@ -430,6 +404,3 @@ body.dark .tabs button.active { background:#007bff; color:#fff; }
 </script>
 </body>
 </html>
-
-
-
