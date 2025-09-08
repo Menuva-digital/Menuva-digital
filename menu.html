@@ -177,39 +177,58 @@
     margin: 5px 0;
     line-height: 1.5;
   }
-    /* ===================== Fixed Button Bar ===================== */
+  /* ===================== Fixed Button Bar ===================== */
 .fixed-bar {
   position: fixed;
   bottom: 0;
   left: 0;
   width: 93%;
+  margin: 0 3.5%; /* biar center */
   background: linear-gradient(135deg, #1e3c72, #2a5298);
   box-shadow: 0 -2px 6px rgba(0,0,0,0.1);
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   gap: 10px; /* jarak antar tombol */
-  padding: 10px 15px; /* padding kiri/kanan biar nggak nempel tepi */
+  padding: 10px;
   z-index: 1000;
 }
 
 .fixed-bar button {
-  flex: 1 1 auto; /* tombol berbagi space sama rata */
-  padding: 12px 0;
-  font-size: 12px;
+  flex: 1;               /* bagi space sama rata */
+  height: 50px;          /* tinggi fix */
+  font-size: 14px;       /* teks agak besar */
   font-weight: bold;
   border-radius: 8px;
   border: none;
   cursor: pointer;
   color: white;
+  text-align: center;
+  line-height: 50px;     /* bikin teks rata tengah vertikal */
   transition: background-color 0.3s ease;
-  box-sizing: border-box; /* penting agar padding dihitung dalam width */
 }
 
-/* Warna tombol */
-.btn-book { background: #6c63ff; }
 .btn-order { background: #007bff; }
-.btn-room { background: #28a745;}
+.btn-room  { background: #28a745; }
 
+/* Warna tombol */
+.btn-book {
+  display: block;             /* biar bisa atur margin auto */
+  margin: 20px auto;          /* center horizontal */
+  width: 80%;                 /* panjang 80% dari body */
+  padding: 16px;              /* bikin agak besar */
+  font-size: 1.2rem;          /* teks lebih gede */
+  text-align: center;
+  background: #6c63ff;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.btn-book:hover {
+  background: #5848e3; /* efek hover */
+}
 /* Hover effect */
 .fixed-bar button:hover { opacity: 0.85; }
 
@@ -284,7 +303,9 @@ main, .container { padding-bottom: 70px; }
 <div class="fullscreen-overlay" id="fullscreenOverlay" onclick="closeFullscreen()">
   <img id="fullscreenImage" alt="Fullscreen Image" />
 </div>
+  
  <button class="btn-book" onclick="window.location.href='book.html'">📖 Dine-in Menu</button>
+  
 <!-- ===================== Fixed Button Bar ===================== -->
 <div class="fixed-bar">
   <button class="btn-order" onclick="window.location.href='order.html'">🛒 Reserve</button>
@@ -464,6 +485,7 @@ function startCountdown(tanggalAkhir, elementId) {
 
 </body>
 </html>
+
 
 
 
