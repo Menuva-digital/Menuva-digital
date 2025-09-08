@@ -230,22 +230,30 @@
     </div>
   </div>
 </div>
-
 <script>
-  // Dummy Data (buat testing)
-  const restoData = {
-    logo: "https://via.placeholder.com/60",
-    namaRestoran: "Resto Mantap",
-    restoAddress: "Jl. Contoh No.1",
-    restoPhone: "08123456789",
-    nomorWaAdmin: ["08123456789"],
-    rooms: [
-      {nama:"Room A", harga:200000, kapasitas:2, luas:12, deskripsi:"Double Bed", kategori:"hotel", image:"https://via.placeholder.com/150"},
-      {nama:"Room B", harga:150000, kapasitas:1, luas:8, deskripsi:"Single Bed", kategori:"hotel", image:"https://via.placeholder.com/150"},
-      {nama:"Meeting 1", harga:500000, kapasitas:10, luas:30, deskripsi:"Projector", kategori:"meeting", image:"https://via.placeholder.com/150"},
-      {nama:"Paket VIP", harga:1000000, kapasitas:5, luas:20, deskripsi:"Full Service", kategori:"package", image:"https://via.placeholder.com/150"}
-    ]
-  };
+  let db;
+  const DB_NAME = "MenuvaDB";
+  const STORE_NAME = "menuvaData";
+  const DB_VERSION = 1;
+  let restoData = {}; // akan diisi dari DB
+
+  function initDB() {
+    return new Promise((resolve, reject) => {
+      const req = indexedDB.open(DB_NAME, DB_VERSION);
+      req.onerror = () => reject(req.error);
+      req.onsuccess = e => { db = e.target.result; resolve(); };
+    });
+  }
+
+  function loadDataFromDB() {
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction(STORE_NAME, "readonly");
+      const store = tx.objectStore(STORE_NAME);
+      const req = store.get(1);
+      req.onsuccess = () => resolve(req.result || {});
+      req.onerror = () => reject(req.error);
+    });
+  }
 
   let cart = [];
 
@@ -311,18 +319,23 @@
 
   // Display Data
   function tampilkanData(){
+    if(!restoData || !restoData.namaRestoran){
+      document.getElementById("empty").classList.remove("hidden");
+      return;
+    }
+
     // Header
-    document.getElementById("restoLogo").src = restoData.logo;
-    document.getElementById("restoName").innerText = restoData.namaRestoran;
-    document.getElementById("alamatRestoranDisplay").innerText = restoData.restoAddress;
-    document.getElementById("teleponRestoranDisplay").innerText = restoData.restoPhone;
+    document.getElementById("restoLogo").src = restoData.logo || "";
+    document.getElementById("restoName").innerText = restoData.namaRestoran || "Nama Restoran";
+    document.getElementById("alamatRestoranDisplay").innerText = restoData.restoAddress || "";
+    document.getElementById("teleponRestoranDisplay").innerText = restoData.restoPhone || "";
 
     // Grid
     const grids = {rooms:document.getElementById("rooms"), meetings:document.getElementById("meetings"), packages:document.getElementById("packages")};
     Object.values(grids).forEach(g=>g.innerHTML="");
 
     let total=0;
-    restoData.rooms.forEach(room=>{
+    (restoData.rooms || []).forEach(room=>{
       total++;
       if(room.kategori==="hotel") grids.rooms.innerHTML += buatCard(room);
       else if(room.kategori==="meeting") grids.meetings.innerHTML += buatCard(room);
@@ -364,8 +377,10 @@
   }
 
   // Init
-  document.addEventListener("DOMContentLoaded", ()=>{
+  document.addEventListener("DOMContentLoaded", async ()=>{
     applyTheme();
+    await initDB();
+    restoData = await loadDataFromDB();
     tampilkanData();
     setupTabs();
     setupWA();
