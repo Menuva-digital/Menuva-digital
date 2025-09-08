@@ -248,84 +248,46 @@
     </div>
   </div>
 </div>
-
 <script>
-  // Dummy Data (buat testing)
-  const restoData = {
-    logo: "https://via.placeholder.com/60",
-    namaRestoran: "Resto Mantap",
-    restoAddress: "Jl. Contoh No.1",
-    restoPhone: "08123456789",
-    nomorWaAdmin: ["08123456789"],
-    rooms: [
-      {nama:"Room A", harga:200000, kapasitas:2, luas:12, deskripsi:"Double Bed", kategori:"hotel", image:"https://via.placeholder.com/150"},
-      {nama:"Room B", harga:150000, kapasitas:1, luas:8, deskripsi:"Single Bed", kategori:"hotel", image:"https://via.placeholder.com/150"},
-      {nama:"Meeting 1", harga:500000, kapasitas:10, luas:30, deskripsi:"Projector", kategori:"meeting", image:"https://via.placeholder.com/150"},
-      {nama:"Paket VIP", harga:1000000, kapasitas:5, luas:20, deskripsi:"Full Service", kategori:"package", image:"https://via.placeholder.com/150"}
-    ]
-  };
+  let db;
+  const DB_NAME = "MenuvaDB";
+  const STORE_NAME = "menuvaData";
+  const DB_VERSION = 1;
+  let restoData = {}; // akan diisi dari DB
+
+  function initDB() {
+    return new Promise((resolve, reject) => {
+      const req = indexedDB.open(DB_NAME, DB_VERSION);
+      req.onerror = () => reject(req.error);
+      req.onsuccess = e => { db = e.target.result; resolve(); };
+    });
+  }
+
+  function loadDataFromDB() {
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction(STORE_NAME, "readonly");
+      const store = tx.objectStore(STORE_NAME);
+      const req = store.get(1);
+      req.onsuccess = () => resolve(req.result || {});
+      req.onerror = () => reject(req.error);
+    });
+  }
 
   let cart = [];
 
-  // ===================== DARK MODE FLOAT =====================
-  function updateDarkIcon() {
-    const btn = document.getElementById("darkToggle");
-    btn.textContent = document.body.classList.contains('dark') ? '☀️' : '🌙';
+  // Dark Mode
+  function applyTheme() {
+    const saved = localStorage.getItem('menuva_theme');
+    if (saved === 'dark') document.body.classList.add('dark');
+    document.querySelector('.dark-toggle').textContent = document.body.classList.contains('dark') ? '☀️' : '🌙';
   }
   function toggleDark() {
-    document.body.classList.toggle("dark");
-    localStorage.setItem("menuva_theme", document.body.classList.contains("dark") ? "dark" : "light");
-    updateDarkIcon();
-  }
-  function applyTheme() {
-    if (localStorage.getItem("menuva_theme") === "dark") {
-      document.body.classList.add("dark");
-    }
-    updateDarkIcon();
+    document.body.classList.toggle('dark');
+    localStorage.setItem('menuva_theme', document.body.classList.contains('dark') ? 'dark' : 'light');
+    document.querySelector('.dark-toggle').textContent = document.body.classList.contains('dark') ? '☀️' : '🌙';
   }
 
-  // Dragging floating button
-  (function dragFloating() {
-    const btn = document.getElementById("darkToggle");
-    let offsetX, offsetY, dragging = false;
-
-    btn.addEventListener("mousedown", startDrag);
-    btn.addEventListener("touchstart", startDrag);
-
-    function startDrag(e) {
-      dragging = true;
-      const rect = btn.getBoundingClientRect();
-      offsetX = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
-      offsetY = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
-      document.addEventListener("mousemove", drag);
-      document.addEventListener("mouseup", stopDrag);
-      document.addEventListener("touchmove", drag);
-      document.addEventListener("touchend", stopDrag);
-    }
-
-    function drag(e) {
-      if (!dragging) return;
-      e.preventDefault();
-      let x = (e.touches ? e.touches[0].clientX : e.clientX) - offsetX;
-      let y = (e.touches ? e.touches[0].clientY : e.clientY) - offsetY;
-      btn.style.left = x + "px";
-      btn.style.top = y + "px";
-      btn.style.right = "auto";
-      btn.style.bottom = "auto";
-    }
-
-    function stopDrag() {
-      dragging = false;
-      document.removeEventListener("mousemove", drag);
-      document.removeEventListener("mouseup", stopDrag);
-      document.removeEventListener("touchmove", drag);
-      document.removeEventListener("touchend", stopDrag);
-    }
-  })();
-
-  document.getElementById("darkToggle").addEventListener("click", toggleDark);
-
-  // ===================== BUILD CARD =====================
+  // Build Card
   function buatCard(room) {
     return `
       <div class="room-card">
@@ -340,7 +302,7 @@
     `;
   }
 
-  // ===================== CART =====================
+  // Cart
   function updateCart() {
     const preview = document.getElementById("cartPreview");
     const totalEl = document.getElementById("cartTotal");
@@ -373,18 +335,25 @@
   function hapusDariCart(i){ cart.splice(i,1); updateCart(); }
   function ubahQty(i,d){ cart[i].qty+=d; if(cart[i].qty<1) cart[i].qty=1; updateCart(); }
 
-  // ===================== DISPLAY DATA =====================
+  // Display Data
   function tampilkanData(){
-    document.getElementById("restoLogo").src = restoData.logo;
-    document.getElementById("restoName").innerText = restoData.namaRestoran;
-    document.getElementById("alamatRestoranDisplay").innerText = restoData.restoAddress;
-    document.getElementById("teleponRestoranDisplay").innerText = restoData.restoPhone;
+    if(!restoData || !restoData.namaRestoran){
+      document.getElementById("empty").classList.remove("hidden");
+      return;
+    }
 
+    // Header
+    document.getElementById("restoLogo").src = restoData.logo || "";
+    document.getElementById("restoName").innerText = restoData.namaRestoran || "Nama Restoran";
+    document.getElementById("alamatRestoranDisplay").innerText = restoData.restoAddress || "";
+    document.getElementById("teleponRestoranDisplay").innerText = restoData.restoPhone || "";
+
+    // Grid
     const grids = {rooms:document.getElementById("rooms"), meetings:document.getElementById("meetings"), packages:document.getElementById("packages")};
     Object.values(grids).forEach(g=>g.innerHTML="");
 
     let total=0;
-    restoData.rooms.forEach(room=>{
+    (restoData.rooms || []).forEach(room=>{
       total++;
       if(room.kategori==="hotel") grids.rooms.innerHTML += buatCard(room);
       else if(room.kategori==="meeting") grids.meetings.innerHTML += buatCard(room);
@@ -393,7 +362,7 @@
     document.getElementById("empty").classList.toggle("hidden", total>0);
   }
 
-  // ===================== TABS =====================
+  // Tabs
   function setupTabs(){
     document.querySelectorAll(".tabs button").forEach(btn=>{
       btn.addEventListener("click", ()=>{
@@ -405,38 +374,31 @@
     });
   }
 
-  // ===================== WHATSAPP =====================
+  // WA send
   function setupWA(){
     document.getElementById("btnSend").addEventListener("click", ()=>{
       if(!restoData.nomorWaAdmin || restoData.nomorWaAdmin.length===0){ alert("Admin's WhatsApp number has not been set."); return; }
       if(cart.length===0){ alert("Cart is still empty."); return; }
 
-      const custName = document.getElementById("custName").value.trim();
-      const custAddress = document.getElementById("custAddress").value.trim();
-      const custPhone = document.getElementById("custPhone").value.trim();
-      const custDate = document.getElementById("custDate").value.trim();
-      const custNote = document.getElementById("custNote").value.trim();
-      if(!custName || !custPhone || !custDate){ alert("Please fill in Name, Phone Number, and Date."); return; }
-
-      let msg = `*Reservation Request*%0A--------------------%0A`;
-      msg += `*Name:* ${custName}%0A*Address:* ${custAddress}%0A*Phone:* ${custPhone}%0A*Date:* ${custDate}%0A*Note:* ${custNote}%0A--------------------%0A`;
-
-      let total=0;
-      cart.forEach(item=>{
-        const subtotal=item.harga*item.qty;
-        total+=subtotal;
-        msg+=`• ${item.nama} x${item.qty} = Rp ${subtotal.toLocaleString()}%0A`;
-      });
-      msg+=`--------------------%0ATotal: Rp ${total.toLocaleString()}`;
-
-      const url = `https://wa.me/${restoData.nomorWaAdmin[0]}?text=${msg}`;
-      window.open(url,"_blank");
+      const adminNo = restoData.nomorWaAdmin[0].replace(/[^0-9]/g,"");
+      let pesan = `Hello ${restoData.namaRestoran || "Admin"}, I want a reservation:\n\n`;
+      cart.forEach((item,i)=>{ pesan += `${i+1}. ${item.nama} - Rp ${item.harga.toLocaleString()} x ${item.qty} = Rp ${(item.harga*item.qty).toLocaleString()}\n`; });
+      let total = cart.reduce((a,b)=>a+(b.harga*b.qty),0);
+      pesan += `\nTotal: Rp ${total.toLocaleString()}\n\n`;
+      pesan += `Name: ${document.getElementById("custName").value}\n`;
+      pesan += `Address: ${document.getElementById("custAddress").value}\n`;
+      pesan += `Phone Number: ${document.getElementById("custPhone").value}\n`;
+      pesan += `Date: ${document.getElementById("custDate").value}\n`;
+      pesan += `Notes: ${document.getElementById("custNote").value}\n`;
+      window.open(`https://wa.me/${adminNo}?text=${encodeURIComponent(pesan)}`,"_blank");
     });
   }
 
-  // ===================== INIT =====================
-  document.addEventListener("DOMContentLoaded", ()=>{
+  // Init
+  document.addEventListener("DOMContentLoaded", async ()=>{
     applyTheme();
+    await initDB();
+    restoData = await loadDataFromDB();
     tampilkanData();
     setupTabs();
     setupWA();
@@ -445,3 +407,4 @@
 
 </body>
 </html>
+
