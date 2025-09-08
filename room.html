@@ -10,12 +10,12 @@
 
 :root {
   --bg: #eaf1fb;          /* biru muda elegan buat background */
-  --surface: #ffffff;     /* putih bersih untuk card/surface */
-  --text: #1c2d4f;        /* biru gelap elegan untuk teks utama */
-  --muted: #5c6f91;       /* biru keabu-abuan untuk teks sekunder */
-  --border: #c3d4f7;      /* biru soft untuk border */
-  --primary: #1f70ff;     /* biru utama (elegan, tidak terlalu neon) */
-  --success: #25d366;     /* hijau WhatsApp-style */
+  --surface: #ffffff;
+  --text: #1c2d4f;
+  --muted: #5c6f91;
+  --border: #c3d4f7;
+  --primary: #1f70ff;
+  --success: #25d366;
   --card-light: #ffffff;
   --card-dark: #1c2333;
   --shadow: 0 6px 24px rgba(0,0,0,.08);
@@ -27,19 +27,18 @@ body.dark {
   --text: #e6ebff;
   --muted: #aab6db;
   --border: #263148;
-  --primary: #4da3ff;     /* biru lebih terang untuk mode gelap */
+  --primary: #4da3ff;
   --chip: #0f1a2a;
   --shadow: 0 8px 28px rgba(0,0,0,.5);
 }
 
 body {
   font-family: system-ui, sans-serif;
-  background: var(--bg);
+  background-color: var(--bg) !important;  /* 🔥 paksa warna default */
   color: var(--text);
   transition: background .3s, color .3s;
-  padding-bottom: 80px; /* biar fixed bar ga nutup konten */
+  padding-bottom: 80px;
 }
-
 
   /* ===================== HEADER ===================== */
   header .header-inner {
@@ -405,5 +404,6 @@ body {
 
 </body>
 </html>
+
 
 
