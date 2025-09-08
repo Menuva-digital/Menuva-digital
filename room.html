@@ -354,37 +354,42 @@
 
   // ============ Load Data ============ 
   async function tampilkanData() {
-    try {
-      const data = await loadDataFromDB();
-      restoData = data;
+  try {
+    const data = await loadDataFromDB();
+    restoData = data;
 
-      document.getElementById("restoLogo").src = data.logo || "";
-      document.getElementById("restoName").innerText = data.namaRestoran || "Nama Resto";
-      document.getElementById("alamatRestoranDisplay").innerText = data.restoAddress || "";
-      document.getElementById("teleponRestoranDisplay").innerText = data.restoPhone || "";
+    document.getElementById("restoLogo").src = data.logo || "";
+    document.getElementById("restoName").innerText = data.namaRestoran || "Nama Resto";
+    document.getElementById("alamatRestoranDisplay").innerText = data.restoAddress || "";
+    document.getElementById("teleponRestoranDisplay").innerText = data.restoPhone || "";
 
-      ["rooms","meetings","packages"].forEach(id=>{
-        document.getElementById(id).innerHTML="";
+    // Kosongkan semua grid
+    const grids = {
+      rooms: document.getElementById("rooms"),
+      meetings: document.getElementById("meetings"),
+      packages: document.getElementById("packages")
+    };
+    Object.values(grids).forEach(g => g.innerHTML = "");
+
+    let total = 0;
+    if (data.rooms && data.rooms.length > 0) {
+      data.rooms.forEach(room => {
+        total++;
+        // pastikan kategori sesuai
+        if (room.kategori === "hotel") {
+          grids.rooms.innerHTML += buatCard(room);
+        } else if (room.kategori === "meeting") {
+          grids.meetings.innerHTML += buatCard(room);
+        } else if (room.kategori === "package") {
+          grids.packages.innerHTML += buatCard(room);
+        }
       });
-
-      let total = 0;
-      if (data.rooms && data.rooms.length > 0) {
-        data.rooms.forEach(room=>{
-          total++;
-          if(room.kategori==="hotel"){
-            document.getElementById("rooms").innerHTML += buatCard(room);
-          } else if(room.kategori==="meeting"){
-            document.getElementById("meetings").innerHTML += buatCard(room);
-          } else if(room.kategori==="package"){
-            document.getElementById("packages").innerHTML += buatCard(room);
-          }
-        });
-      }
-      document.getElementById("empty").classList.toggle("hidden", total>0);
-    } catch(e){
-      console.error("❌ Error:", e);
     }
+    document.getElementById("empty").classList.toggle("hidden", total > 0);
+  } catch (e) {
+    console.error("❌ Error:", e);
   }
+}
 
   // ============ INIT ============ 
   document.addEventListener("DOMContentLoaded", ()=>{
@@ -435,6 +440,7 @@
 
 </body>
 </html>
+
 
 
 
