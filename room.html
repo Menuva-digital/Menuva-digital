@@ -9,7 +9,7 @@
 * { box-sizing: border-box; margin:0; padding:0; }
 
 :root {
-  --bg: #eaf1fb;          /* biru muda elegan buat background */
+  --bg: #2a5298;          /* biru elegan buat background */
   --surface: #ffffff;
   --text: #1c2d4f;
   --muted: #5c6f91;
@@ -18,6 +18,7 @@
   --success: #25d366;
   --card-light: #ffffff;
   --card-dark: #1c2333;
+  --chip: #dce7ff;        /* ✅ tambahin ini buat default terang */
   --shadow: 0 6px 24px rgba(0,0,0,.08);
 }
 
@@ -34,7 +35,7 @@ body.dark {
 
 body {
   font-family: system-ui, sans-serif;
-  background-color: var(--bg) !important;  /* 🔥 paksa warna default */
+  background: var(--bg);  /* gak perlu !important kalau variablenya fix */
   color: var(--text);
   transition: background .3s, color .3s;
   padding-bottom: 80px;
@@ -404,6 +405,7 @@ body {
 
 </body>
 </html>
+
 
 
 
