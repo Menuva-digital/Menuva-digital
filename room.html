@@ -8,12 +8,12 @@
   /* ===================== RESET & THEME ===================== */
   * { box-sizing: border-box; margin:0; padding:0; }
   :root {
-    --bg: #f4f8ff;
+    --bg: #eaf1ff;          /* biru lembut */
     --surface: #ffffff;
     --text: #1f2a44;
-    --muted: #6b7a99;
-    --border: #d8e1ff;
-    --primary: #1f70ff;
+    --muted: #5c6b8a;
+    --border: #c2d4ff;
+    --primary: #1f70ff;      /* biru elegan */
     --success: #25d366;
     --card-light: #ffffff;
     --card-dark: #1c2333;
@@ -53,13 +53,6 @@
   }
   header h1 { font-size: 1.2rem; }
   header .contact-info { font-size: 0.8rem; color: var(--muted); }
-  header .dark-toggle {
-    margin-left: auto;
-    font-size: 1.2rem;
-    cursor: pointer;
-    background: none;
-    border: none;
-  }
 
   /* ===================== MAIN CONTAINER ===================== */
   .main-container {
@@ -76,13 +69,13 @@
 
   /* ===================== TABS ===================== */
   .tabs {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* selalu 3 sejajar */
     gap: 10px;
     margin-bottom: 16px;
   }
   .tabs button {
+    width: 100%;
     padding: 6px 14px;
     border-radius: 8px;
     border: none;
@@ -172,6 +165,29 @@
   .btn-wa { background: var(--success); }
   .btn-back { background: #d8cd33; color:#000; }
 
+  /* ===================== FLOATING DARK TOGGLE ===================== */
+  .dark-float {
+    position: fixed;
+    bottom: 100px;
+    right: 20px;
+    z-index: 1000;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: #fff;
+    font-size: 1.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: grab;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    user-select: none;
+  }
+  .dark-float:active {
+    cursor: grabbing;
+  }
+
   /* ===================== RESPONSIVE ===================== */
   @media (max-width: 500px) {
     header .header-inner { flex-direction: column; align-items: flex-start; gap: 6px; }
@@ -194,9 +210,11 @@
         <div id="teleponRestoranDisplay"></div>
       </div>
     </div>
-    <button class="dark-toggle" onclick="toggleDark()">🌙</button>
   </div>
 </header>
+
+<!-- Floating Dark Toggle -->
+<button id="darkToggle" class="dark-float">🌙</button>
 
 <div class="main-container" id="app">
   <!-- Tabs -->
@@ -230,46 +248,84 @@
     </div>
   </div>
 </div>
+
 <script>
-  let db;
-  const DB_NAME = "MenuvaDB";
-  const STORE_NAME = "menuvaData";
-  const DB_VERSION = 1;
-  let restoData = {}; // akan diisi dari DB
-
-  function initDB() {
-    return new Promise((resolve, reject) => {
-      const req = indexedDB.open(DB_NAME, DB_VERSION);
-      req.onerror = () => reject(req.error);
-      req.onsuccess = e => { db = e.target.result; resolve(); };
-    });
-  }
-
-  function loadDataFromDB() {
-    return new Promise((resolve, reject) => {
-      const tx = db.transaction(STORE_NAME, "readonly");
-      const store = tx.objectStore(STORE_NAME);
-      const req = store.get(1);
-      req.onsuccess = () => resolve(req.result || {});
-      req.onerror = () => reject(req.error);
-    });
-  }
+  // Dummy Data (buat testing)
+  const restoData = {
+    logo: "https://via.placeholder.com/60",
+    namaRestoran: "Resto Mantap",
+    restoAddress: "Jl. Contoh No.1",
+    restoPhone: "08123456789",
+    nomorWaAdmin: ["08123456789"],
+    rooms: [
+      {nama:"Room A", harga:200000, kapasitas:2, luas:12, deskripsi:"Double Bed", kategori:"hotel", image:"https://via.placeholder.com/150"},
+      {nama:"Room B", harga:150000, kapasitas:1, luas:8, deskripsi:"Single Bed", kategori:"hotel", image:"https://via.placeholder.com/150"},
+      {nama:"Meeting 1", harga:500000, kapasitas:10, luas:30, deskripsi:"Projector", kategori:"meeting", image:"https://via.placeholder.com/150"},
+      {nama:"Paket VIP", harga:1000000, kapasitas:5, luas:20, deskripsi:"Full Service", kategori:"package", image:"https://via.placeholder.com/150"}
+    ]
+  };
 
   let cart = [];
 
-  // Dark Mode
-  function applyTheme() {
-    const saved = localStorage.getItem('menuva_theme');
-    if (saved === 'dark') document.body.classList.add('dark');
-    document.querySelector('.dark-toggle').textContent = document.body.classList.contains('dark') ? '☀️' : '🌙';
+  // ===================== DARK MODE FLOAT =====================
+  function updateDarkIcon() {
+    const btn = document.getElementById("darkToggle");
+    btn.textContent = document.body.classList.contains('dark') ? '☀️' : '🌙';
   }
   function toggleDark() {
-    document.body.classList.toggle('dark');
-    localStorage.setItem('menuva_theme', document.body.classList.contains('dark') ? 'dark' : 'light');
-    document.querySelector('.dark-toggle').textContent = document.body.classList.contains('dark') ? '☀️' : '🌙';
+    document.body.classList.toggle("dark");
+    localStorage.setItem("menuva_theme", document.body.classList.contains("dark") ? "dark" : "light");
+    updateDarkIcon();
+  }
+  function applyTheme() {
+    if (localStorage.getItem("menuva_theme") === "dark") {
+      document.body.classList.add("dark");
+    }
+    updateDarkIcon();
   }
 
-  // Build Card
+  // Dragging floating button
+  (function dragFloating() {
+    const btn = document.getElementById("darkToggle");
+    let offsetX, offsetY, dragging = false;
+
+    btn.addEventListener("mousedown", startDrag);
+    btn.addEventListener("touchstart", startDrag);
+
+    function startDrag(e) {
+      dragging = true;
+      const rect = btn.getBoundingClientRect();
+      offsetX = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+      offsetY = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
+      document.addEventListener("mousemove", drag);
+      document.addEventListener("mouseup", stopDrag);
+      document.addEventListener("touchmove", drag);
+      document.addEventListener("touchend", stopDrag);
+    }
+
+    function drag(e) {
+      if (!dragging) return;
+      e.preventDefault();
+      let x = (e.touches ? e.touches[0].clientX : e.clientX) - offsetX;
+      let y = (e.touches ? e.touches[0].clientY : e.clientY) - offsetY;
+      btn.style.left = x + "px";
+      btn.style.top = y + "px";
+      btn.style.right = "auto";
+      btn.style.bottom = "auto";
+    }
+
+    function stopDrag() {
+      dragging = false;
+      document.removeEventListener("mousemove", drag);
+      document.removeEventListener("mouseup", stopDrag);
+      document.removeEventListener("touchmove", drag);
+      document.removeEventListener("touchend", stopDrag);
+    }
+  })();
+
+  document.getElementById("darkToggle").addEventListener("click", toggleDark);
+
+  // ===================== BUILD CARD =====================
   function buatCard(room) {
     return `
       <div class="room-card">
@@ -284,7 +340,7 @@
     `;
   }
 
-  // Cart
+  // ===================== CART =====================
   function updateCart() {
     const preview = document.getElementById("cartPreview");
     const totalEl = document.getElementById("cartTotal");
@@ -317,25 +373,18 @@
   function hapusDariCart(i){ cart.splice(i,1); updateCart(); }
   function ubahQty(i,d){ cart[i].qty+=d; if(cart[i].qty<1) cart[i].qty=1; updateCart(); }
 
-  // Display Data
+  // ===================== DISPLAY DATA =====================
   function tampilkanData(){
-    if(!restoData || !restoData.namaRestoran){
-      document.getElementById("empty").classList.remove("hidden");
-      return;
-    }
+    document.getElementById("restoLogo").src = restoData.logo;
+    document.getElementById("restoName").innerText = restoData.namaRestoran;
+    document.getElementById("alamatRestoranDisplay").innerText = restoData.restoAddress;
+    document.getElementById("teleponRestoranDisplay").innerText = restoData.restoPhone;
 
-    // Header
-    document.getElementById("restoLogo").src = restoData.logo || "";
-    document.getElementById("restoName").innerText = restoData.namaRestoran || "Nama Restoran";
-    document.getElementById("alamatRestoranDisplay").innerText = restoData.restoAddress || "";
-    document.getElementById("teleponRestoranDisplay").innerText = restoData.restoPhone || "";
-
-    // Grid
     const grids = {rooms:document.getElementById("rooms"), meetings:document.getElementById("meetings"), packages:document.getElementById("packages")};
     Object.values(grids).forEach(g=>g.innerHTML="");
 
     let total=0;
-    (restoData.rooms || []).forEach(room=>{
+    restoData.rooms.forEach(room=>{
       total++;
       if(room.kategori==="hotel") grids.rooms.innerHTML += buatCard(room);
       else if(room.kategori==="meeting") grids.meetings.innerHTML += buatCard(room);
@@ -344,7 +393,7 @@
     document.getElementById("empty").classList.toggle("hidden", total>0);
   }
 
-  // Tabs
+  // ===================== TABS =====================
   function setupTabs(){
     document.querySelectorAll(".tabs button").forEach(btn=>{
       btn.addEventListener("click", ()=>{
@@ -356,35 +405,43 @@
     });
   }
 
-  // WA send
+  // ===================== WHATSAPP =====================
   function setupWA(){
     document.getElementById("btnSend").addEventListener("click", ()=>{
       if(!restoData.nomorWaAdmin || restoData.nomorWaAdmin.length===0){ alert("Admin's WhatsApp number has not been set."); return; }
       if(cart.length===0){ alert("Cart is still empty."); return; }
 
-      const adminNo = restoData.nomorWaAdmin[0].replace(/[^0-9]/g,"");
-      let pesan = `Hello ${restoData.namaRestoran || "Admin"}, I want a reservation:\n\n`;
-      cart.forEach((item,i)=>{ pesan += `${i+1}. ${item.nama} - Rp ${item.harga.toLocaleString()} x ${item.qty} = Rp ${(item.harga*item.qty).toLocaleString()}\n`; });
-      let total = cart.reduce((a,b)=>a+(b.harga*b.qty),0);
-      pesan += `\nTotal: Rp ${total.toLocaleString()}\n\n`;
-      pesan += `Name: ${document.getElementById("custName").value}\n`;
-      pesan += `Address: ${document.getElementById("custAddress").value}\n`;
-      pesan += `Phone Number: ${document.getElementById("custPhone").value}\n`;
-      pesan += `Date: ${document.getElementById("custDate").value}\n`;
-      pesan += `Notes: ${document.getElementById("custNote").value}\n`;
-      window.open(`https://wa.me/${adminNo}?text=${encodeURIComponent(pesan)}`,"_blank");
+      const custName = document.getElementById("custName").value.trim();
+      const custAddress = document.getElementById("custAddress").value.trim();
+      const custPhone = document.getElementById("custPhone").value.trim();
+      const custDate = document.getElementById("custDate").value.trim();
+      const custNote = document.getElementById("custNote").value.trim();
+      if(!custName || !custPhone || !custDate){ alert("Please fill in Name, Phone Number, and Date."); return; }
+
+      let msg = `*Reservation Request*%0A--------------------%0A`;
+      msg += `*Name:* ${custName}%0A*Address:* ${custAddress}%0A*Phone:* ${custPhone}%0A*Date:* ${custDate}%0A*Note:* ${custNote}%0A--------------------%0A`;
+
+      let total=0;
+      cart.forEach(item=>{
+        const subtotal=item.harga*item.qty;
+        total+=subtotal;
+        msg+=`• ${item.nama} x${item.qty} = Rp ${subtotal.toLocaleString()}%0A`;
+      });
+      msg+=`--------------------%0ATotal: Rp ${total.toLocaleString()}`;
+
+      const url = `https://wa.me/${restoData.nomorWaAdmin[0]}?text=${msg}`;
+      window.open(url,"_blank");
     });
   }
 
-  // Init
-  document.addEventListener("DOMContentLoaded", async ()=>{
+  // ===================== INIT =====================
+  document.addEventListener("DOMContentLoaded", ()=>{
     applyTheme();
-    await initDB();
-    restoData = await loadDataFromDB();
     tampilkanData();
     setupTabs();
     setupWA();
   });
 </script>
+
 </body>
 </html>
