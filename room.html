@@ -139,13 +139,18 @@
     }
 
     /* ===== Bottom Buttons ===== */
-    .bottom-buttons {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 16px;
-      padding-top: 12px;
-      border-top: 1px solid #ddd;
-    }
+  .bottom-buttons {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 20px;
+  background: var(--card-bg);
+  box-shadow: 0 -2px 6px rgba(0,0,0,0.1);
+  z-index: 1000;
+}
     .bottom-buttons button {
       min-width: 120px;
       padding: 10px;
@@ -404,5 +409,6 @@
 </script>
 </body>
 </html>
+
 
 
