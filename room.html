@@ -9,7 +9,7 @@
 * { box-sizing: border-box; margin:0; padding:0; }
 
 :root {
-  --bg: #2a5298;          /* biru elegan buat background */
+  --bg: #2a5298,#1e3c72;          /* biru elegan buat background */
   --surface: #ffffff;
   --text: #1c2d4f;
   --muted: #5c6f91;
@@ -42,28 +42,46 @@ body {
 }
 
   /* ===================== HEADER ===================== */
-  header .header-inner {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px 20px;
-  }
-  header img#restoLogo {
-    width: 60px;
-    height: 60px;
-    object-fit: contain;
-    border-radius: 8px;
-  }
-  header h1 { font-size: 1.2rem; }
-  header .contact-info { font-size: 0.8rem; color: var(--muted); }
-  header .dark-toggle {
-    margin-left: auto;
-    font-size: 1.2rem;
-    cursor: pointer;
-    background: none;
-    border: none;
-  }
+ header {
+  position: relative; /* penting biar anak bisa absolute */
+  padding: 12px 20px;
+}
 
+header .header-inner {
+  display: flex;
+  flex-direction: column;   /* logo & judul ditumpuk */
+  align-items: center;      /* center horizontal */
+  gap: 6px;
+}
+
+header img#restoLogo {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+header h1 {
+  font-size: 1.2rem;
+  text-align: center;
+  margin: 0;
+}
+
+header .contact-info {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+/* tombol dark mode toggle di kanan agak bawah */
+header .dark-toggle {
+  position: absolute;
+  right: 20px;
+  bottom: 10px;   /* makin besar makin turun */
+  font-size: 1.2rem;
+  cursor: pointer;
+  background: none;
+  border: none;
+}
   /* ===================== MAIN CONTAINER ===================== */
   .main-container {
     width: 95%;
@@ -405,6 +423,7 @@ body {
 
 </body>
 </html>
+
 
 
 
