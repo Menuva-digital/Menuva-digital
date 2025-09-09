@@ -53,7 +53,7 @@
     }
     .header-inner { display: grid; grid-template-columns: 80px 1fr 180px; gap: 12px; align-items: center; }
     #restoLogo { height: 64px; width: 64px; object-fit: contain; border-radius: 12px; background: rgba(255,255,255,.1); }
-    #restoName { margin: 0; font-size: 26px; letter-spacing: .2px; }
+    #restoName { margin: 0; font-size: 18px; letter-spacing: .2px; }
     .contact-info { font-size: 12px; opacity: .9; }
 
     .header-controls { display:flex; gap:8px; align-items:center; justify-content:flex-end; }
@@ -162,13 +162,15 @@
     <div class="container header-inner">
       <img id="restoLogo" alt="Logo" />
       <div>
-        <h1 id="restoName">Nama Restoran</h1>
+        <h1 id="restoName">Resto Name</h1>
         <div class="contact-info">
           <div id="alamatRestoranDisplay"></div>
           <div id="teleponRestoranDisplay"></div>
         </div>
       </div>
-
+      <div>  
+        <button class="dark-toggle" onclick="toggleDark()" title="Toggle theme">🌙</button>
+      </div>
       <div class="header-controls">
         <!-- Locale/Currency dropdown (hybrid: auto-detect + manual override) -->
         <select id="localeSelect" class="locale-select" title="Change locale / currency">
@@ -182,8 +184,6 @@
           <option value="zh-CN|CNY">China — CNY</option>
           <option value="fr-FR|EUR">France — EUR</option>
         </select>
-
-        <button class="dark-toggle" onclick="toggleDark()" title="Toggle theme">🌙</button>
       </div>
     </div>
   </header>
@@ -750,3 +750,4 @@ Notes: ${note}`;
   </script>
 </body>
 </html>
+
