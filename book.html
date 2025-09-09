@@ -57,6 +57,13 @@
     .contact-info { font-size: 12px; opacity: .9; }
 
     .header-controls { display:flex; gap:8px; align-items:center; justify-content:flex-end; }
+    .header-controls select {
+  width: auto;     /* biar menyesuaikan isi */
+  min-width: 80px; /* kasih batas minimum */
+  padding: 2px 6px;
+  font-size: 0.85rem;
+}
+
     .dark-toggle {
       width: 44px; height: 44px; border-radius: 50%; border: 1px solid rgba(255,255,255,.35);
       background: transparent; color: #fff; cursor: pointer; font-size: 18px;
@@ -183,9 +190,9 @@
         <select id="localeSelect" class="locale-select" title="Change locale / currency">
           <!-- default options; you can add more -->
           <option value="auto">Auto (browser)</option>
-          <option value="en-US|USD">United States — USD</option>
-          <option value="id-ID|IDR">Indonesia — IDR</option>
-          <option value="en-GB|GBP">United Kingdom — GBP</option>
+          <option value="en-US|USD">US — USD</option>
+          <option value="id-ID|IDR">INA — IDR</option>
+          <option value="en-GB|GBP">UK — GBP</option>
           <option value="de-DE|EUR">Germany — EUR</option>
           <option value="ja-JP|JPY">Japan — JPY</option>
           <option value="zh-CN|CNY">China — CNY</option>
@@ -757,5 +764,6 @@ Notes: ${note}`;
   </script>
 </body>
 </html>
+
 
 
