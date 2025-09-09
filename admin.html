@@ -504,7 +504,6 @@
         <input type="text" placeholder="Promo Name" value="${promo.namaPromo || ""}" onchange="updatePromo(${index}, 'namaPromo', this.value)">
         <input type="file" accept="image/*" onchange="uploadPromoImage(event, ${index})">
         <img id="promoImgPreview${index}" src="${promo.image || ""}" style="max-height:80px; margin:5px 0">
-        <input type="text" placeholder="Menu Promo Name" value="${promo.namaMenu || ""}" onchange="updatePromo(${index}, 'namaMenu', this.value)">
         <input type="text" placeholder="Deskription Promo" value="${promo.deskripsi || ""}" onchange="updatePromo(${index}, 'deskripsi', this.value)">
         <input type="number" placeholder="Promo Price" value="${promo.harga || ""}" onchange="updatePromo(${index}, 'harga', this.value)">
         <input type="text" placeholder="Kategori Promo" value="${promo.kategori || ""}" onchange="updatePromo(${index}, 'kategori', this.value)">
@@ -519,7 +518,6 @@
     menuPromo.push({
       namaPromo: promo.namaPromo || "",
       image: promo.image || "",
-      namaMenu: promo.namaMenu || "",
       deskripsi: promo.deskripsi || "",
       harga: promo.harga || "",
       kategori: promo.kategori || "",
@@ -1052,5 +1050,6 @@ document.getElementById("logoInput")?.addEventListener("change", async function 
 </script>
 
 </html>
+
 
 
