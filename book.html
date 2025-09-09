@@ -153,6 +153,12 @@
       border-radius: 50%;
       display: none; /* default hidden kalau qty = 0 */
     }
+.settings {
+  display: flex;
+  flex-direction: column; /* urut vertikal */
+  align-items: flex-end;  /* posisikan kanan */
+  gap: 8px; /* jarak antar elemen */
+}
 
   </style>
 </head>
@@ -167,9 +173,10 @@
           <div id="alamatRestoranDisplay"></div>
           <div id="teleponRestoranDisplay"></div>
         </div>
-      </div>
-      <div>  
+      </div>  
+        <div class="settings">
         <button class="dark-toggle" onclick="toggleDark()" title="Toggle theme">🌙</button>
+        </div?
       </div>
       <div class="header-controls">
         <!-- Locale/Currency dropdown (hybrid: auto-detect + manual override) -->
@@ -750,4 +757,5 @@ Notes: ${note}`;
   </script>
 </body>
 </html>
+
 
