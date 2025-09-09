@@ -145,23 +145,93 @@ header {
     .tabs { display: flex; gap: 8px; padding: 10px; justify-content: center; flex-wrap: wrap; }
     .tab { padding: 8px 14px; border: 1px solid var(--border); border-radius: 999px; background: var(--chip); color: var(--text); cursor: pointer; font-weight: 600; }
     .tab.active { background: var(--brand); color: #fff; border-color: var(--brand); }
+   /* =====================
+   GRID CONTENT
+   ===================== */
+.tab-content { 
+  display: none; 
+  padding: 20px 0; 
+}
+.tab-content.active { 
+  display: block; 
+}
 
-    /* =====================
-       GRID CONTENT
-       ===================== */
-    .tab-content { display: none; padding: 20px 0; }
-    .tab-content.active { display: block; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+.grid { 
+  display: grid; 
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); 
+  gap: 16px; 
+}
 
-    .menu-card {
-      background: var(--surface); border: 1px solid var(--border); border-radius: 6px; box-shadow: var(--shadow);
-      padding: 12px; display: flex; flex-direction: column; gap: 8px; cursor: pointer; transition: transform .18s ease, box-shadow .18s ease;
-    }
-    .menu-card:hover { transform: translateY(-2px); }
-    .menu-thumb { height: 140px; border-radius: 12px; object-fit: cover; background: #e9eefc; }
-    .menu-title { font-weight: 800; font-size: 16px; letter-spacing: .2px; }
-    .menu-desc { font-size: 13px; color: var(--muted); min-height: 32px; }
-    .menu-price { margin-top: 4px; font-weight: 800; color: var(--brand); }
+/* HP Portrait → 3 card */
+@media screen and (max-width: 600px) and (orientation: portrait) {
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .menu-thumb { height: 100px; }
+  .menu-title { font-size: 14px; }
+  .menu-desc { font-size: 12px; }
+}
+
+/* HP Landscape → 6 card */
+@media screen and (max-width: 900px) and (orientation: landscape) {
+  .grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+  .menu-thumb { height: 90px; }
+  .menu-title { font-size: 13px; }
+  .menu-desc { font-size: 11px; }
+}
+
+/* Tablet → 4 card */
+@media screen and (min-width: 601px) and (max-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Desktop → 5 card */
+@media screen and (min-width: 1025px) {
+  .grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+.menu-card {
+  background: var(--surface); 
+  border: 1px solid var(--border); 
+  border-radius: 6px; 
+  box-shadow: var(--shadow);
+  padding: 12px; 
+  display: flex; 
+  flex-direction: column; 
+  gap: 8px; 
+  cursor: pointer; 
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+.menu-card:hover { 
+  transform: translateY(-2px); 
+}
+.menu-thumb { 
+  height: 140px; 
+  border-radius: 12px; 
+  object-fit: cover; 
+  background: #e9eefc; 
+}
+.menu-title { 
+  font-weight: 800; 
+  font-size: 16px; 
+  letter-spacing: .2px; 
+}
+.menu-desc { 
+  font-size: 13px; 
+  color: var(--muted); 
+  min-height: 32px; 
+}
+.menu-price { 
+  margin-top: 4px; 
+  font-weight: 800; 
+  color: var(--brand); 
+}
 
     /* =====================
        PROMO CARD
@@ -834,6 +904,7 @@ Notes: ${note}`;
   </script>
 </body>
 </html>
+
 
 
 
