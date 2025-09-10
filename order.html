@@ -69,6 +69,32 @@
 
     .promo-container{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-bottom:12px}
     .promo-item{width:260px;padding:12px;border-radius:10px;background:#fffef5;border:1px solid var(--border);box-shadow:0 6px 18px rgba(0,0,0,0.04);text-align:center}
+    /* Grid untuk promo */
+#promoList {
+  display: grid;
+  grid-template-columns: 1fr; /* default: 1 kolom (portrait) */
+  gap: 16px;
+}
+
+@media (min-width: 600px) {
+  #promoList {
+    grid-template-columns: repeat(2, 1fr); /* layar agak lebar: 2 kolom */
+  }
+}
+
+@media (min-width: 900px) {
+  #promoList {
+    grid-template-columns: repeat(3, 1fr); /* layar lebar: 3 kolom */
+  }
+}
+
+/* Gambar promo biar proporsional */
+#promoList img {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  object-fit: cover;
+}
 
     .order-summary{margin-top:18px;border:1px solid var(--border);padding:16px;border-radius:10px;background:var(--surface)}
     .order-summary input,.order-summary textarea{width:100%;padding:8px;border-radius:8px;border:1px solid var(--border);margin-top:6px}
@@ -540,3 +566,4 @@
   </script>
 </body>
 </html>
+
