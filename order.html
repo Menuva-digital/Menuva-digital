@@ -45,12 +45,41 @@ h1 {
   font-size: 16px;
 }
 
+/* === GRID RESPONSIVE === */
 .menu-grid {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
   gap: 15px;
   justify-content: center;
 }
+
+/* HP Portrait → 3 kolom */
+@media screen and (max-width: 600px) and (orientation: portrait) {
+  .menu-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* HP Landscape → 6 kolom */
+@media screen and (max-width: 900px) and (orientation: landscape) {
+  .menu-grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+/* Tablet → 4 kolom */
+@media screen and (min-width: 601px) and (max-width: 1024px) {
+  .menu-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Desktop → 5 kolom */
+@media screen and (min-width: 1025px) {
+  .menu-grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
 
 /* === MENU ITEM CARD === */
 .menu-item {
@@ -584,6 +613,7 @@ function kirimPesanan() {
 
 </body>
 </html>
+
 
 
 
