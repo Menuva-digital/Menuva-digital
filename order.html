@@ -6,253 +6,296 @@
   <title>Order Menu</title>
   <style>
     :root {
-      --bg-light: #f9f9f9;
-      --text-light: #333;
-      --bg-dark: #1e1e1e;
-      --text-dark: #f5f5f5;
-      --primary: #ff9800;
+      --bg-color: #ffffff;
+      --text-color: #222;
+      --card-bg: #f9f9f9;
+      --accent: #e67e22;
+    }
+    [data-theme="dark"] {
+      --bg-color: #1a1a1a;
+      --text-color: #f5f5f5;
+      --card-bg: #2a2a2a;
+      --accent: #f39c12;
     }
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: var(--bg-light);
-      color: var(--text-light);
-      transition: background 0.3s, color 0.3s;
-    }
-    body.dark {
-      background: var(--bg-dark);
-      color: var(--text-dark);
+      background: var(--bg-color);
+      color: var(--text-color);
     }
     header {
+      background: var(--accent);
+      color: white;
+      padding: 1rem;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 1rem;
-      background: var(--primary);
-      color: #fff;
+      text-align: center;
     }
-    header .top {
+    header h1 { margin: 0; font-size: 1.5rem; }
+    header p { margin: 0.2rem 0; font-size: 0.9rem; }
+    .header-actions {
+      margin-top: 0.5rem;
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      width: 100%;
-      max-width: 1200px;
-    }
-    header img.logo {
-      height: 50px;
-    }
-    header h1 {
-      margin: 0;
-      font-size: 1.5rem;
-    }
-    .controls {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
+      gap: 0.5rem;
     }
     .tabs {
       display: flex;
       justify-content: center;
-      gap: 1rem;
       margin: 1rem 0;
       flex-wrap: wrap;
+      gap: 0.5rem;
     }
     .tab {
       padding: 0.5rem 1rem;
+      border: 1px solid var(--accent);
       border-radius: 20px;
       cursor: pointer;
-      background: #ddd;
-      transition: background 0.3s;
+      background: transparent;
+      color: var(--accent);
     }
     .tab.active {
-      background: var(--primary);
-      color: #fff;
+      background: var(--accent);
+      color: white;
     }
-    .menu-grid {
+    .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
       gap: 1rem;
       padding: 1rem;
-      max-width: 1200px;
-      margin: auto;
     }
     .card {
-      background: #fff;
-      border-radius: 10px;
+      background: var(--card-bg);
+      border-radius: 12px;
       overflow: hidden;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      transition: transform 0.2s;
-    }
-    body.dark .card {
-      background: #2a2a2a;
-    }
-    .card:hover {
-      transform: translateY(-4px);
+      text-align: center;
+      padding: 0.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      aspect-ratio: 1/1;
     }
     .card img {
       width: 100%;
-      aspect-ratio: 1/1;
+      height: 100px;
       object-fit: cover;
+      border-radius: 8px;
     }
-    .card-content {
-      padding: 0.5rem;
-      text-align: center;
+    .card h3 {
+      margin: 0.5rem 0;
+      font-size: 1rem;
     }
-    .promo-section {
-      max-width: 1200px;
-      margin: 2rem auto;
+    .card p { margin: 0.2rem 0; font-size: 0.85rem; }
+    .promo {
+      margin: 1rem;
       padding: 1rem;
-      background: var(--primary);
-      color: #fff;
+      background: var(--accent);
+      color: white;
       border-radius: 12px;
       text-align: center;
     }
-    select, button {
-      padding: 0.4rem 0.6rem;
-      border-radius: 5px;
-      border: 1px solid #ccc;
+    .summary {
+      padding: 1rem;
+      border-top: 1px solid #ccc;
+      background: var(--card-bg);
+    }
+    .summary h2 { margin-top: 0; }
+    button {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      background: var(--accent);
+      color: white;
+      font-size: 1rem;
     }
   </style>
 </head>
 <body>
   <header>
-    <div class="top">
-      <div class="logo-info">
-        <img src="logo.png" alt="Restaurant Logo" class="logo">
-        <div>
-          <h1>Global Resto</h1>
-          <p>Jl. Example Street No. 123</p>
-          <p>Phone: +62 812 3456 7890</p>
-        </div>
-      </div>
-      <div class="controls">
-        <select id="currencySelector"></select>
-        <button id="darkToggle">🌙</button>
-      </div>
+    <h1>My Restaurant</h1>
+    <p>123 Street Name, City</p>
+    <p>Phone: +62 812-3456-7890</p>
+    <div class="header-actions">
+      <button id="darkToggle">Toggle Dark Mode</button>
+      <select id="currencySelect"></select>
     </div>
   </header>
 
   <div class="tabs" id="categoryTabs"></div>
 
-  <div class="menu-grid" id="menuGrid"></div>
+  <div class="promo" id="promoCard">Special Promo Loading...</div>
 
-  <div class="promo-section" id="promoSection">
-    <h2>Special Promotions</h2>
-    <div id="promoContent"></div>
+  <div class="grid" id="menuGrid"></div>
+
+  <div class="summary">
+    <h2>Order Summary</h2>
+    <div id="orderList"></div>
+    <p><strong>Total: <span id="totalPrice">0</span></strong></p>
+    <button onclick="sendOrder()">Submit Order</button>
   </div>
 
   <script>
-    // Detect default currency from browser locale
-    function detectCurrency() {
-      const locale = navigator.language || "en-US";
-      if (locale.startsWith("id")) return "IDR";
-      if (locale.startsWith("en")) return "USD";
-      if (locale.startsWith("de") || locale.startsWith("fr")) return "EUR";
-      return "USD";
-    }
+    // ===== Dark Mode =====
+    const darkToggle = document.getElementById("darkToggle");
+    darkToggle.addEventListener("click", () => {
+      document.body.dataset.theme =
+        document.body.dataset.theme === "dark" ? "light" : "dark";
+    });
 
-    const currencySelector = document.getElementById("currencySelector");
-    const supportedCurrencies = ["IDR", "USD", "EUR"];
-    supportedCurrencies.forEach(cur => {
+    // ===== Currency =====
+    const currencySelect = document.getElementById("currencySelect");
+    const supportedCurrencies = ["IDR", "USD", "EUR", "JPY"];
+    const userLocale = navigator.language;
+    let defaultCurrency = "USD";
+    try {
+      const format = new Intl.NumberFormat(userLocale, {
+        style: "currency",
+        currency: "USD",
+      });
+      defaultCurrency = format.resolvedOptions().currency || "USD";
+    } catch (e) {
+      defaultCurrency = "USD";
+    }
+    supportedCurrencies.forEach((cur) => {
       const opt = document.createElement("option");
       opt.value = cur;
       opt.textContent = cur;
-      currencySelector.appendChild(opt);
+      if (cur === defaultCurrency) opt.selected = true;
+      currencySelect.appendChild(opt);
     });
-    currencySelector.value = detectCurrency();
-
-    function formatPrice(amount) {
-      return new Intl.NumberFormat(navigator.language, {
-        style: "currency",
-        currency: currencySelector.value
-      }).format(amount);
-    }
-
-    // Dark mode toggle
-    const darkToggle = document.getElementById("darkToggle");
-    darkToggle.addEventListener("click", () => {
-      document.body.classList.toggle("dark");
+    let currentCurrency = defaultCurrency;
+    currencySelect.addEventListener("change", (e) => {
+      currentCurrency = e.target.value;
+      renderMenu();
+      updateSummary();
     });
 
-    // Fetch categories & menu from IndexedDB
-    async function fetchData(storeName) {
+    // ===== IndexedDB Data Handling =====
+    let db;
+    let menuItems = [];
+    let promo = {};
+    let order = [];
+
+    function openDB() {
       return new Promise((resolve, reject) => {
-        const request = indexedDB.open("restaurantDB", 1);
-        request.onsuccess = (event) => {
-          const db = event.target.result;
-          const tx = db.transaction(storeName, "readonly");
-          const store = tx.objectStore(storeName);
-          const items = [];
-          store.openCursor().onsuccess = (e) => {
-            const cursor = e.target.result;
-            if (cursor) {
-              items.push(cursor.value);
-              cursor.continue();
-            } else {
-              resolve(items);
-            }
-          };
+        const request = indexedDB.open("RestaurantDB", 1);
+        request.onsuccess = (e) => {
+          db = e.target.result;
+          resolve();
         };
-        request.onerror = () => reject("Error opening DB");
+        request.onerror = (e) => reject(e);
       });
     }
 
-    async function render() {
-      const categories = await fetchData("categories");
-      const menuItems = await fetchData("menu");
-      const promos = await fetchData("promotions");
+    async function fetchData() {
+      await openDB();
+      menuItems = await getAll("menu");
+      promo = (await getAll("promo"))[0] || {};
+      renderTabs();
+      renderMenu();
+      renderPromo();
+    }
 
-      // Render category tabs
-      const tabContainer = document.getElementById("categoryTabs");
-      tabContainer.innerHTML = "";
-      categories.forEach((cat, index) => {
-        const tab = document.createElement("div");
-        tab.className = "tab" + (index === 0 ? " active" : "");
-        tab.textContent = cat.name;
-        tab.dataset.category = cat.name;
-        tab.onclick = () => {
-          document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
-          tab.classList.add("active");
-          showMenu(cat.name, menuItems);
-        };
-        tabContainer.appendChild(tab);
+    function getAll(storeName) {
+      return new Promise((resolve, reject) => {
+        const tx = db.transaction(storeName, "readonly");
+        const store = tx.objectStore(storeName);
+        const req = store.getAll();
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = (e) => reject(e);
       });
+    }
 
-      // Show first category by default
-      if (categories.length > 0) {
-        showMenu(categories[0].name, menuItems);
+    // ===== Rendering =====
+    function renderTabs() {
+      const tabs = document.getElementById("categoryTabs");
+      tabs.innerHTML = "";
+      const categories = [...new Set(menuItems.map((m) => m.category))];
+      categories.forEach((cat, i) => {
+        const btn = document.createElement("button");
+        btn.className = "tab" + (i === 0 ? " active" : "");
+        btn.textContent = cat;
+        btn.onclick = () => {
+          document
+            .querySelectorAll(".tab")
+            .forEach((t) => t.classList.remove("active"));
+          btn.classList.add("active");
+          renderMenu(cat);
+        };
+        tabs.appendChild(btn);
+      });
+    }
+
+    function formatCurrency(amount) {
+      try {
+        return new Intl.NumberFormat("en-US", {
+          style: "currency",
+          currency: currentCurrency,
+        }).format(amount);
+      } catch {
+        return amount + " " + currentCurrency;
       }
-
-      // Render promos
-      const promoContent = document.getElementById("promoContent");
-      promoContent.innerHTML = "";
-      promos.forEach(p => {
-        const div = document.createElement("div");
-        div.innerHTML = `<h3>${p.title}</h3><p>${p.description}</p>`;
-        promoContent.appendChild(div);
-      });
     }
 
-    function showMenu(category, items) {
+    function renderMenu(filterCategory) {
       const grid = document.getElementById("menuGrid");
       grid.innerHTML = "";
-      items.filter(i => i.category === category).forEach(i => {
+      let items = menuItems;
+      if (filterCategory) {
+        items = items.filter((m) => m.category === filterCategory);
+      }
+      items.forEach((item) => {
         const card = document.createElement("div");
         card.className = "card";
         card.innerHTML = `
-          <img src="${i.image}" alt="${i.name}">
-          <div class="card-content">
-            <h3>${i.name}</h3>
-            <p>${formatPrice(i.price)}</p>
-          </div>
+          <img src="${item.image}" alt="${item.name}">
+          <h3>${item.name}</h3>
+          <p>${formatCurrency(item.price)}</p>
+          <button onclick="addToOrder('${item.id}')">Add</button>
         `;
         grid.appendChild(card);
       });
     }
 
-    currencySelector.addEventListener("change", () => render());
+    function renderPromo() {
+      const promoCard = document.getElementById("promoCard");
+      if (promo && promo.title) {
+        promoCard.innerHTML = `<h3>${promo.title}</h3><p>${promo.description}</p>`;
+      } else {
+        promoCard.innerHTML = "No promo available";
+      }
+    }
 
-    render();
+    // ===== Order Handling =====
+    function addToOrder(id) {
+      const item = menuItems.find((m) => m.id == id);
+      order.push(item);
+      updateSummary();
+    }
+
+    function updateSummary() {
+      const list = document.getElementById("orderList");
+      const totalPrice = document.getElementById("totalPrice");
+      list.innerHTML = "";
+      let total = 0;
+      order.forEach((item) => {
+        const p = document.createElement("p");
+        p.textContent = `${item.name} - ${formatCurrency(item.price)}`;
+        list.appendChild(p);
+        total += item.price;
+      });
+      totalPrice.textContent = formatCurrency(total);
+    }
+
+    function sendOrder() {
+      alert("Order sent!");
+      order = [];
+      updateSummary();
+    }
+
+    // Init
+    fetchData();
   </script>
 </body>
 </html>
