@@ -1,522 +1,186 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Order</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Page</title>
   <style>
-    :root {
-      --bg: #f4f8ff;
-      --surface: #ffffff;
-      --text: #1f2a44;
-      --muted: #6b7a99;
-      --border: #d8e1ff;
-      --brand: #1f70ff;
-      --brand-2: #2a5298;
-      --brand-3: #1e3c72;
-      --chip: #eef4ff;
-      --danger: #e54646;
-      --success: #25d366;
-      --shadow: 0 6px 24px rgba(0,0,0,.08);
-    }
-    body.dark {
-      --bg: #0e1116;
-      --surface: #141922;
-      --text: #e6ebff;
-      --muted: #aab6db;
-      --border: #263148;
-      --brand: #4da3ff;
-      --chip: #0f1a2a;
-      --shadow: 0 8px 28px rgba(0,0,0,.5);
-    }
-
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background: var(--bg);
-      color: var(--text);
       margin: 0;
-      padding: 0;
-      padding-bottom: 120px;
-      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      color: #333;
+      transition: background 0.3s, color 0.3s;
     }
 
-    /* HEADER */
-    header {
-      background: var(--brand-3);
-      color: #fff;
-      padding: 12px 20px;
-      box-shadow: var(--shadow);
+    body.dark {
+      background: #121212;
+      color: #f1f1f1;
     }
-    .header-inner {
+
+    header {
       display: flex;
       justify-content: space-between;
-      align-items: center;
+      align-items: flex-start;
+      padding: 12px 20px;
+      background: #fff;
+      border-bottom: 1px solid #ddd;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      transition: background 0.3s;
     }
-    .header-left {
+
+    body.dark header {
+      background: #1e1e1e;
+      border-color: #444;
+    }
+
+    .logo-section {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
     }
-    #restoLogo {
-      width: 60px;
-      height: 60px;
-      object-fit: contain;
+
+    .logo-section img {
+      width: 40px;
+      height: 40px;
     }
-    .resto-info h1 {
-      margin: 0;
-      font-size: 1.4rem;
+
+    .brand-name {
+      font-size: 18px;
+      font-weight: bold;
     }
-    .contact-info {
-      font-size: 0.85rem;
-      color: var(--muted);
-    }
-    .header-right {
+
+    .right-controls {
       display: flex;
       flex-direction: column;
       align-items: flex-end;
-      gap: 10px;
+      gap: 6px;
     }
-    .dark-toggle {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      border: 1px solid rgba(255,255,255,.35);
-      background: transparent;
-      color: #fff;
+
+    .toggle-darkmode {
       cursor: pointer;
-      font-size: 18px;
-    }
-    .locale-select {
-      padding: 6px 10px;
-      border-radius: 10px;
-      border: 0;
-      background: rgba(255,255,255,.12);
-      color: #fff;
-      font-weight: 700;
-      min-width: 100px;
+      font-size: 20px;
     }
 
-    /* TAGLINE */
-    .tagline {
-      text-align: center;
-      padding: 8px;
-      font-style: italic;
-      color: var(--muted);
-    }
-
-    /* MAIN WRAPPER */
-    .main-container {
-      width: 97%;
-      max-width: 1600px;
-      margin: 8px auto -50px;
-      padding: 20px;
+    select {
+      padding: 4px 6px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
       background: #fff;
-      border-radius: 12px 12px 0 0;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.05);
-      box-sizing: border-box;
-    }
-
-    /* MENU */
-    .filter-container {
-      text-align: center;
-      margin: 20px 0;
-    }
-    .filter-container select {
-      padding: 10px;
-      font-size: 16px;
-    }
-    .menu-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 15px;
-      justify-content: center;
-    }
-    .menu-item {
-      border: 1px solid #ddd;
-      padding: 15px;
-      text-align: center;
-      width: 250px;
-      border-radius: 10px;
-      background: white;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-    .menu-item .menu-name {
-      font-weight: bold;
-      font-size: 18px;
-    }
-    .menu-item .qty-controls {
-      margin-top: 10px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    .qty-controls button {
-      background: orange;
-      border: none;
-      padding: 6px 12px;
-      color: white;
-      font-size: 18px;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-    .qty-controls span {
-      margin: 0 10px;
-      font-weight: bold;
-    }
-
-    /* ORDER SUMMARY */
-    .order-summary {
-      margin-top: 40px;
-      border: 1px solid #ccc;
-      padding: 25px;
-      border-radius: 12px;
-      background: #fff;
-    }
-    .order-summary h2 {
-      margin-bottom: 20px;
-    }
-    .order-summary input, .order-summary textarea {
-      width: 100%;
-      margin-bottom: 15px;
-      padding: 10px;
-      font-size: 15px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-    }
-
-    /* PROMO */
-    .section-title {
-      text-align: center;
-      font-size: 22px;
-      margin: 30px 0 15px;
-      font-weight: bold;
-    }
-    .promo-container {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 15px;
-      margin-bottom: 30px;
-    }
-    .promo-item {
-      border: 1px solid #ccc;
-      border-radius: 10px;
-      background: #fffef5;
-      padding: 15px;
-      width: 250px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      text-align: center;
-    }
-    .promo-item img {
-      max-width: 150px;
-      max-height: 150px;
-      display: block;
-      margin: 0 auto 10px;
-    }
-
-    /* BOTTOM BUTTONS */
-    .bottom-buttons {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 91%;
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      background: linear-gradient(135deg, #1e3c72, #2a5298);
-      padding: 10px 15px;
-      box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
-      z-index: 999;
-      gap: 10px;
-    }
-    .bottom-buttons button {
-      flex: 1;
-      padding: 12px;
       font-size: 14px;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: bold;
     }
-    .btn-wa { background-color: green; color: white; }
-    .btn-back { background-color: #e4d617; color: #fcfafa; }
+
+    body.dark select {
+      background: #333;
+      color: #fff;
+      border-color: #666;
+    }
+
+    main {
+      padding: 20px;
+    }
+
+    .product {
+      border: 1px solid #ccc;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      background: #fff;
+      transition: background 0.3s, border-color 0.3s;
+    }
+
+    body.dark .product {
+      background: #1e1e1e;
+      border-color: #444;
+    }
+
+    .price {
+      font-size: 18px;
+      font-weight: bold;
+      margin-top: 5px;
+    }
   </style>
 </head>
 <body>
-  <!-- HEADER -->
   <header>
-    <div class="header-inner">
-      <!-- kiri -->
-      <div class="header-left">
-        <img id="restoLogo" src="logo.png" alt="Logo"/>
-        <div class="resto-info">
-          <h1 id="namaRestoranDisplay">Nama Restoran</h1>
-          <div class="contact-info">
-            <div id="alamatRestoranDisplay">Alamat Restoran</div>
-            <div id="teleponRestoranDisplay">+62-812-xxxx-xxxx</div>
-          </div>
-        </div>
-      </div>
-      <!-- kanan -->
-      <div class="header-right">
-        <button class="dark-toggle" onclick="toggleDark()" title="Toggle theme">🌙</button>
-        <select id="localeSelect" class="locale-select">
-          <option value="auto">Auto (browser)</option>
-          <option value="en-US|USD">US — USD</option>
-          <option value="id-ID|IDR">INA — IDR</option>
-          <option value="en-GB|GBP">UK — GBP</option>
-          <option value="de-DE|EUR">Germany — EUR</option>
-          <option value="ja-JP|JPY">Japan — JPY</option>
-          <option value="zh-CN|CNY">China — CNY</option>
-          <option value="fr-FR|EUR">France — EUR</option>
-        </select>
-      </div>
+    <div class="logo-section">
+      <img src="logo.png" alt="Logo">
+      <span class="brand-name">My Store</span>
+    </div>
+    <div class="right-controls">
+      <div class="toggle-darkmode" id="darkToggle">🌙</div>
+      <select id="currencySelect">
+        <option value="auto">Auto</option>
+        <option value="usd">USD</option>
+        <option value="idr">IDR</option>
+      </select>
     </div>
   </header>
 
-  <!-- TAGLINE -->
-  <div class="tagline">
-    <h3>"Your Favorite Food, Just One Click Away"</h3>
-  </div>
-
-  <!-- MAIN -->
-  <div class="main-container">
-    <div id="promoContainer"></div>
-    <h2 class="section-title">🍽️ Regular Menu</h2>
-    <div class="filter-container">
-      <label for="kategoriFilter">Filter Menu:</label>
-      <select id="kategoriFilter" onchange="tampilkanMenu()">
-        <option value="Semua">All Categories</option>
-      </select>
+  <main>
+    <div class="product">
+      <h2>Produk A</h2>
+      <p>Deskripsi singkat produk A.</p>
+      <div class="price" data-price="10">Rp 0</div>
     </div>
-    <div id="menu-list" class="menu-grid"></div>
-    <div class="order-summary">
-      <h2>🧾 Order Summary</h2>
-      <p>Total Item: <span id="total-item">0</span></p>
-      <p>Total Price: <span id="total-harga">0</span></p>
-      <label>Orderer Name</label>
-      <input id="nama" type="text" placeholder="Example: John">
-      <label>Delivery Address</label>
-      <textarea id="alamat" placeholder="Example: Road. Memories No. 123"></textarea>
-      <label>Delivery Time</label>
-      <input type="datetime-local" id="waktuAntar">
-      <label>Additional Notes</label>
-      <textarea id="catatan" placeholder="Example: No chili, please hurry up!"></textarea>
-      <label>Rooms (opsional)</label>
-      <input type="text" id="ruangan" placeholder="Example: Room 301">
+    <div class="product">
+      <h2>Produk B</h2>
+      <p>Deskripsi singkat produk B.</p>
+      <div class="price" data-price="25">Rp 0</div>
     </div>
-  </div>
-
-  <!-- BUTTONS -->
-  <div class="bottom-buttons">
-    <button onclick="kirimPesanan()" class="btn-wa">📤 Send Order List</button>
-    <button onclick="window.location.href='menu.html'" class="btn-back">⬅️ Back To Menu</button>
-  </div>
+  </main>
 
   <script>
-    function toggleDark() {
+    const darkToggle = document.getElementById("darkToggle");
+    const currencySelect = document.getElementById("currencySelect");
+    const prices = document.querySelectorAll(".price");
+
+    // Simulasi rate sederhana
+    const rates = {
+      usd: 1,
+      idr: 15000
+    };
+
+    // Toggle dark mode
+    darkToggle.addEventListener("click", () => {
       document.body.classList.toggle("dark");
-      if (document.body.classList.contains("dark")) {
-        localStorage.setItem("theme", "dark");
-      } else {
-        localStorage.setItem("theme", "light");
-      }
-    }
-    window.onload = function() {
-      if (localStorage.getItem("theme") === "dark") {
-        document.body.classList.add("dark");
-      }
+      darkToggle.textContent = document.body.classList.contains("dark") ? "☀️" : "🌙";
+    });
+
+    // Deteksi locale browser → default currency
+    function getBrowserCurrency() {
+      const locale = navigator.language;
+      if (locale.includes("id")) return "idr";
+      return "usd";
     }
 
-    // ===== IndexedDB & fungsi lama tetap sama (load data, tampilkan promo/menu, ringkasan, kirim WA) =====
-    let db;
-    const DB_NAME = "MenuvaDB";
-    const STORE_NAME = "menuvaData";
-    const DB_VERSION = 1;
-    let data = {};
-    const pesanan = {};
-    document.addEventListener("DOMContentLoaded", initDB);
-
-    function initDB() {
-      const request = indexedDB.open(DB_NAME, DB_VERSION);
-      request.onerror = () => { console.error("❌ IndexedDB gagal dibuka"); };
-      request.onsuccess = (event) => { db = event.target.result; loadDataFromDB(); };
-      request.onupgradeneeded = (event) => { db = event.target.result; };
+    // Format harga
+    function formatPrice(value, currency) {
+      return new Intl.NumberFormat(currency === "idr" ? "id-ID" : "en-US", {
+        style: "currency",
+        currency: currency.toUpperCase()
+      }).format(value);
     }
 
-    function loadDataFromDB() {
-      const tx = db.transaction(STORE_NAME, "readonly");
-      const store = tx.objectStore(STORE_NAME);
-      const getReq = store.get(1);
-      getReq.onsuccess = () => {
-        data = getReq.result;
-        if (!data) {
-          document.body.innerHTML = "<p>❌ Data is not yet available. Please input from admin first.</p>";
-          return;
-        }
-        tampilkanHeader();
-        tampilkanFilterKategori();
-        tampilkanPromo();
-        tampilkanMenu();
-      };
-      getReq.onerror = () => { console.error("❌ Failed to retrieve data"); };
-    }
+    // Update harga sesuai currency
+    function updatePrices() {
+      let selected = currencySelect.value;
+      if (selected === "auto") selected = getBrowserCurrency();
 
-    function tampilkanHeader() {
-      const logo = data.logo || "";
-      const nama = data.namaRestoran || "";
-      const alamat = data.restoAddress || "";
-      const telp = data.restoPhone || "";
-      if (logo) { document.getElementById("restoLogo").src = logo; }
-      document.getElementById("namaRestoranDisplay").textContent = nama;
-      document.getElementById("alamatRestoranDisplay").textContent = alamat;
-      document.getElementById("teleponRestoranDisplay").textContent = telp;
-    }
-
-    function tampilkanFilterKategori() {
-      const kategoriFilter = document.getElementById("kategoriFilter");
-      const kategoriUnik = [...new Set(data.menu.map(m => m.kategori).filter(Boolean))];
-      kategoriUnik.forEach(k => {
-        const opt = document.createElement("option");
-        opt.value = k;
-        opt.textContent = k.charAt(0).toUpperCase() + k.slice(1);
-        kategoriFilter.appendChild(opt);
+      prices.forEach(priceEl => {
+        const basePrice = parseFloat(priceEl.dataset.price);
+        const converted = basePrice * rates[selected];
+        priceEl.textContent = formatPrice(converted, selected);
       });
     }
 
-    function tampilkanPromo() {
-      if (!Array.isArray(data.menuPromo) || data.menuPromo.length === 0) return;
-      const promoContainer = document.getElementById("promoContainer");
-      promoContainer.innerHTML = `<h2 class="section-title">🔥 Special Promo</h2>`;
-      const wrapper = document.createElement("div");
-      wrapper.className = "promo-container";
-      data.menuPromo.forEach((promo, index) => {
-        const promoIndex = `promo-${index}`;
-        if (pesanan[promoIndex] === undefined) pesanan[promoIndex] = 0;
-        const hargaFormatted = (Number(promo.harga) || 0).toLocaleString("id-ID");
-        const div = document.createElement("div");
-        div.className = "promo-item";
-        div.innerHTML = `
-          ${promo.image ? `<img src="${promo.image}" alt="Promo">` : ""}
-          <div><b>* ${promo.namaPromo} *</b></div>
-          <div>${promo.namaMenu}</div>
-          <div>${promo.deskripsi}</div>
-          <div>${hargaFormatted} | Until To ${promo.tanggalAkhir}</div>
-          <div class="qty-controls">
-            <button onclick="ubahJumlahPromo('${promoIndex}', -1)">➖</button>
-            <span id="qty-${promoIndex}">${pesanan[promoIndex]}</span>
-            <button onclick="ubahJumlahPromo('${promoIndex}', 1)">➕</button>
-          </div>
-        `;
-        wrapper.appendChild(div);
-      });
-      promoContainer.appendChild(wrapper);
-    }
-    function ubahJumlahPromo(index, delta) {
-      pesanan[index] = Math.max(0, (pesanan[index] || 0) + delta);
-      document.getElementById(`qty-${index}`).innerText = pesanan[index];
-      updateRingkasan();
-    }
+    // Initial load
+    updatePrices();
 
-    function tampilkanMenu() {
-      const kategoriDipilih = document.getElementById("kategoriFilter").value || "Semua";
-      const menuList = document.getElementById("menu-list");
-      menuList.innerHTML = "";
-      data.menu.forEach((item, index) => {
-        if (kategoriDipilih !== "Semua" && item.kategori !== kategoriDipilih) return;
-        if (pesanan[index] === undefined) pesanan[index] = 0;
-        const itemEl = document.createElement("div");
-        itemEl.className = "menu-item";
-        itemEl.innerHTML = `
-          <div class="menu-name">${item.nama}</div>
-          <div style="margin: 5px 0;">${parseInt(item.harga).toLocaleString()}</div>
-          <div class="qty-controls">
-            <button onclick="ubahJumlah(${index}, -1)">➖</button>
-            <span id="qty-${index}">${pesanan[index]}</span>
-            <button onclick="ubahJumlah(${index}, 1)">➕</button>
-          </div>
-        `;
-        menuList.appendChild(itemEl);
-      });
-      updateRingkasan();
-    }
-    function ubahJumlah(index, delta) {
-      pesanan[index] = Math.max(0, (pesanan[index] || 0) + delta);
-      document.getElementById(`qty-${index}`).innerText = pesanan[index];
-      updateRingkasan();
-    }
-    function updateRingkasan() {
-      let totalQty = 0;
-      let totalHargaValue = 0;
-      Object.entries(pesanan).forEach(([i, jumlah]) => {
-        if (jumlah <= 0) return;
-        if (i.startsWith("promo-")) {
-          const idx = parseInt(i.split("-")[1]);
-          const item = data.menuPromo[idx];
-          totalQty += jumlah;
-          totalHargaValue += jumlah * parseInt(item.harga || 0);
-        } else {
-          const item = data.menu[i];
-          totalQty += jumlah;
-          totalHargaValue += jumlah * parseInt(item.harga || 0);
-        }
-      });
-      document.getElementById("total-item").innerText = totalQty;
-      document.getElementById("total-harga").innerText = totalHargaValue.toLocaleString();
-    }
-
-    function kirimPesanan() {
-      const nama = document.getElementById("nama").value.trim();
-      const alamat = document.getElementById("alamat").value.trim();
-      const waktuAntar = document.getElementById("waktuAntar").value;
-      const catatan = document.getElementById("catatan").value.trim();
-      const ruangan = document.getElementById("ruangan").value.trim();
-      const now = new Date();
-      const waktuOrder = now.toLocaleString("id-ID");
-      if (!data) { alert("❌ Restaurant data not found."); return; }
-      let listPesanan = Object.entries(pesanan)
-        .filter(([_, jumlah]) => jumlah > 0)
-        .map(([i, jumlah]) => {
-          if (i.startsWith("promo-")) {
-            const idx = parseInt(i.split("-")[1]);
-            const item = data.menuPromo[idx];
-            const harga = jumlah * parseInt(item.harga || 0);
-            return `${item.namaPromo} x${jumlah} (${harga.toLocaleString("id-ID")})`;
-          } else {
-            const item = data.menu[i];
-            const harga = jumlah * parseInt(item.harga || 0);
-            return `${item.nama} x${jumlah} (${harga.toLocaleString("id-ID")})`;
-          }
-        }).join("\n");
-      if (!listPesanan) { alert("No items selected."); return; }
-      let totalHargaAll = Object.entries(pesanan).reduce((sum, [i, jml]) => {
-        if (i.startsWith("promo-")) {
-          const idx = parseInt(i.split("-")[1]);
-          const item = data.menuPromo[idx];
-          return sum + (jml * parseInt(item.harga || 0));
-        } else {
-          const item = data.menu[i];
-          return sum + (jml * parseInt(item.harga || 0));
-        }
-      }, 0);
-      let pesanWA = `🧾 New Order from ${nama || "Customer"}\n\n` +
-        `📅 Order Date: ${waktuOrder}\n` +
-        (waktuAntar ? `🕒 Delivery Time: ${new Date(waktuAntar).toLocaleString("id-ID")}\n` : "") +
-        (ruangan ? `🏨 Room: ${ruangan}\n` : "") +
-        `\n📍 Address:\n${alamat}\n` +
-        `\n🛒 List order:\n${listPesanan}\n\n` +
-        `💰 Total: ${totalHargaAll.toLocaleString("id-ID")}\n` +
-        (catatan ? `\n📌 Notes:\n${catatan}` : "");
-      const nomorAdminList = data.nomorWaAdmin || [];
-      if (nomorAdminList.length === 0) { alert("⚠️ Tidak ada nomor admin yang tersedia."); return; }
-      nomorAdminList.forEach(nomor => {
-        const waLink = `https://wa.me/${nomor}?text=${encodeURIComponent(pesanWA)}`;
-        window.open(waLink, "_blank");
-      });
-    }
+    // Listener dropdown
+    currencySelect.addEventListener("change", updatePrices);
   </script>
 </body>
 </html>
