@@ -48,8 +48,8 @@ h1 {
 /* === GRID RESPONSIVE === */
 .menu-grid {
   display: grid;
-  gap: 10px;
-  justify-content: center;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); 
 }
 
 /* HP Portrait → 3 kolom */
@@ -79,35 +79,36 @@ h1 {
     grid-template-columns: repeat(5, 1fr);
   }
 }
-/* === MENU ITEM CARD === */
 .menu-item {
   border: 1px solid #ddd;
-  padding: 10px;              /* lebih kecil */
+  padding: 8px;                    /* lebih rapat */
   text-align: center;
-  width: 75px;               /* diperkecil biar lebih elegan */
-  aspect-ratio: 1 / 1; 
+  aspect-ratio: 1 / 1;             /* bikin square */
   border-radius: 10px;
   background: #fff;
   box-shadow: 0 3px 8px rgba(0,0,0,0.08);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  align-items: center;             /* biar konten center */
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
-.menu-item:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 14px rgba(0,0,0,0.15);
-}
+
 .menu-item .menu-name {
   font-weight: bold;
-  font-size: 12px;  /* lebih kecil tapi jelas */
-  margin-bottom: 6px;
+  font-size: 11px;                 /* agak kecil biar muat */
+  margin-bottom: 4px;
+  white-space: nowrap;             /* teks tetap 1 baris */
+  overflow: hidden;                /* sembunyikan yg kepanjangan */
+  text-overflow: ellipsis;         /* kasih "..." kalau kepanjangan */
+  width: 100%;
 }
+
 .menu-item .menu-price {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
   color: #1e3c72;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
 }
 
 /* === QTY BUTTONS PREMIUM === */
@@ -612,6 +613,7 @@ function kirimPesanan() {
 
 </body>
 </html>
+
 
 
 
