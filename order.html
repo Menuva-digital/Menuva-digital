@@ -48,36 +48,42 @@ h1 {
 /* === GRID RESPONSIVE === */
 .menu-grid {
   display: grid;
-  gap: 15px;
+  gap: 12px;
   justify-content: center;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
 }
 
 /* HP Portrait → 3 kolom */
 @media screen and (max-width: 600px) and (orientation: portrait) {
   .menu-grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(90px, 1fr));
   }
 }
 
 /* HP Landscape → 6 kolom */
 @media screen and (max-width: 900px) and (orientation: landscape) {
   .menu-grid {
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(6, minmax(70px, 1fr));
   }
 }
 
 /* Tablet → 4 kolom */
 @media screen and (min-width: 601px) and (max-width: 1024px) {
   .menu-grid {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(4, minmax(120px, 1fr));
   }
 }
 
 /* Desktop → 5 kolom */
 @media screen and (min-width: 1025px) {
   .menu-grid {
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(5, minmax(160px, 1fr));
   }
+}
+
+.menu-item {
+  max-width: 140px;   /* ⬅️ biar tidak terlalu melebar */
+  margin: auto;       /* ⬅️ biar selalu center */
 }
 
 
@@ -613,6 +619,7 @@ function kirimPesanan() {
 
 </body>
 </html>
+
 
 
 
