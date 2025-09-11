@@ -92,31 +92,29 @@ header {
     max-width: 140px;
   }
 }
-  /* HEADER RIGHT */
+ /* HEADER RIGHT */
 .header-right {
   display: flex;
   flex-direction: column; /* vertikal */
   align-items: flex-end;  /* geser ke kanan */
-  gap: 6px;               /* jarak antar icon & dropdown */
 }
 
-/* dark mode icon tanpa background */
+/* dark mode icon lebih ke atas */
 .dark-toggle {
   width: 44px;
   height: 44px;
-  border: 0;               /* hilangkan border */
-  background: transparent;  /* hilangkan background */
+  border: 0;
+  background: transparent;
   color: #fff;
   font-size: 22px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: none;
-  border-radius: 50%;      /* optional, biar lingkaran tetap */
+  margin-bottom: auto; /* dorong icon ke atas */
 }
 
-/* dropdown locale tetap di bawah icon */
+/* toggle dropdown lebih ke bawah */
 .locale-select {
   padding: 6px 10px;
   border-radius: 8px;
@@ -125,14 +123,24 @@ header {
   color: #fff;
   font-weight: 700;
   min-width: 140px;
-  text-align: right; /* biar teks kanan */
+  text-align: right;
+  margin-top: auto; /* dorong ke bawah */
 }
+
+/* responsive tweak */
 @media (max-width: 420px) {
   .dark-toggle { width: 36px; height: 36px; font-size: 18px; }
   .locale-select { min-width: 110px; font-size: 14px; }
 }
-tagline{
-  text-align: center;
+
+.tagline {
+  text-align: center;   /* center horizontal teks */
+  padding: 8px;
+  font-style: italic;
+  color: var(--chip);
+  background: transparent;
+  margin-bottom: 8px;
+}
 }
   /* MAIN CONTAINER */
   .main-container{width:97%;max-width:1200px;margin:8px auto;padding:20px;background:var(--surface);border-radius:12px;box-shadow:0 3px 10px rgba(0,0,0,0.05)}
@@ -762,6 +770,7 @@ body.dark .qty-controls span {
   </script>
 </body>
 </html>
+
 
 
 
