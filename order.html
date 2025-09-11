@@ -87,100 +87,130 @@
 
 /* === STYLE QTY MIRIP PSP === */
 .qty-controls {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: 8px;
+  padding: 4px;
+  border-radius: 999px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: linear-gradient(180deg, rgba(255,255,255,0.85), rgba(255,255,255,0.75));
+  box-shadow: 0 4px 10px rgba(16,24,40,0.06);
 }
 
+/* dark mode container */
+body.dark .qty-controls {
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.06));
+  border: 1px solid rgba(255,255,255,0.06);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.35);
+}
+
+/* tombol - / + (tipis, pill look) */
 .qty-controls button {
-  background: linear-gradient(145deg, var(--brand), var(--brand-2));
-  border: none;
-  border-radius: 50px; /* bikin lonjong */
-  color: #fff;
-  font-size: 18px;
-  font-weight: bold;
-  width: 36px;
-  height: 36px;
-  display: flex;
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: inset -2px -2px 6px rgba(255,255,255,0.2),
-              inset 2px 2px 6px rgba(0,0,0,0.25),
-              0 4px 8px rgba(0,0,0,0.15);
-  transition: all 0.2s ease;
-}
-
-.qty-controls button:hover {
-  transform: scale(1.08);
-  background: linear-gradient(145deg, var(--brand-2), var(--brand-3));
-}
-
-.qty-controls button:active {
-  transform: scale(0.95);
-}
-
-.qty-controls span {
-  font-size: 18px;
+  font-size: 16px;
+  line-height: 1;
   font-weight: 700;
-  min-width: 28px;
-  text-align: center;
   color: var(--text);
+  background: transparent;
+  transition: transform .14s ease, box-shadow .14s ease, background .14s ease;
+  box-shadow: inset -1px -1px 0 rgba(255,255,255,0.35), inset 1px 1px 2px rgba(0,0,0,0.06);
 }
 
+/* tombol warna filled (opsional) */
+.qty-controls button.filled {
+  background: linear-gradient(145deg, var(--brand-2), var(--brand-3));
+  color: #fff;
+  box-shadow: 0 4px 8px rgba(14,30,60,0.18);
+}
 
-  /* PROMO GRID */
-  #promoList {
-    display: grid;
-    grid-template-columns: 1fr; /* default portrait */
-    gap: 16px;
-  }
-  @media (min-width: 600px) {
-    #promoList { grid-template-columns: repeat(2, 1fr); }
-  }
-  @media (min-width: 900px) {
-    #promoList { grid-template-columns: repeat(3, 1fr); }
-  }
+/* hover / active */
+.qty-controls button:hover { transform: translateY(-2px); }
+.qty-controls button:active { transform: translateY(0); }
 
-  .promo-item {
-    width: 100%;
-    border-radius: 12px;
-    background: var(--surface);
-    color: var(--text);
-    border:1px solid var(--border);
-    box-shadow:0 6px 18px rgba(0,0,0,0.06);
-    text-align:center;
-    padding:12px;
-  }
-  .promo-item img {
-    width: 100%;
-    max-height: 200px;
-    object-fit: cover;
-    border-radius: 10px;
-  }
+/* middle value (span) */
+.qty-controls span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  height: 28px;
+  padding: 0 6px;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  font-weight: 800;
+  font-size: 15px;
+  text-align: center;
+}
 
-  /* ORDER SUMMARY */
-  .order-summary{margin-top:18px;border:1px solid var(--border);padding:16px;border-radius:10px;background:var(--surface)}
-  .order-summary input,.order-summary textarea{width:100%;padding:8px;border-radius:8px;border:1px solid var(--border);margin-top:6px}
+/* keyboard focus */
+.qty-controls button:focus,
+.qty-controls span:focus {
+  outline: 2px solid rgba(31,112,255,0.18);
+  outline-offset: 2px;
+}
 
-  /* BOTTOM BUTTONS */
-  .bottom-buttons{position:fixed;bottom:0;left:0;width:100%;display:flex;gap:10px;padding:10px;background:linear-gradient(135deg,#1e3c72,#2a5298);box-shadow:0 -2px 8px rgba(0,0,0,0.1);z-index:999}
-  .bottom-buttons button{flex:1;padding:12px;border-radius:8px;border:0;color:#fff;font-weight:800;cursor:pointer}
-  .btn-wa{background:var(--success)} .btn-back{background:#f39c12}
+/* responsive tweak */
+@media (max-width:420px) {
+  .qty-controls { gap: 6px; padding: 3px; }
+  .qty-controls button { width: 26px; height: 26px; font-size: 15px; }
+  .qty-controls span { min-width: 30px; font-size: 14px; }
+}
 
-  .small-muted{font-size:13px;color:var(--muted);text-align:center}
-  .fallback{padding:18px;text-align:center;color:var(--muted);background:var(--chip);border-radius:8px}
+/* PROMO GRID */
+#promoList { display: grid; grid-template-columns: 1fr; gap: 16px; }
+@media (min-width: 600px) { #promoList { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 900px) { #promoList { grid-template-columns: repeat(3, 1fr); } }
 
-  @media (max-width:700px){
-    .header-inner{flex-direction:row;gap:8px}
-    .header-right{align-items:flex-end}
-    .locale-select{min-width:110px}
-  }
+.promo-item {
+  width: 100%;
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--text);
+  border:1px solid var(--border);
+  box-shadow:0 6px 18px rgba(0,0,0,0.06);
+  text-align:center;
+  padding:12px;
+}
+.promo-item img {
+  width: 100%;
+  max-height: 200px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+/* ORDER SUMMARY */
+.order-summary{margin-top:18px;border:1px solid var(--border);padding:16px;border-radius:10px;background:var(--surface)}
+.order-summary input,.order-summary textarea{width:100%;padding:8px;border-radius:8px;border:1px solid var(--border);margin-top:6px}
+
+/* BOTTOM BUTTONS */
+.bottom-buttons{position:fixed;bottom:0;left:0;width:100%;display:flex;gap:10px;padding:10px;background:linear-gradient(135deg,#1e3c72,#2a5298);box-shadow:0 -2px 8px rgba(0,0,0,0.1);z-index:999}
+.bottom-buttons button{flex:1;padding:12px;border-radius:8px;border:0;color:#fff;font-weight:800;cursor:pointer}
+.btn-wa{background:var(--success)} .btn-back{background:#f39c12}
+
+.small-muted{font-size:13px;color:var(--muted);text-align:center}
+.fallback{padding:18px;text-align:center;color:var(--muted);background:var(--chip);border-radius:8px}
+
+@media (max-width:700px){
+  .header-inner{flex-direction:row;gap:8px}
+  .header-right{align-items:flex-end}
+  .locale-select{min-width:110px}
+}
 </style>
 </head>
 <body>
-  <header>
+ <header>
     <div class="header-inner">
       <div class="header-left">
         <img id="restoLogo" src="logo.png" alt="Logo">
@@ -633,9 +663,4 @@
   </script>
 </body>
 </html>
-
-
-
-
-
 
