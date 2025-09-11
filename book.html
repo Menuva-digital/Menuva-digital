@@ -56,8 +56,8 @@ header {
 }
 
 .header-inner {
-  display: grid;
-  grid-template-columns: auto 1fr auto; /* kiri - tengah fleksibel - kanan */
+  display: flex;
+  justify-content: space-between; /* kiri & kanan */
   align-items: center;
   gap: 12px;
 }
@@ -66,63 +66,38 @@ header {
   display: flex;
   align-items: center;
   gap: 10px;
+  flex: 1; /* biar ambil ruang tengah */
+  min-width: 0; /* penting supaya teks wrap, ga meluber */
+}
+
+.resto-info {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* cegah melebar */
+}
+
+#restoName {
+  margin: 0;
+  font-size: 16px;
+  font-weight: bold;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; /* potong kalau kepanjangan */
+}
+
+.contact-info {
+  font-size: 12px;
+  opacity: .9;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .header-controls {
   display: flex;
   align-items: center;
   gap: 12px;
-  justify-content: flex-end;
-}
-
-
-#restoLogo {
-  height: 56px;
-  width: 56px;
-  object-fit: contain;
-  border-radius: 12px;
-  background: rgba(255,255,255,.1);
-  flex-shrink: 0;   /* logo tidak mengecil */
-}
-
-.resto-info {
-  display: flex;
-  flex-direction: column;
-  min-width: 0; /* supaya teks panjang bisa wrap */
-}
-
-#restoName {
-  margin: 0;
-  font-size: 16px;
-  letter-spacing: .2px;
-  font-weight: bold;
-  white-space: normal;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-}
-
-.contact-info {
-  font-size: 12px;
-  opacity: .9;
-  white-space: normal;
-  word-wrap: break-word;
-}
-
-.header-controls select {
-  width: auto;      /* menyesuaikan isi */
-  min-width: 80px;  /* minimum */
-  max-width: 140px; /* batasi biar ga kepanjangan */
-  padding: 2px 6px;
-  font-size: 0.85rem;
-}
-
-/* toggle dark mode */
-.toggle-dark {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 0.9rem;
-  cursor: pointer;
+  flex-shrink: 0; /* jangan ketekan */
 }
 
 
@@ -415,9 +390,9 @@ header {
 <body>
 <!-- ===================== HEADER ===================== -->
 <header>
+ <header>
   <div class="header-inner">
-
-    <!-- KIRI: Logo + Info resto -->
+    <!-- kiri -->
     <div class="header-left">
       <img id="restoLogo" alt="Logo" />
       <div class="resto-info">
@@ -428,7 +403,6 @@ header {
         </div>
       </div>
     </div>
-
     <!-- KANAN: Dark mode toggle + Dropdown -->
     <div class="header-controls">
       <button class="dark-toggle" onclick="toggleDark()" title="Toggle theme">🌙</button>
@@ -1009,6 +983,7 @@ Notes: ${note}`;
   </script>
 </body>
 </html>
+
 
 
 
