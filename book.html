@@ -44,71 +44,99 @@
     img { max-width: 100%; display: block; }
     .container { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
 
-   
-header {
+    header {
+  width: 100%; /* biar nutup full atas */
   background: linear-gradient(90deg, var(--brand-2), var(--brand-3));
   color: #fff;
-  padding: 24px 16px; /* ⬅️ ubah dari 12px jadi 24px biar lebih tinggi */
+  padding: 16px; /* cukup, gak perlu terlalu tinggi */
   position: sticky;
   top: 0;
   z-index: 50;
   box-shadow: var(--shadow);
+  box-sizing: border-box;
 }
 
 .header-inner {
   display: flex;
-  justify-content: space-between; /* kiri & kanan */
-  align-items: center;
+  justify-content: space-between;
+  align-items: flex-start; /* biar kiri dan kanan rata atas */
   gap: 12px;
 }
 
 .header-left {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 10px;
-  flex: 1; /* biar ambil ruang tengah */
-  min-width: 0; /* penting supaya teks wrap, ga meluber */
+  flex: 1;
+  min-width: 0;
 }
 
 .resto-info {
   display: flex;
   flex-direction: column;
-  overflow: hidden; /* cegah melebar */
+  overflow: hidden;
 }
 
 #restoName {
   margin: 0;
   font-size: 16px;
   font-weight: bold;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis; /* potong kalau kepanjangan */
+  white-space: normal;   /* ⬅️ biar text bisa turun */
+  word-break: break-word; /* ⬅️ kalau kepanjangan, pecah */
 }
 
 .contact-info {
   font-size: 12px;
   opacity: .9;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  white-space: normal;   /* ⬅️ jangan pakai nowrap */
+  word-break: break-word;
 }
-
 .header-controls {
   display: flex;
-  flex-direction: column;   /* ⬅️ ini bikin atas–bawah */
-  align-items: flex-end;    /* sejajarkan ke kanan */
-  gap: 8px;                 /* jarak antar elemen */
-  flex-shrink: 0;           /* jangan ketekan */
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  flex-shrink: 0;
+  max-width: 120px; /* ⬅️ batasi lebar */
 }
 
+.dark-toggle {
+  width: 32px; 
+  height: 32px; 
+  border-radius: 50%; 
+  border: 1px solid rgba(255,255,255,.35);
+  background: transparent; 
+  color: #fff; 
+  cursor: pointer; 
+  font-size: 14px; /* lebih kecil */
+  line-height: 1;
+}
 
-    .dark-toggle {
-      width: 44px; height: 44px; border-radius: 50%; border: 1px solid rgba(255,255,255,.35);
-      background: transparent; color: #fff; cursor: pointer; font-size: 18px;
-    }
-    .locale-select {
-      padding: 8px 10px; border-radius: 10px; border: 0; background: rgba(255,255,255,.12); color: #fff; font-weight:700;
-    }
+.locale-select {
+  font-size: 12px;   /* kecil */
+  padding: 4px 6px;  /* tipis */
+  border-radius: 6px;
+  border: 0; 
+  background: rgba(255,255,255,.12); 
+  color: #fff; 
+  font-weight: 600;
+  max-width: 100px; /* jangan melar */
+}
+#restoLogo {
+  height: 44px;
+  width: 44px;
+  object-fit: contain;
+  border-radius: 8px;
+  background: rgba(255,255,255,.1);
+  flex-shrink: 0;
+}
+@media (max-width: 480px) {
+  #restoLogo {
+    height: 36px;
+    width: 36px;
+  }
+}
+
 
     /* =====================
        TABS
@@ -984,6 +1012,7 @@ Notes: ${note}`;
   </script>
 </body>
 </html>
+
 
 
 
