@@ -138,7 +138,60 @@ header {
   .main-container{width:97%;max-width:1200px;margin:8px auto;padding:20px;background:var(--surface);border-radius:12px;box-shadow:0 3px 10px rgba(0,0,0,0.05)}
   .section-title{text-align:center;font-size:22px;margin:16px 0;font-weight:700;color:var(--text)}
   .filter-container{text-align:center;margin:12px 0}
+   
+ 
+.filter-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 16px 0;
+}
 
+.filter-tabs button {
+  background: var(--chip);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 8px 18px;
+  border-radius: 999px;       /* bikin bentuk pil */
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+/* Hover efek */
+.filter-tabs button:hover {
+  background: var(--brand);
+  color: #fff;
+  border-color: var(--brand);
+}
+
+/* Active tab */
+.filter-tabs button.active {
+  background: linear-gradient(135deg, var(--brand-2), var(--brand-3));
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+}
+
+/* Dark mode tweak */
+body.dark .filter-tabs button {
+  background: rgba(255,255,255,0.08);
+  color: var(--text);
+  border: 1px solid rgba(255,255,255,0.15);
+}
+
+body.dark .filter-tabs button:hover {
+  background: var(--brand);
+  color: #fff;
+}
+
+body.dark .filter-tabs button.active {
+  background: linear-gradient(135deg, var(--brand), var(--brand-2));
+  color: #fff;
+  border: none;
+}
   /* MENU GRID */
   .menu-grid {
     display: grid;
@@ -374,12 +427,12 @@ body.dark .qty-controls span {
 
     <h2 class="section-title">🍽️ Regular Menu</h2>
 
-    <div class="filter-container">
-      <label for="kategoriFilter">Filter Menu:</label>
-      <select id="kategoriFilter" onchange="tampilkanMenu()">
-        <option value="Semua">All Categories</option>
-      </select>
-    </div>
+   <div class="filter-container">
+  <div class="filter-tabs" id="kategoriTabs">
+    <!-- auto generate -->
+   </div>
+   </div>
+
 
     <div id="menu-list" class="menu-grid"></div>
 
@@ -574,20 +627,48 @@ body.dark .qty-controls span {
     }
 
     function tampilkanFilterKategori() {
-      const kategoriFilter = document.getElementById('kategoriFilter');
-      // clear previous except first option
-      const existing = Array.from(kategoriFilter.querySelectorAll('option')).slice(0,1);
-      kategoriFilter.innerHTML = '';
-      kategoriFilter.appendChild(existing[0] || document.createElement('option'));
-      if (!Array.isArray(data.menu) || data.menu.length === 0) return;
-      const kategoriUnik = [...new Set((data.menu||[]).map(m => m.kategori).filter(Boolean))];
-      kategoriUnik.forEach(k => {
-        const opt = document.createElement('option');
-        opt.value = k;
-        opt.textContent = k.charAt(0).toUpperCase() + k.slice(1);
-        kategoriFilter.appendChild(opt);
-      });
+  const tabContainer = document.getElementById('kategoriTabs');
+  tabContainer.innerHTML = '';
+
+  if (!Array.isArray(data.menu) || data.menu.length === 0) return;
+
+  // Tab default "All"
+  const allBtn = document.createElement('button');
+  allBtn.textContent = 'All';
+  allBtn.classList.add('active');
+  allBtn.onclick = () => tampilkanMenu('Semua', allBtn);
+  tabContainer.appendChild(allBtn);
+
+  // Generate tab kategori unik
+  const kategoriUnik = [...new Set(data.menu.map(m => m.kategori).filter(Boolean))];
+  kategoriUnik.forEach(k => {
+    const btn = document.createElement('button');
+    btn.textContent = k.charAt(0).toUpperCase() + k.slice(1);
+    btn.onclick = () => tampilkanMenu(k, btn);
+    tabContainer.appendChild(btn);
+  });
+}
+
+function tampilkanMenu(kategori = 'Semua', btn = null) {
+  // Update tab aktif
+  if (btn) {
+    document.querySelectorAll('#kategoriTabs button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+
+  // Render ulang menu
+  const list = document.getElementById('menuList');
+  list.innerHTML = '';
+  (data.menu || []).forEach(item => {
+    if (kategori === 'Semua' || item.kategori === kategori) {
+      const el = document.createElement('div');
+      el.className = 'menu-item';
+      el.textContent = item.nama; // ganti sesuai struktur aslinya
+      list.appendChild(el);
     }
+  });
+}
+
 
     /* =================== PROMO =================== */
     function tampilkanPromo() {
@@ -664,9 +745,9 @@ body.dark .qty-controls span {
           <div class="menu-name">${escapeHtml(item.nama || '')}</div>
           <div class="menu-price" data-price="${hargaNum}" id="price-${index}">${hargaFormatted}</div>
           <div class="qty-controls">
-            <button data-idx="${index}" data-delta="-1">➖</button>
+            <button data-idx="${index}" data-delta="-1">-</button>
             <span id="qty-${index}">${pesanan[index]}</span>
-            <button data-idx="${index}" data-delta="1">➕</button>
+            <button data-idx="${index}" data-delta="1">+</button>
           </div>
         `;
         menuList.appendChild(itemEl);
@@ -791,6 +872,7 @@ body.dark .qty-controls span {
   </script>
 </body>
 </html>
+
 
 
 
