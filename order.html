@@ -82,10 +82,53 @@
     background:var(--surface);box-shadow:0 4px 12px rgba(0,0,0,0.04);
     display:flex;flex-direction:column;gap:6px;align-items:center;text-align:center
   }
-  .menu-name{font-weight:700;text-align:center}
-  .menu-price{font-weight:800}
-  .qty-controls{display:flex;gap:8px;align-items:center;justify-content:center}
-  .qty-controls button{background:orange;border:0;padding:6px 10px;border-radius:6px;color:#fff;cursor:pointer}
+ .menu-name{font-weight:700;text-align:center}
+.menu-price{font-weight:800}
+
+/* === STYLE QTY MIRIP PSP === */
+.qty-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.qty-controls button {
+  background: linear-gradient(145deg, var(--brand), var(--brand-2));
+  border: none;
+  border-radius: 50px; /* bikin lonjong */
+  color: #fff;
+  font-size: 18px;
+  font-weight: bold;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: inset -2px -2px 6px rgba(255,255,255,0.2),
+              inset 2px 2px 6px rgba(0,0,0,0.25),
+              0 4px 8px rgba(0,0,0,0.15);
+  transition: all 0.2s ease;
+}
+
+.qty-controls button:hover {
+  transform: scale(1.08);
+  background: linear-gradient(145deg, var(--brand-2), var(--brand-3));
+}
+
+.qty-controls button:active {
+  transform: scale(0.95);
+}
+
+.qty-controls span {
+  font-size: 18px;
+  font-weight: 700;
+  min-width: 28px;
+  text-align: center;
+  color: var(--text);
+}
+
 
   /* PROMO GRID */
   #promoList {
@@ -590,6 +633,7 @@
   </script>
 </body>
 </html>
+
 
 
 
