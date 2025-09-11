@@ -21,6 +21,8 @@
       --danger: #e54646;
       --success: #25d366;
       --shadow: 0 6px 24px rgba(0,0,0,.08);
+      --qty-btn-bg: #eef4ff;  /* light mode, biru muda */
+      --qty-btn-text: #1f2a44; /* warna teks tombol */
     }
     body.dark {
       --bg: #0e1116;
@@ -31,6 +33,8 @@
       --brand: #4da3ff;
       --chip: #0f1a2a;
       --shadow: 0 8px 28px rgba(0,0,0,.5);
+       --qty-btn-bg: #263148;  /* dark mode, biru gelap */
+       --qty-btn-text: #e6ebff; /* teks putih terang */
     }
 
     /* =====================
@@ -102,7 +106,7 @@
 }
 
 .dark-toggle {
- width: 32px; height: 32px; 
+ width: 36px; height: 36px; 
   border-radius: 0; 
   border: none;
   background: transparent; 
@@ -321,7 +325,16 @@
     .cart-row { display: grid; grid-template-columns: 1fr 76px 92px 28px; gap: 8px; align-items: center; padding: 6px 8px; border-bottom: 1px dashed var(--border); }
     .cart-row:last-child { border-bottom: none; }
     .qty-wrap { display: inline-flex; border: 1px solid var(--border); border-radius: 999px; overflow: hidden; }
-    .qty-wrap button { width: 28px; height: 28px; border: 0; background: var(--chip); cursor: pointer; font-weight: 800; }
+    .qty-wrap button {
+     width: 28px;
+     height: 28px;
+     border: 0;
+     background: var(--qty-btn-bg);  /* warna sesuai mode */
+     color: var(--qty-btn-text);     /* teks juga berubah */
+     cursor: pointer;
+     font-weight: 800;
+     border-radius: 6px; /* opsional biar lebih modern */
+    }
     .qty-wrap input { width: 36px; text-align: center; border: 0; background: transparent; color: var(--text); font-weight: 700; }
     .price-right { text-align: right; font-weight: 700; }
     .remove-btn { border: 0; background: transparent; color: var(--danger); font-size: 18px; cursor: pointer; }
@@ -1010,6 +1023,7 @@ Notes: ${note}`;
   </script>
 </body>
 </html>
+
 
 
 
