@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Menuva Book — Dine-In (Luxury)</title>
+  <title>Dine-In Book</title>
   <style>
     /* =====================
        THEME (Light / Dark)
@@ -44,8 +44,7 @@
     img { max-width: 100%; display: block; }
     .container { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
 
-    /* =====================
-     /* HEADER */
+   
 header {
   background: linear-gradient(90deg, var(--brand-2), var(--brand-3));
   color: #fff;
@@ -58,20 +57,24 @@ header {
 
 .header-inner {
   display: grid;
-  grid-template-columns: 80px 1fr 180px;
-  gap: 6px;
+  grid-template-columns: auto 1fr auto; /* kiri - tengah fleksibel - kanan */
   align-items: center;
-  padding: 2px 0; /* kasih tambahan jarak vertikal */
+  gap: 12px;
 }
 
-/* kiri: logo + info resto */
 .header-left {
   display: flex;
   align-items: center;
   gap: 10px;
-  flex: 1;          /* biar fleksibel */
-  min-width: 0;     /* penting supaya teks wrap */
 }
+
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
 
 #restoLogo {
   height: 56px;
@@ -103,13 +106,6 @@ header {
   opacity: .9;
   white-space: normal;
   word-wrap: break-word;
-}
-
-/* kanan: toggle + dropdown */
-.header-controls {
-  display: flex;
-  align-items: center;
-  gap: 12px;
 }
 
 .header-controls select {
@@ -417,9 +413,11 @@ header {
 </style>
 </head>
 <body>
-  <!-- ===================== HEADER ===================== -->
-  <header>
-    <div class="container header-inner">
+<!-- ===================== HEADER ===================== -->
+<header>
+  <div class="container header-inner">
+    <!-- kiri: logo + info resto -->
+    <div class="header-left">
       <img id="restoLogo" alt="Logo" />
       <div>
         <h1 id="restoName">Resto Name</h1>
@@ -427,27 +425,26 @@ header {
           <div id="alamatRestoranDisplay"></div>
           <div id="teleponRestoranDisplay"></div>
         </div>
-      </div>  
-        <div class="settings">
-        <button class="dark-toggle" onclick="toggleDark()" title="Toggle theme">🌙</button>
-        </div>
-      </div>
-      <div class="header-controls">
-        <!-- Locale/Currency dropdown (hybrid: auto-detect + manual override) -->
-        <select id="localeSelect" class="locale-select" title="Change locale / currency">
-          <!-- default options; you can add more -->
-          <option value="auto">Auto (browser)</option>
-          <option value="en-US|USD">US — USD</option>
-          <option value="id-ID|IDR">INA — IDR</option>
-          <option value="en-GB|GBP">UK — GBP</option>
-          <option value="de-DE|EUR">Germany — EUR</option>
-          <option value="ja-JP|JPY">Japan — JPY</option>
-          <option value="zh-CN|CNY">China — CNY</option>
-          <option value="fr-FR|EUR">France — EUR</option>
-        </select>
       </div>
     </div>
-  </header>
+
+    <!-- kanan: toggle + dropdown -->
+    <div class="header-controls">
+      <button class="dark-toggle" onclick="toggleDark()" title="Toggle theme">🌙</button>
+      <select id="localeSelect" class="locale-select" title="Change locale / currency">
+        <option value="auto">Auto (browser)</option>
+        <option value="en-US|USD">US — USD</option>
+        <option value="id-ID|IDR">INA — IDR</option>
+        <option value="en-GB|GBP">UK — GBP</option>
+        <option value="de-DE|EUR">Germany — EUR</option>
+        <option value="ja-JP|JPY">Japan — JPY</option>
+        <option value="zh-CN|CNY">China — CNY</option>
+        <option value="fr-FR|EUR">France — EUR</option>
+      </select>
+    </div>
+  </div>
+</header>
+
 
   <!-- ===================== TABS ===================== -->
   <div class="tabs-wrap">
@@ -1012,6 +1009,7 @@ Notes: ${note}`;
   </script>
 </body>
 </html>
+
 
 
 
