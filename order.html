@@ -266,21 +266,38 @@ body.dark .qty-controls span {
   .qty-controls button { width: 26px; height: 26px; font-size: 15px; }
   .qty-controls span { min-width: 30px; font-size: 14px; }
 }
-
 /* PROMO GRID */
-#promoList { display: grid; grid-template-columns: 1fr; gap: 16px; }
-@media (min-width: 600px) { #promoList { grid-template-columns: repeat(2, 1fr); } }
-@media (min-width: 900px) { #promoList { grid-template-columns: repeat(3, 1fr); } }
+#promoList { 
+  display: grid; 
+  grid-template-columns: 1fr; 
+  gap: 16px; 
+}
+
+/* portrait (default logic) */
+@media (min-width: 600px) and (orientation: portrait) {
+  #promoList { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 900px) and (orientation: portrait) {
+  #promoList { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* landscape khusus HP/tablet */
+@media (orientation: landscape) {
+  #promoList { grid-template-columns: repeat(2, 1fr); } /* default 2 kolom */
+}
+@media (min-width: 900px) and (orientation: landscape) {
+  #promoList { grid-template-columns: repeat(3, 1fr); } /* 3 kolom kalau lebar */
+}
 
 .promo-item {
   width: 100%;
   border-radius: 12px;
   background: var(--surface);
   color: var(--text);
-  border:1px solid var(--border);
-  box-shadow:0 6px 18px rgba(0,0,0,0.06);
-  text-align:center;
-  padding:12px;
+  border: 1px solid var(--border);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+  text-align: center;
+  padding: 12px;
 }
 .promo-item img {
   width: 100%;
@@ -762,6 +779,7 @@ body.dark .qty-controls span {
   </script>
 </body>
 </html>
+
 
 
 
