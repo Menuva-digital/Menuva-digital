@@ -292,6 +292,18 @@ header .dark-toggle {
 .cart-item .remove-btn:hover {
   background: linear-gradient(145deg, #ff6655, #e74c3c);
 }
+#loadingIndicator {
+  display: none;
+}
+#loadingIndicator.active {
+  display: block;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
 
 </style>
 </head>
@@ -309,6 +321,9 @@ header .dark-toggle {
     <button class="dark-toggle" onclick="toggleDark()">🌙</button>
   </div>
 </header>
+<div id="loadingIndicator" style="text-align:center; padding:20px; font-size:0.9rem; color:#666;">
+  ⏳ Loading data...
+</div>
 
 <div class="main-container" id="app">
   <!-- Tabs -->
@@ -498,18 +513,26 @@ header .dark-toggle {
   }
 
   // Init
-  document.addEventListener("DOMContentLoaded", async ()=>{
-    applyTheme();
-    await initDB();
-    restoData = await loadDataFromDB();
-    tampilkanData();
-    setupTabs();
-    setupWA();
-  });
+document.addEventListener("DOMContentLoaded", async ()=>{
+  applyTheme();
+  document.getElementById("loadingIndicator").classList.add("active");
+
+  await initDB();
+  restoData = await loadDataFromDB();
+
+  tampilkanData();
+  setupTabs();
+  setupWA();
+
+  // matikan loader setelah data tampil
+  document.getElementById("loadingIndicator").classList.remove("active");
+});
+
 </script>
 
 </body>
 </html>
+
 
 
 
