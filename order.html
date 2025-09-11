@@ -38,23 +38,60 @@
     margin:0;padding:0;padding-bottom:120px;
   }
 
-  /* HEADER */
-  header{
-    background:var(--brand-3);
-    color:#fff;padding:12px 20px;box-shadow:var(--shadow);
+/* HEADER - tweak */
+header {
+  background: var(--brand-3);
+  color: #fff;
+  padding: 16px 20px; /* naikkan sedikit tinggi header */
+  box-shadow: var(--shadow);
+}
+
+#restoLogo {
+  width: 70px;  /* sedikit lebih besar */
+  height: 70px;
+  object-fit: contain;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.resto-info h1 {
+  font-size: 1.3rem; /* naikkan sedikit */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* dropdown lebih fleksibel */
+.locale-select {
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 0;
+  background: rgba(255,255,255,.12);
+  color: #fff;
+  font-weight: 700;
+  min-width: 120px; /* lebih pendek, jangan sampai kebanyakan */
+  max-width: 160px; /* batasi maksimal */
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+/* responsive portrait tweak */
+@media (max-width:480px) and (orientation: portrait) {
+  header {
+    padding: 14px 16px;
   }
-  .header-inner{display:flex;justify-content:space-between;align-items:center;gap:12px}
-  .header-left{display:flex;align-items:center;gap:12px;min-width:0}
-  #restoLogo{width:60px;height:60px;object-fit:contain;border-radius:8px;flex-shrink:0}
-  .resto-info{display:flex;flex-direction:column;min-width:0}
-  .resto-info h1{margin:0;font-size:1.2rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .contact-info{font-size:0.85rem;color:rgba(255,255,255,0.9)}
-
-  .header-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
-  .dark-toggle{width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.25);background:transparent;color:#fff;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center}
-  .locale-select{padding:6px 10px;border-radius:8px;border:0;background:rgba(255,255,255,.12);color:#fff;font-weight:700;min-width:140px}
-
-  .tagline{text-align:center;padding:8px;font-style:italic;color:var(--chip);background:transparent;margin-bottom:8px}
+  #restoLogo {
+    width: 60px;
+    height: 60px;
+  }
+  .resto-info h1 {
+    font-size: 1.1rem;
+  }
+  .locale-select {
+    min-width: 100px;
+    max-width: 140px;
+  }
+}
 
   /* MAIN CONTAINER */
   .main-container{width:97%;max-width:1200px;margin:8px auto;padding:20px;background:var(--surface);border-radius:12px;box-shadow:0 3px 10px rgba(0,0,0,0.05)}
@@ -684,6 +721,7 @@ body.dark .qty-controls span {
   </script>
 </body>
 </html>
+
 
 
 
