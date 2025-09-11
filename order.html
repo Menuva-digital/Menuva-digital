@@ -648,27 +648,56 @@ body.dark .qty-controls span {
     tabContainer.appendChild(btn);
   });
 }
+    function tampilkanMenu(kategori = null, btn = null) {
+  // Ambil kategori
+  const kategoriDipilih = kategori || document.getElementById('kategoriFilter')?.value || 'Semua';
 
-function tampilkanMenu(kategori = 'Semua', btn = null) {
   // Update tab aktif
   if (btn) {
     document.querySelectorAll('#kategoriTabs button').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
   }
 
-  // Render ulang menu
-  const list = document.getElementById('menuList');
-  list.innerHTML = '';
-  (data.menu || []).forEach(item => {
-    if (kategori === 'Semua' || item.kategori === kategori) {
-      const el = document.createElement('div');
-      el.className = 'menu-item';
-      el.textContent = item.nama; // ganti sesuai struktur aslinya
-      list.appendChild(el);
-    }
-  });
-}
+  // Target list
+  const menuList = document.getElementById('menu-list'); // fix: sesuai HTML
+  menuList.innerHTML = '';
 
+  if (!Array.isArray(data.menu) || data.menu.length === 0) {
+    menuList.innerHTML = `<div class="fallback">No menu available</div>`;
+    return;
+  }
+
+  data.menu.forEach((item, index) => {
+    if (kategoriDipilih !== 'Semua' && item.kategori !== kategoriDipilih) return;
+    if (pesanan[index] === undefined) pesanan[index] = 0;
+    const hargaNum = Number(item.harga) || 0;
+    const hargaFormatted = formatHarga(hargaNum);
+
+    const itemEl = document.createElement('div');
+    itemEl.className = 'menu-item';
+    itemEl.innerHTML = `
+      <div class="menu-name">${escapeHtml(item.nama || '')}</div>
+      <div class="menu-price" data-price="${hargaNum}" id="price-${index}">${hargaFormatted}</div>
+      <div class="qty-controls">
+        <button data-idx="${index}" data-delta="-1">-</button>
+        <span id="qty-${index}">${pesanan[index]}</span>
+        <button data-idx="${index}" data-delta="1">+</button>
+      </div>
+    `;
+    menuList.appendChild(itemEl);
+  });
+
+  // attach listeners
+  menuList.querySelectorAll('button[data-idx]').forEach(btn => {
+    btn.addEventListener('click', (ev) => {
+      const idx = btn.dataset.idx;
+      const delta = Number(btn.dataset.delta || 0);
+      ubahJumlah(idx, delta);
+    });
+  });
+
+  updateRingkasan();
+}
 
     /* =================== PROMO =================== */
     function tampilkanPromo() {
@@ -719,49 +748,6 @@ function tampilkanMenu(kategori = 'Semua', btn = null) {
       pesanan[index] = Math.max(0, (pesanan[index] || 0) + delta);
       const span = document.getElementById(`qty-${index}`);
       if (span) span.innerText = pesanan[index];
-      updateRingkasan();
-    }
-
-    /* =================== MENU =================== */
-    function tampilkanMenu() {
-      const kategoriDipilih = document.getElementById('kategoriFilter').value || 'Semua';
-      const menuList = document.getElementById('menu-list');
-      menuList.innerHTML = '';
-
-      if (!Array.isArray(data.menu) || data.menu.length === 0) {
-        menuList.innerHTML = `<div class="fallback">No menu available</div>`;
-        return;
-      }
-
-      data.menu.forEach((item, index) => {
-        if (kategoriDipilih !== 'Semua' && item.kategori !== kategoriDipilih) return;
-        if (pesanan[index] === undefined) pesanan[index] = 0;
-        const hargaNum = Number(item.harga) || 0;
-        const hargaFormatted = formatHarga(hargaNum);
-
-        const itemEl = document.createElement('div');
-        itemEl.className = 'menu-item';
-        itemEl.innerHTML = `
-          <div class="menu-name">${escapeHtml(item.nama || '')}</div>
-          <div class="menu-price" data-price="${hargaNum}" id="price-${index}">${hargaFormatted}</div>
-          <div class="qty-controls">
-            <button data-idx="${index}" data-delta="-1">-</button>
-            <span id="qty-${index}">${pesanan[index]}</span>
-            <button data-idx="${index}" data-delta="1">+</button>
-          </div>
-        `;
-        menuList.appendChild(itemEl);
-      });
-
-      // attach listeners
-      menuList.querySelectorAll('button[data-idx]').forEach(btn => {
-        btn.addEventListener('click', (ev) => {
-          const idx = btn.dataset.idx;
-          const delta = Number(btn.dataset.delta || 0);
-          ubahJumlah(idx, delta);
-        });
-      });
-
       updateRingkasan();
     }
 
@@ -872,6 +858,7 @@ function tampilkanMenu(kategori = 'Semua', btn = null) {
   </script>
 </body>
 </html>
+
 
 
 
