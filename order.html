@@ -273,7 +273,10 @@ body.dark .qty-controls span {
   gap: 16px; 
 }
 
-/* portrait (default logic) */
+/* Portrait rules */
+@media (orientation: portrait) {
+  #promoList { grid-template-columns: 1fr; } /* default 1 kolom */
+}
 @media (min-width: 600px) and (orientation: portrait) {
   #promoList { grid-template-columns: repeat(2, 1fr); }
 }
@@ -281,27 +284,16 @@ body.dark .qty-controls span {
   #promoList { grid-template-columns: repeat(3, 1fr); }
 }
 
-/* landscape khusus HP/tablet */
+/* Landscape rules */
 @media (orientation: landscape) {
-  #promoList { grid-template-columns: repeat(2, 1fr); } /* default 2 kolom */
+  #promoList { grid-template-columns: repeat(2, 1fr); } /* fix 2 kolom di HP landscape */
 }
-@media (min-width: 900px) and (orientation: landscape) {
-  #promoList { grid-template-columns: repeat(3, 1fr); } /* 3 kolom kalau lebar */
-}
-
-.promo-item {
-  width: 100%;
-  border-radius: 12px;
-  background: var(--surface);
-  color: var(--text);
-  border: 1px solid var(--border);
-  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
-  text-align: center;
-  padding: 12px;
+@media (min-width: 1024px) and (orientation: landscape) {
+  #promoList { grid-template-columns: repeat(3, 1fr); } /* tablet/desktop landscape */
 }
 .promo-item img {
   width: 100%;
-  max-height: 200px;
+  aspect-ratio: 4/3; /* lebih stabil daripada max-height */
   object-fit: cover;
   border-radius: 10px;
 }
@@ -779,6 +771,7 @@ body.dark .qty-controls span {
   </script>
 </body>
 </html>
+
 
 
 
