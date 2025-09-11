@@ -291,12 +291,32 @@ body.dark .qty-controls span {
 @media (min-width: 1024px) and (orientation: landscape) {
   #promoList { grid-template-columns: repeat(3, 1fr); } /* tablet/desktop landscape */
 }
+/* PROMO ITEM */
+.promo-item {
+  display: flex;
+  flex-direction: column;       /* gambar di atas, teks di bawah */
+  align-items: center;          /* isi rata tengah */
+  justify-content: center;      /* konten ditengah secara vertikal */
+  text-align: center;
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+  padding: 12px;
+  height: 100%;                 /* biar semua card tingginya sama */
+  box-sizing: border-box;
+}
+
+/* PROMO IMAGE */
 .promo-item img {
   width: 100%;
-  aspect-ratio: 4/3; /* lebih stabil daripada max-height */
+  aspect-ratio: 4/3;            /* jaga proporsi */
   object-fit: cover;
   border-radius: 10px;
+  margin-bottom: 8px;           /* kasih jarak ke teks */
 }
+
 
 /* ORDER SUMMARY */
 .order-summary{margin-top:18px;border:1px solid var(--border);padding:16px;border-radius:10px;background:var(--surface)}
@@ -771,6 +791,7 @@ body.dark .qty-controls span {
   </script>
 </body>
 </html>
+
 
 
 
