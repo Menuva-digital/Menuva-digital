@@ -413,13 +413,14 @@ header {
 </style>
 </head>
 <body>
-<!-- ===================== HEADER ===================== -->
+  <!-- ===================== HEADER ===================== -->
 <header>
   <div class="container header-inner">
-    <!-- kiri: logo + info resto -->
+    
+    <!-- Kiri: Logo + Info -->
     <div class="header-left">
       <img id="restoLogo" alt="Logo" />
-      <div>
+      <div class="resto-info">
         <h1 id="restoName">Resto Name</h1>
         <div class="contact-info">
           <div id="alamatRestoranDisplay"></div>
@@ -428,7 +429,7 @@ header {
       </div>
     </div>
 
-    <!-- kanan: toggle + dropdown -->
+    <!-- Kanan: Dark toggle + Dropdown -->
     <div class="header-controls">
       <button class="dark-toggle" onclick="toggleDark()" title="Toggle theme">🌙</button>
       <select id="localeSelect" class="locale-select" title="Change locale / currency">
@@ -442,9 +443,9 @@ header {
         <option value="fr-FR|EUR">France — EUR</option>
       </select>
     </div>
+
   </div>
 </header>
-
 
   <!-- ===================== TABS ===================== -->
   <div class="tabs-wrap">
@@ -1009,6 +1010,7 @@ Notes: ${note}`;
   </script>
 </body>
 </html>
+
 
 
 
