@@ -44,19 +44,27 @@ header {
   color: #fff;
   padding: 16px 20px; /* naikkan sedikit tinggi header */
   box-shadow: var(--shadow);
+  
+  display: flex;
+  flex-direction: column; /* biar isi nyusun vertikal */
+  align-items: center;    /* rata tengah horizontal */
+  justify-content: center;/* rata tengah vertical */
+  text-align: center;     /* teks di tengah */
 }
 
 #restoLogo {
-  width: 70px;  /* sedikit lebih besar */
+  width: 70px;  
   height: 70px;
   object-fit: contain;
   border-radius: 8px;
   flex-shrink: 0;
+  margin-bottom: 8px; /* kasih jarak dikit sama teks */
 }
 
 .resto-info h1 {
-  font-size: 1.3rem; /* naikkan sedikit */
+  font-size: 1.3rem;
   white-space: nowrap;
+  margin: 4px 0; /* biar nggak nempel */
 }
 
 /* dropdown lebih fleksibel */
@@ -67,10 +75,11 @@ header {
   background: rgba(255,255,255,.12);
   color: #fff;
   font-weight: 700;
-  min-width: 120px; /* lebih pendek, jangan sampai kebanyakan */
-  max-width: 160px; /* batasi maksimal */
+  min-width: 120px; 
+  max-width: 160px;
   text-overflow: ellipsis;
   overflow: hidden;
+  margin-top: 6px; /* jarak dari title */
 }
 
 /* responsive portrait tweak */
@@ -78,20 +87,24 @@ header {
   header {
     padding: 14px 16px;
   }
-/* HEADER RIGHT FIX - ABSOLUTE POSITION */
+}
+
+/* HEADER RIGHT FIX */
 .header-right {
-  position: relative;
-  width: auto; 
+  position: absolute; /* biar bisa ditempel ke kanan header */
+  top: 0;
+  right: 0;
+  height: 100%;
   display: flex;
   flex-direction: column;
+  justify-content: space-between; /* icon di atas, dropdown di bawah */
   align-items: flex-end;
+  padding: 8px 30px; /* kasih jarak dari sisi kanan & atas/bawah */
+  box-sizing: border-box;
 }
 
 /* icon dark mode - atas */
 .dark-toggle {
-  position: top;
-  top: 8px;   /* jarak dari atas header */
-  right: 20px; /* jarak dari kanan header */
   width: 44px;
   height: 44px;
   border: 0;
@@ -107,9 +120,6 @@ header {
 
 /* dropdown locale - bawah */
 .locale-select {
-  position: bottom;
-  bottom: 8px; /* jarak dari bawah header */
-  right: 20px;  /* sama seperti icon */
   padding: 6px 10px;
   border-radius: 8px;
   border: 0;
@@ -118,6 +128,7 @@ header {
   font-weight: 700;
   min-width: 140px;
   text-align: right;
+  margin-top: auto; /* dorong dropdown ke bawah */
 }
 
 .tagline {
@@ -756,6 +767,7 @@ body.dark .qty-controls span {
   </script>
 </body>
 </html>
+
 
 
 
