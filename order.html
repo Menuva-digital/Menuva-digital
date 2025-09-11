@@ -92,33 +92,38 @@ header {
     max-width: 140px;
   }
 }
-/* HEADER RIGHT FIX */
+/* HEADER RIGHT FIX - ABSOLUTE POSITION */
 .header-right {
+  position: relative;
+  width: auto; 
   display: flex;
-  flex-direction: column; /* vertikal */
-  justify-content: space-between; /* icon di atas, dropdown di bawah */
-  align-items: flex-end;  /* geser ke kanan */
-  height: 100%; /* pastikan mengambil tinggi penuh header */
-  gap: 8px; /* jarak kecil antar item */
+  flex-direction: column;
+  align-items: flex-end;
 }
 
-/* dark mode icon */
+/* icon dark mode - atas */
 .dark-toggle {
+  position: absolute;
+  top: 8px;   /* jarak dari atas header */
+  right: 20px; /* jarak dari kanan header */
   width: 44px;
   height: 44px;
   border: 0;
   background: transparent;
   color: #fff;
   font-size: 22px;
-  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
   box-shadow: none;
 }
 
-/* dropdown locale */
+/* dropdown locale - bawah */
 .locale-select {
+  position: absolute;
+  bottom: 8px; /* jarak dari bawah header */
+  right: 20px;  /* sama seperti icon */
   padding: 6px 10px;
   border-radius: 8px;
   border: 0;
@@ -766,6 +771,7 @@ body.dark .qty-controls span {
   </script>
 </body>
 </html>
+
 
 
 
