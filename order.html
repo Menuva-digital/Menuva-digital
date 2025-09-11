@@ -92,14 +92,17 @@ header {
     max-width: 140px;
   }
 }
- /* HEADER RIGHT */
+/* HEADER RIGHT FIX */
 .header-right {
   display: flex;
   flex-direction: column; /* vertikal */
+  justify-content: space-between; /* icon di atas, dropdown di bawah */
   align-items: flex-end;  /* geser ke kanan */
+  height: 100%; /* pastikan mengambil tinggi penuh header */
+  gap: 8px; /* jarak kecil antar item */
 }
 
-/* dark mode icon lebih ke atas */
+/* dark mode icon */
 .dark-toggle {
   width: 44px;
   height: 44px;
@@ -111,10 +114,10 @@ header {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: auto; /* dorong icon ke atas */
+  box-shadow: none;
 }
 
-/* toggle dropdown lebih ke bawah */
+/* dropdown locale */
 .locale-select {
   padding: 6px 10px;
   border-radius: 8px;
@@ -124,24 +127,17 @@ header {
   font-weight: 700;
   min-width: 140px;
   text-align: right;
-  margin-top: auto; /* dorong ke bawah */
-}
-
-/* responsive tweak */
-@media (max-width: 420px) {
-  .dark-toggle { width: 36px; height: 36px; font-size: 18px; }
-  .locale-select { min-width: 110px; font-size: 14px; }
 }
 
 .tagline {
   text-align: center;   /* center horizontal teks */
   padding: 8px;
   font-style: italic;
-  color: var(--chip);
+  color: rgba(125, 5, 236, 0.966);
   background: transparent;
   margin-bottom: 8px;
 }
-}
+
   /* MAIN CONTAINER */
   .main-container{width:97%;max-width:1200px;margin:8px auto;padding:20px;background:var(--surface);border-radius:12px;box-shadow:0 3px 10px rgba(0,0,0,0.05)}
   .section-title{text-align:center;font-size:22px;margin:16px 0;font-weight:700;color:var(--text)}
@@ -770,6 +766,7 @@ body.dark .qty-controls span {
   </script>
 </body>
 </html>
+
 
 
 
