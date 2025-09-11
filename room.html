@@ -41,15 +41,20 @@ body {
   padding-bottom: 80px;
 }
 
-/* ===== HEADER ===== */
-header .header-inner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between; /* kiri vs kanan */
-  padding: 12px 20px;
+header {
+  position: relative;
+  text-align: center;
+  padding: 16px 20px;
 }
 
-header .left-info {
+header .header-inner {
+  display: flex;
+  justify-content: center; /* konten utama di tengah */
+  align-items: center;
+  position: relative;
+}
+
+header .center-info {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -64,21 +69,27 @@ header img#restoLogo {
 
 header h1 {
   font-size: 1.2rem;
-  color: #fff; /* biar putih di default maupun dark */
+  margin: 0;
+  color: var(--text, #fff);
 }
 
 header .contact-info {
   font-size: 0.8rem;
-  color: #fff; /* selalu putih */
+  color: var(--text, #fff);
 }
 
 header .dark-toggle {
-  font-size: 1.2rem;
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.3rem;
   cursor: pointer;
   background: none;
   border: none;
-  color: #fff; /* selalu putih */
+  color: var(--text, #fff);
 }
+
 .fixed-bar {
   position: fixed;       /* kalau mau selalu nempel bawah */
   bottom: 0;
@@ -230,17 +241,20 @@ header .dark-toggle {
 
 <header>
   <div class="header-inner">
-    <img id="restoLogo" alt="Logo" />
-    <div>
-      <h1 id="restoName">Resto Name</h1>
-      <div class="contact-info">
-        <div id="alamatRestoranDisplay"></div>
-        <div id="teleponRestoranDisplay"></div>
+    <div class="center-info">
+      <img id="restoLogo" alt="Logo" />
+      <div>
+        <h1 id="restoName">Resto Name</h1>
+        <div class="contact-info">
+          <div id="alamatRestoranDisplay"></div>
+          <div id="teleponRestoranDisplay"></div>
+        </div>
       </div>
     </div>
     <button class="dark-toggle" onclick="toggleDark()">🌙</button>
   </div>
 </header>
+
 
 <div class="main-container" id="app">
   <!-- Tabs -->
@@ -434,6 +448,7 @@ header .dark-toggle {
 
 </body>
 </html>
+
 
 
 
