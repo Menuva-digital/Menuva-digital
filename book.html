@@ -48,7 +48,7 @@
 header {
   background: linear-gradient(90deg, var(--brand-2), var(--brand-3));
   color: #fff;
-  padding: 18px 12px; /* ⬅️ ubah dari 12px jadi 24px biar lebih tinggi */
+  padding: 24px 16px; /* ⬅️ ubah dari 12px jadi 24px biar lebih tinggi */
   position: sticky;
   top: 0;
   z-index: 50;
@@ -95,9 +95,10 @@ header {
 
 .header-controls {
   display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-shrink: 0; /* jangan ketekan */
+  flex-direction: column;   /* ⬅️ ini bikin atas–bawah */
+  align-items: flex-end;    /* sejajarkan ke kanan */
+  gap: 8px;                 /* jarak antar elemen */
+  flex-shrink: 0;           /* jangan ketekan */
 }
 
 
@@ -983,6 +984,7 @@ Notes: ${note}`;
   </script>
 </body>
 </html>
+
 
 
 
