@@ -66,22 +66,23 @@ header {
   white-space: nowrap;
   margin: 4px 0; /* biar nggak nempel */
 }
-
-/* dropdown lebih fleksibel */
 .locale-select {
+  position: absolute;
+  top: 50%; 
+  right: 30px; /* jarak dari sisi kanan */
+  transform: translateY(-50%); /* biar vertikalnya pas di tengah header */
+  
   padding: 6px 10px;
   border-radius: 8px;
   border: 0;
   background: rgba(255,255,255,.12);
   color: #fff;
   font-weight: 700;
-  min-width: 120px; 
+  min-width: 140px;
   max-width: 160px;
   text-overflow: ellipsis;
   overflow: hidden;
-  margin-top: 6px; /* jarak dari title */
 }
-
 /* responsive portrait tweak */
 @media (max-width:480px) and (orientation: portrait) {
   header {
@@ -117,20 +118,6 @@ header {
   cursor: pointer;
   box-shadow: none;
 }
-
-/* dropdown locale - bawah */
-.locale-select {
-  padding: 6px 10px;
-  border-radius: 8px;
-  border: 0;
-  background: rgba(255,255,255,.12);
-  color: #fff;
-  font-weight: 700;
-  min-width: 140px;
-  text-align: right;
-  margin-top: auto; /* dorong dropdown ke bawah */
-}
-
 .tagline {
   text-align: center;   /* center horizontal teks */
   padding: 8px;
@@ -767,6 +754,7 @@ body.dark .qty-controls span {
   </script>
 </body>
 </html>
+
 
 
 
