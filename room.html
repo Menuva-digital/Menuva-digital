@@ -231,7 +231,7 @@ header .dark-toggle {
     header h1 { font-size: 1rem; }
     .room-card img { height: 80px; }
   }
-  /* Cart Item */
+/* Cart Item */
 .cart-item {
   display: flex;
   align-items: center;
@@ -244,16 +244,24 @@ header .dark-toggle {
   box-shadow: 0 2px 6px rgba(0,0,0,0.08);
   font-size: 14px;
   color: var(--text, #333);
+  flex-wrap: wrap; /* biar responsif kalau sempit */
 }
 
-/* Tombol umum */
-.cart-item button {
-  background: linear-gradient(145deg, #4e73df, #224abe); /* biru elegan */
+/* Kontainer tombol qty biar sejajar */
+.qty-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+}
+
+/* Tombol umum ( + / - ) */
+.qty-controls button {
+  background: linear-gradient(145deg, #4e73df, #224abe);
   color: #fff;
   border: none;
-  border-radius: 20px;     /* stick PSP style */
+  border-radius: 20px;
   padding: 6px 12px;
-  margin-left: 6px;
   cursor: pointer;
   font-size: 14px;
   font-weight: 600;
@@ -261,19 +269,27 @@ header .dark-toggle {
   box-shadow: 0 3px 6px rgba(0,0,0,0.15);
 }
 
-/* Hover efek */
-.cart-item button:hover {
+.qty-controls button:hover {
   transform: translateY(-2px);
   box-shadow: 0 5px 10px rgba(0,0,0,0.25);
   background: linear-gradient(145deg, #5a82f0, #2d4fd1);
 }
 
-/* Tombol hapus ❌ */
-.cart-item button:last-child {
+/* Tombol hapus ❌ lebih kecil */
+.cart-item .remove-btn {
   background: linear-gradient(145deg, #e74c3c, #c0392b);
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  font-size: 14px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 8px;
 }
 
-.cart-item button:last-child:hover {
+.cart-item .remove-btn:hover {
   background: linear-gradient(145deg, #ff6655, #e74c3c);
 }
 
@@ -397,9 +413,17 @@ header .dark-toggle {
       total += subtotal;
       const div = document.createElement("div");
       div.className = "cart-item";
-      div.innerHTML = `<span>${item.nama} - ${item.harga.toLocaleString()} x ${item.qty} = <b>${subtotal.toLocaleString()}</b></span>
-        ${item.kategori==="package"?`<button onclick="ubahQty(${idx},-1)">-</button><button onclick="ubahQty(${idx},1)">+</button>`:""}
-        <button onclick="hapusDariCart(${idx})">❌</button>`;
+     div.innerHTML = `
+  <span>${item.nama} - ${item.harga.toLocaleString()} x ${item.qty} = <b>${subtotal.toLocaleString()}</b></span>
+  ${item.kategori==="package" ? `
+    <div class="qty-controls">
+      <button onclick="ubahQty(${idx},-1)">-</button>
+      <span>${item.qty}</span>
+      <button onclick="ubahQty(${idx},1)">+</button>
+    </div>` : ""}
+  <button class="remove-btn" onclick="hapusDariCart(${idx})">X</button>
+`;
+
       preview.appendChild(div);
     });
     totalEl.innerText = "Total:  "+total.toLocaleString();
@@ -486,6 +510,7 @@ header .dark-toggle {
 
 </body>
 </html>
+
 
 
 
