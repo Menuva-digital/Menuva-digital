@@ -725,9 +725,9 @@ body.dark .qty-controls span {
           <div>${escapeHtml(promo.deskripsi || '')}</div>
           <div>${hargaFormatted} ${promo.tanggalAkhir ? `| Until ${escapeHtml(promo.tanggalAkhir)}` : ''}</div>
           <div class="qty-controls">
-            <button data-key="${promoKey}" data-delta="-1">➖</button>
+            <button data-key="${promoKey}" data-delta="-1">-</button>
             <span id="qty-${promoKey}">${pesanan[promoKey]}</span>
-            <button data-key="${promoKey}" data-delta="1">➕</button>
+            <button data-key="${promoKey}" data-delta="1">+</button>
           </div>
         `;
         wrapper.appendChild(div);
@@ -858,6 +858,7 @@ body.dark .qty-controls span {
   </script>
 </body>
 </html>
+
 
 
 
