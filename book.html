@@ -236,8 +236,7 @@
   text-align: center;
   margin: 2px 0 0 0;   /* ⬅️ jarak kecil aja */
 }
-
-  /* =====================
+/* =====================
    PROMO CARD
    ===================== */
 .promo-card {
@@ -253,14 +252,22 @@
   align-items: center;
   text-align: center;
   gap: 8px;
-  margin: auto;
-  grid-column: span 2;   /* ⬅️ promo card jadi 2 kolom lebih lebar */
 }
+
+/* HP Portrait → promo full width */
 @media (max-width: 600px) {
   .promo-card {
-    grid-column: span 3; /* ⬅️ full width di HP portrait */
+    grid-column: span 3; /* full grid di mobile */
   }
 }
+
+/* Tablet → bisa dibuat 2 kolom */
+@media (min-width: 601px) and (max-width: 1024px) {
+  .promo-card {
+    grid-column: span 2;
+  }
+}
+
 .promo-card img {
   width: 100%;
   max-height: 180px;      /* lebih besar dari menu biasa */
@@ -1023,6 +1030,7 @@ Notes: ${note}`;
   </script>
 </body>
 </html>
+
 
 
 
