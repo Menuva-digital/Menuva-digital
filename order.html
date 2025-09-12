@@ -320,30 +320,49 @@ body.dark .qty-controls span {
   .qty-controls span { min-width: 30px; font-size: 14px; }
 }
 /* PROMO GRID */
-#promoList { 
-  display: grid; 
-  grid-template-columns: 1fr; 
-  gap: 16px; 
+/* HP */
+@media (max-width: 599px) {
+  #promoContainer {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
-/* Portrait rules */
-@media (orientation: portrait) {
-  #promoList { grid-template-columns: 1fr; } /* default 1 kolom */
-}
-@media (min-width: 600px) and (orientation: portrait) {
-  #promoList { grid-template-columns: repeat(2, 1fr); }
-}
-@media (min-width: 900px) and (orientation: portrait) {
-  #promoList { grid-template-columns: repeat(3, 1fr); }
+/* Tablet */
+@media (min-width: 600px) and (max-width: 1023px) {
+  #promoContainer {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
-/* Landscape rules */
-@media (orientation: landscape) {
-  #promoList { grid-template-columns: repeat(2, 1fr); } /* fix 2 kolom di HP landscape */
+/* Desktop normal */
+@media (min-width: 1024px) and (max-width: 1439px) {
+  #promoContainer {
+    grid-template-columns: repeat(5, 1fr);
+  }
 }
-@media (min-width: 1024px) and (orientation: landscape) {
-  #promoList { grid-template-columns: repeat(3, 1fr); } /* tablet/desktop landscape */
+
+/* Desktop lebar */
+@media (min-width: 1440px) {
+  #promoContainer {
+    grid-template-columns: repeat(6, 1fr);
+  }
 }
+
+
+.promo-item {
+  max-width: 220px;   /* batasi lebar maksimal kartu */
+  margin: 0 auto;     /* biar center di dalam grid */
+}
+/* ===== PROMO GRID ===== */
+#promoContainer {
+  display: grid;
+  gap: 8px; /* super rapat */
+  justify-content: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 4px;
+}
+
 /* PROMO ITEM */
 .promo-item {
   display: flex;
@@ -871,6 +890,7 @@ body.dark .qty-controls span {
   </script>
 </body>
 </html>
+
 
 
 
