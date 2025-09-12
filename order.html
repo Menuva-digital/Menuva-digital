@@ -369,7 +369,20 @@ body.dark .qty-controls span {
   border-radius: 10px;
   margin-bottom: 8px;           /* kasih jarak ke teks */
 }
-
+.promo-badge {
+  position: relative;
+  top: -5px;
+  left: -60px;
+  background: #ffcc00;
+  color: #222;
+  font-weight: 800;
+  font-size: 13px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  box-shadow: 0 2px 6px rgba(0,0,0,.25);
+  pointer-events: none;
+}
 
 /* ORDER SUMMARY */
 .order-summary{margin-top:18px;border:1px solid var(--border);padding:16px;border-radius:10px;background:var(--surface)}
@@ -700,49 +713,49 @@ body.dark .qty-controls span {
 }
 
     /* =================== PROMO =================== */
-    function tampilkanPromo() {
-      const promoContainer = document.getElementById('promoContainer');
-      if (!Array.isArray(data.menuPromo) || data.menuPromo.length === 0) {
-        promoContainer.innerHTML = '';
-        return;
-      }
-      promoContainer.innerHTML = `<h2 class="section-title">🔥 Special Promo</h2>`;
-      const wrapper = document.createElement('div');
-      wrapper.className = 'promo-container';
-      data.menuPromo.forEach((promo, index) => {
-        const promoKey = `promo-${index}`;
-        if (pesanan[promoKey] === undefined) pesanan[promoKey] = 0;
-        const hargaNum = Number(promo.harga) || 0;
-        const hargaFormatted = formatHarga(hargaNum);
+   function tampilkanPromo() {
+  const promoContainer = document.getElementById('promoContainer');
+  if (!Array.isArray(data.menuPromo) || data.menuPromo.length === 0) {
+    promoContainer.innerHTML = '';
+    return;
+  }
 
-        const div = document.createElement('div');
-        div.className = 'promo-item';
-        // use escapeHtml for texts
-        div.innerHTML = `
-          ${promo.image ? `<img src="${escapeHtml(promo.image)}" alt="Promo image">` : ''}
-          <div><b>* ${escapeHtml(promo.namaPromo || '')} *</b></div>
-          <div>${escapeHtml(promo.namaMenu || '')}</div>
-          <div>${escapeHtml(promo.deskripsi || '')}</div>
-          <div>${hargaFormatted} ${promo.tanggalAkhir ? `| Until ${escapeHtml(promo.tanggalAkhir)}` : ''}</div>
-          <div class="qty-controls">
-            <button data-key="${promoKey}" data-delta="-1">-</button>
-            <span id="qty-${promoKey}">${pesanan[promoKey]}</span>
-            <button data-key="${promoKey}" data-delta="1">+</button>
-          </div>
-        `;
-        wrapper.appendChild(div);
-      });
-      promoContainer.appendChild(wrapper);
+  // kosongkan isi
+  promoContainer.innerHTML = '';
 
-      // attach listeners (avoid inline onclick)
-      wrapper.querySelectorAll('button[data-key]').forEach(btn => {
-        btn.addEventListener('click', (ev) => {
-          const key = btn.dataset.key;
-          const delta = Number(btn.dataset.delta || 0);
-          ubahJumlahPromo(key, delta);
-        });
-      });
-    }
+  data.menuPromo.forEach((promo, index) => {
+    const promoKey = `promo-${index}`;
+    if (pesanan[promoKey] === undefined) pesanan[promoKey] = 0;
+    const hargaNum = Number(promo.harga) || 0;
+    const hargaFormatted = formatHarga(hargaNum);
+
+    const div = document.createElement('div');
+    div.className = 'promo-item';
+    div.innerHTML = `
+      <div class="promo-badge">Promo</div>   <!-- 🔥 badge ditambahin di sini -->
+      ${promo.image ? `<img src="${escapeHtml(promo.image)}" alt="Promo image">` : ''}
+      <div><b> ${escapeHtml(promo.namaPromo || '')} </b></div>
+      <div>${escapeHtml(promo.namaMenu || '')}</div>
+      <div>${escapeHtml(promo.deskripsi || '')}</div>
+      <div>${hargaFormatted} ${promo.tanggalAkhir ? `| Until ${escapeHtml(promo.tanggalAkhir)}` : ''}</div>
+      <div class="qty-controls">
+        <button data-key="${promoKey}" data-delta="-1">-</button>
+        <span id="qty-${promoKey}">${pesanan[promoKey]}</span>
+        <button data-key="${promoKey}" data-delta="1">+</button>
+      </div>
+    `;
+    promoContainer.appendChild(div);
+  });
+
+  // listener
+  promoContainer.querySelectorAll('button[data-key]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const key = btn.dataset.key;
+      const delta = Number(btn.dataset.delta || 0);
+      ubahJumlahPromo(key, delta);
+    });
+  });
+}
 
     function ubahJumlahPromo(index, delta) {
       pesanan[index] = Math.max(0, (pesanan[index] || 0) + delta);
@@ -858,6 +871,7 @@ body.dark .qty-controls span {
   </script>
 </body>
 </html>
+
 
 
 
