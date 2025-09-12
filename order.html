@@ -755,7 +755,6 @@ body.dark .qty-controls span {
       <div class="promo-badge">Promo</div>   <!-- 🔥 badge ditambahin di sini -->
       ${promo.image ? `<img src="${escapeHtml(promo.image)}" alt="Promo image">` : ''}
       <div><b> ${escapeHtml(promo.namaPromo || '')} </b></div>
-      <div>${escapeHtml(promo.namaMenu || '')}</div>
       <div>${escapeHtml(promo.deskripsi || '')}</div>
       <div>${hargaFormatted} ${promo.tanggalAkhir ? `| Until ${escapeHtml(promo.tanggalAkhir)}` : ''}</div>
       <div class="qty-controls">
@@ -891,6 +890,7 @@ body.dark .qty-controls span {
   </script>
 </body>
 </html>
+
 
 
 
