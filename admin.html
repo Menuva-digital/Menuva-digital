@@ -292,6 +292,112 @@
       padding: 10px 20px;
       z-index: 9999;
     }
+    /* Style umum untuk tombol aksi penting */
+.btn-action {
+  display: inline-block;
+  padding: 10px 16px;
+  margin: 6px 4px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  color: #fff;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+}
+
+/* Copy Link → biru elegan */
+#btnSalinLink.btn-action {
+  background: #007BFF;
+}
+#btnSalinLink.btn-action:hover {
+  background: #0056b3;
+}
+
+/* Download QR → hijau segar */
+#btnDownloadQR.btn-action {
+  background: #28a745;
+}
+#btnDownloadQR.btn-action:hover {
+  background: #1e7e34;
+}
+
+/* Print QR → oranye elegan */
+#btnPrintQR.btn-action {
+  background: #fd7e14;
+}
+#btnPrintQR.btn-action:hover {
+  background: #e8590c;
+}
+
+/* Backup Data → ungu premium */
+#btnBackup.btn-action {
+  background: #6f42c1;
+}
+#btnBackup.btn-action:hover {
+  background: #5936a2;
+}
+/* Blue – untuk backup */
+.btn-blue {
+  background: linear-gradient(135deg, #3b82f6, #1e3a8a);
+  color: white;
+}
+.btn-blue:hover {
+  background: linear-gradient(135deg, #1e3a8a, #172554);
+  transform: scale(1.05);
+}
+/* Base style tombol */
+button {
+  padding: 10px 16px;
+  font-size: 15px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.25s ease;
+}
+
+/* Orange – utama */
+.btn-orange {
+  background: linear-gradient(135deg, #ff914d, #ff6a00);
+  color: white;
+}
+.btn-orange:hover {
+  background: linear-gradient(135deg, #ff6a00, #cc5500);
+  transform: scale(1.05);
+}
+
+/* Teal – untuk salin link */
+.btn-teal {
+  background: linear-gradient(135deg, #20c997, #0f766e);
+  color: white;
+}
+.btn-teal:hover {
+  background: linear-gradient(135deg, #0f766e, #0c5f56);
+  transform: scale(1.05);
+}
+
+/* Purple – untuk download */
+.btn-purple {
+  background: linear-gradient(135deg, #a855f7, #6b21a8);
+  color: white;
+}
+.btn-purple:hover {
+  background: linear-gradient(135deg, #6b21a8, #4c1d95);
+  transform: scale(1.05);
+}
+
+/* Red – untuk print */
+.btn-red {
+  background: linear-gradient(135deg, #ef4444, #b91c1c);
+  color: white;
+}
+.btn-red:hover {
+  background: linear-gradient(135deg, #b91c1c, #7f1d1d);
+  transform: scale(1.05);
+}
+
   </style>
 </head>
 <body>
@@ -390,16 +496,22 @@
   <div class="section">
     <button class="btn-simpan" onclick="simpanData()">💾 Save All</button>
    
-    <input type="hidden" id="restoId" />
-   <button id="btnOpenCustomer" class="btn-orange" onclick="openCustomerPage()">👁️ See Customer Page</button>
-   <button id="btnSalinLink" style="display:none;">📋 Copy Link to Share with Customers</button>
-   <div id="qrcodePreview" style="margin-top:10px;"></div>
-   <button id="btnDownloadQR" style="margin-top:10px; display:none;">⬇️ Download QR Code</button>
-   <button id="btnPrintQR" style="margin-top:5px; display:none;">🖨️ Print QR Code</button>
+   <input type="hidden" id="restoId" />
+
+  <button id="btnOpenCustomer" class="btn-orange" onclick="openCustomerPage()">👁️ See Customer Page</button>
+
+  <button id="btnSalinLink" class="btn-teal" style="display:none;">📋 Copy Link to Share with Customers</button>
+
+  <div id="qrcodePreview" style="margin-top:10px;"></div>
+
+  <button id="btnDownloadQR" class="btn-purple" style="margin-top:10px; display:none;">⬇️ Download QR Code</button>
+
+  <button id="btnPrintQR" class="btn-red" style="margin-top:5px; display:none;">🖨️ Print QR Code</button>
+
 
     <div class="section">
       <h2>🔁 Backup & Restore Data</h2>
-      <button onclick="backupData()">📦 Backup Data</button>
+     <button id="btnBackup" class="btn-blue" onclick="backupData()">📦 Backup Data</button>
       <div id="backupDownloadLink" style="margin-top:10px;"></div>
       <label for="restoreInput" style="margin-top: 20px; display: block;">
         📂 Select JSON File to Restore:
@@ -1230,6 +1342,7 @@ function updateShareUI() {
 </script>
 
 </html>
+
 
 
 
