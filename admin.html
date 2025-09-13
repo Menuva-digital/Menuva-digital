@@ -1124,30 +1124,32 @@ async function simpanData() {
     console.error("Error createMenuvaLink:", err);
   }
 }
-
+   
 function openCustomerPage() {
-  const restoId = document.getElementById("restoId").value || "1"; 
+  const restoId = document.getElementById("restoId")?.value;
+  if (!restoId) return alert("❌ Resto ID belum tersedia");
   window.open(`menu.html?resto=${restoId}`, "_blank");
 }
 
 function updateShareUI() {
+  // Pastikan restoId ada
   let restoIdElem = document.getElementById("restoId");
   if (!restoIdElem) {
     restoIdElem = document.createElement("input");
     restoIdElem.type = "hidden";
     restoIdElem.id = "restoId";
-    restoIdElem.value = "1"; // default id
+    restoIdElem.value = "resto" + Date.now(); // default fallback
     document.body.appendChild(restoIdElem);
   }
-
   const restoId = restoIdElem.value;
+
+  const link = `${window.location.origin}/menu.html?resto=${restoId}`;
 
   // === Tombol Copy Link ===
   const btnCopy = document.getElementById("btnSalinLink");
   if (btnCopy) {
     btnCopy.style.display = "inline-block";
     btnCopy.onclick = () => {
-      const link = `${window.location.origin}/menu.html?resto=${restoId}`;
       navigator.clipboard.writeText(link)
         .then(() => alert("✅ Link copied to clipboard"))
         .catch(err => alert("❌ Failed to copy link: " + err));
@@ -1157,61 +1159,50 @@ function updateShareUI() {
   // === Tombol See Customer Page ===
   const btnSee = document.getElementById("btnOpenCustomer");
   if (btnSee) {
-    btnSee.onclick = () => window.open(`menu.html?resto=${restoId}`, "_blank");
+    btnSee.style.display = "inline-block";
+    btnSee.onclick = () => window.open(link, "_blank");
   }
 
   // === Generate QR Code ===
   const qrContainer = document.getElementById("qrcodePreview");
   if (qrContainer) {
     qrContainer.innerHTML = ""; // bersihkan dulu
-    QRCode.toCanvas(
-      `${window.location.origin}/menu.html?resto=${restoId}`,
-      { width: 128 },
-      function (error, canvas) {
-        if (error) {
-          console.error(error);
-          qrContainer.textContent = "❌ Failed to generate QR";
-          return;
-        }
-
-        qrContainer.appendChild(canvas);
-
-        // === Tombol Download QR ===
-        const btnDownload = document.getElementById("btnDownloadQR");
-        if (btnDownload) {
-          btnDownload.style.display = "inline-block";
-          btnDownload.onclick = () => {
-            const link = document.createElement("a");
-            link.href = canvas.toDataURL("image/png");
-            link.download = `${restoId}-QRCode.png`;
-            link.click();
-          };
-        }
-
-        // === Tombol Print QR ===
-        const btnPrint = document.getElementById("btnPrintQR");
-        if (btnPrint) {
-          btnPrint.style.display = "inline-block";
-          btnPrint.onclick = () => {
-            const dataUrl = canvas.toDataURL("image/png");
-            const w = window.open("");
-            w.document.write(`<img src="${dataUrl}" style="width:250px;height:250px;">`);
-            w.document.close();
-            w.print();
-          };
-        }
+    QRCode.toCanvas(link, { width: 128 }, function (error, canvas) {
+      if (error) {
+        console.error(error);
+        qrContainer.textContent = "❌ Failed to generate QR";
+        return;
       }
-    );
+
+      qrContainer.appendChild(canvas);
+
+      // === Tombol Download QR ===
+      const btnDownload = document.getElementById("btnDownloadQR");
+      if (btnDownload) {
+        btnDownload.style.display = "inline-block";
+        btnDownload.onclick = () => {
+          const a = document.createElement("a");
+          a.href = canvas.toDataURL("image/png");
+          a.download = `${restoId}-QRCode.png`;
+          a.click();
+        };
+      }
+
+      // === Tombol Print QR ===
+      const btnPrint = document.getElementById("btnPrintQR");
+      if (btnPrint) {
+        btnPrint.style.display = "inline-block";
+        btnPrint.onclick = () => {
+          const dataUrl = canvas.toDataURL("image/png");
+          const w = window.open("");
+          w.document.write(`<img src="${dataUrl}" style="width:250px;height:250px;">`);
+          w.document.close();
+          w.print();
+        };
+      }
+    });
   }
 }
-
-
-function openCustomerPage() {
-  const restoId = document.getElementById("restoId").value;
-  if (!restoId) return alert("Resto ID belum tersedia");
-  window.open(`menu.html?resto=${restoId}`, "_blank");
-}
-
 
 </script>
 
@@ -1233,6 +1224,7 @@ function openCustomerPage() {
 </script>
 
 </html>
+
 
 
 
