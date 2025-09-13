@@ -394,8 +394,8 @@
    <button id="btnOpenCustomer" class="btn-orange" onclick="openCustomerPage()">👁️ See Customer Page</button>
    <button id="btnSalinLink" style="display:none;">📋 Copy Link to Share with Customers</button>
    <div id="qrcodePreview" style="margin-top:10px;"></div>
-
-
+   <button id="btnDownloadQR" style="margin-top:10px; display:none;">⬇️ Download QR Code</button>
+   <button id="btnPrintQR" style="margin-top:5px; display:none;">🖨️ Print QR Code</button>
 
     <div class="section">
       <h2>🔁 Backup & Restore Data</h2>
@@ -1127,7 +1127,7 @@ function openCustomerPage() {
   window.open(`menu.html?resto=${restoId}`, "_blank");
 }
 
-  function updateShareUI() {
+function updateShareUI() {
   let restoIdElem = document.getElementById("restoId");
   if (!restoIdElem) {
     restoIdElem = document.createElement("input");
@@ -1139,6 +1139,7 @@ function openCustomerPage() {
 
   const restoId = restoIdElem.value;
 
+  // === Tombol Copy Link ===
   const btnCopy = document.getElementById("btnSalinLink");
   if (btnCopy) {
     btnCopy.style.display = "inline-block";
@@ -1150,7 +1151,7 @@ function openCustomerPage() {
     };
   }
 
-
+  // === Tombol See Customer Page ===
   const btnSee = document.getElementById("btnOpenCustomer");
   if (btnSee) {
     btnSee.onclick = () => window.open(`menu.html?resto=${restoId}`, "_blank");
@@ -1169,11 +1170,38 @@ function openCustomerPage() {
           qrContainer.textContent = "❌ Failed to generate QR";
           return;
         }
+
         qrContainer.appendChild(canvas);
+
+        // === Tombol Download QR ===
+        const btnDownload = document.getElementById("btnDownloadQR");
+        if (btnDownload) {
+          btnDownload.style.display = "inline-block";
+          btnDownload.onclick = () => {
+            const link = document.createElement("a");
+            link.href = canvas.toDataURL("image/png");
+            link.download = `${restoId}-QRCode.png`;
+            link.click();
+          };
+        }
+
+        // === Tombol Print QR ===
+        const btnPrint = document.getElementById("btnPrintQR");
+        if (btnPrint) {
+          btnPrint.style.display = "inline-block";
+          btnPrint.onclick = () => {
+            const dataUrl = canvas.toDataURL("image/png");
+            const w = window.open("");
+            w.document.write(`<img src="${dataUrl}" style="width:250px;height:250px;">`);
+            w.document.close();
+            w.print();
+          };
+        }
       }
     );
   }
 }
+
 
 function openCustomerPage() {
   const restoId = document.getElementById("restoId").value;
@@ -1202,6 +1230,7 @@ function openCustomerPage() {
 </script>
 
 </html>
+
 
 
 
