@@ -344,33 +344,43 @@ function loadDataFromDB(restoId) {
 
     request.onsuccess = (event) => {
       const db = event.target.result;
-      const tx = db.transaction(STORE_NAME, "readonly");
-      const store = tx.objectStore(STORE_NAME);
+      try {
+        const tx = db.transaction(STORE_NAME, "readonly");
+        const store = tx.objectStore(STORE_NAME);
+        const getAllReq = store.getAll();
 
-      // Ambil pakai restoId
-      let getReq = store.get(restoId);
+        getAllReq.onsuccess = () => {
+          const allData = getAllReq.result;
+          if (!allData || allData.length === 0) return resolve(null);
 
-      getReq.onsuccess = () => {
-        if (getReq.result) {
-          resolve(getReq.result);
-        } else {
-          // fallback ke key lama = 1
-          const fallbackReq = store.get(1);
-          fallbackReq.onsuccess = () => resolve(fallbackReq.result || null);
-          fallbackReq.onerror = () => resolve(null);
-        }
-      };
-      getReq.onerror = () => reject("❌ failed read data.");
+          let data;
+          if (restoId) {
+            data = allData.find(item => item.restoId === restoId);
+          }
+          // fallback ke data pertama kalau tidak ketemu
+          if (!data) data = allData[0];
+
+          if (!data) return resolve(null);
+
+          const { id, ...cleanData } = data;
+          resolve(cleanData);
+        };
+
+        getAllReq.onerror = () => reject("❌ failed read data from object store.");
+      } catch (e) {
+        reject("❌ Error: " + e.message);
+      }
     };
 
     request.onupgradeneeded = (event) => {
       const db = event.target.result;
       if (!db.objectStoreNames.contains(STORE_NAME)) {
-        db.createObjectStore(STORE_NAME, { keyPath: "restoId" });
+        db.createObjectStore(STORE_NAME, { keyPath: "id" });
       }
     };
   });
 }
+
 
 // ====================== Render fungsi yg sudah ada ======================
 function renderFlipbookGallery(containerId, images, warningId) {
@@ -485,21 +495,16 @@ function startCountdown(tanggalAkhir, elementId) {
 // ====================== Window onload ======================
 window.onload = async () => {
   const restoId = getDataFromURL();
-  try {
-    const data = await loadDataFromDB();
 
-    // 🔥 Fallback biar data lama tetap kebaca
+  try {
+    const data = await loadDataFromDB(restoId);
+
     if (!data) {
-      console.warn("⚠️ IndexedDB kosong, gak ada data.");
+      console.warn("⚠️ Tidak ada data ditemukan di IndexedDB");
       return;
     }
 
-    if (restoId && data.restoId && data.restoId !== restoId) {
-      console.warn("⚠️ Data untuk restoId ini tidak ditemukan, fallback ke data lama.");
-      // tetap pakai data lama
-    }
-
-    // Render logo & info resto
+    // --- Render resto ---
     const logoElem = document.getElementById("logoResto");
     if (data.logo) {
       logoElem.src = data.logo;
@@ -525,6 +530,7 @@ window.onload = async () => {
 </script>
 </body>
 </html>
+
 
 
 
