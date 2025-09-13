@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+
   <title>Admin Menuva</title>
   <style>
     * { box-sizing: border-box; }
@@ -387,10 +389,11 @@
 
   <div class="section">
     <button class="btn-simpan" onclick="simpanData()">💾 Save All</button>
-    <button onclick="window.open('menu.html')" style="margin-top: 10px;" class="btn-orange">👁️ See Customer Page</button>
-    <button id="btnSalinLink" onclick="salinLinkMenu()" style="display:none; background-color: rgb(58, 82, 219); color: white; padding: 10px; border: none; border-radius: 8px; margin-top: 10px;">
-      📋 Copy Link to Share with Customers
-    </button>
+   
+    <input type="hidden" id="restoId" />
+    <button id="btnOpenCustomer" class="btn-orange" onclick="openCustomerPage()">👁️ See Customer Page</button>
+    <div id="qrcodePreview" style="margin-top:10px;"></div>
+
 
     <div class="section">
       <h2>🔁 Backup & Restore Data</h2>
@@ -456,26 +459,56 @@
   }
 
   function saveDataToDB(data) {
-    return new Promise((resolve, reject) => {
-      if (!db) return reject(new Error("DB belum diinisialisasi"));
-      const tx = db.transaction(STORE_NAME, "readwrite");
-      const store = tx.objectStore(STORE_NAME);
-      const req = store.put({ id: 1, ...data });
-      req.onsuccess = () => resolve();
-      req.onerror = () => reject(req.error);
-    });
-  }
+  return new Promise((resolve, reject) => {
+    if (!db) return reject(new Error("DB belum diinisialisasi"));
+    const tx = db.transaction(STORE_NAME, "readwrite");
+    const store = tx.objectStore(STORE_NAME);
 
-  function loadDataFromDB() {
-    return new Promise((resolve, reject) => {
-      if (!db) return reject(new Error("DB belum diinisialisasi"));
-      const tx = db.transaction(STORE_NAME, "readonly");
-      const store = tx.objectStore(STORE_NAME);
-      const req = store.get(1);
-      req.onsuccess = () => resolve(req.result || {});
-      req.onerror = () => reject(req.error);
-    });
-  }
+    // pastikan restoId ada sebelum save
+    let restoId = data.restoId;
+    if (!restoId) {
+      const nama = (data.namaRestoran || "").trim();
+      restoId = slugify(nama) || ("resto" + Date.now());
+      data.restoId = restoId;
+    }
+
+    // simpan dengan id=1 sebagai anchor record utama
+    const req = store.put({ id: 1, ...data });
+
+    req.onsuccess = () => {
+      console.log("✅ Data tersimpan di DB dengan restoId:", restoId);
+      resolve(restoId); // return restoId biar bisa dipakai lanjut
+    };
+    req.onerror = () => {
+      console.error("❌ Gagal menyimpan ke DB:", req.error);
+      reject(req.error);
+    };
+  });
+}
+
+
+ function loadDataFromDB() {
+  return new Promise((resolve, reject) => {
+    if (!db) return reject(new Error("DB belum diinisialisasi"));
+    const tx = db.transaction(STORE_NAME, "readonly");
+    const store = tx.objectStore(STORE_NAME);
+    const req = store.get(1);
+
+    req.onsuccess = () => {
+      const result = req.result;
+      if (result) {
+        // buang "id" supaya data yang di-restore bersih
+        const { id, ...data } = result;
+        resolve(data);
+      } else {
+        resolve({});
+      }
+    };
+
+    req.onerror = () => reject(req.error);
+  });
+}
+
 
   function clearDataDB() {
     return new Promise((resolve, reject) => {
@@ -897,47 +930,66 @@ document.getElementById("logoInput")?.addEventListener("change", async function 
   }
 
   // ====================== SIMPAN & LOAD ======================
-  async function simpanData() {
-    try {
-      const namaRestoran = document.getElementById("namaRestoran").value;
-      const restoAddress = document.getElementById("restoAddress").value.trim();
-      const restoPhone = document.getElementById("restoPhone").value.trim();
-      const logo = document.getElementById("previewLogo").src || "";
-      const nomorWaAdmin = Array.from(document.querySelectorAll(".nomor-wa")).map(i => i.value);
+ async function simpanData() {
+  try {
+    const namaRestoran = document.getElementById("namaRestoran").value.trim();
+    const restoAddress = document.getElementById("restoAddress").value.trim();
+    const restoPhone = document.getElementById("restoPhone").value.trim();
+    const logo = document.getElementById("previewLogo").src || "";
+    const nomorWaAdmin = Array.from(document.querySelectorAll(".nomor-wa")).map(i => i.value);
 
-      // Ambil semua menu (now includes special)
-      const menuData = [
-        ...ambilMenu("menuFoodContainer"),
-        ...ambilMenu("menuSnackContainer"),
-        ...ambilMenu("menuDrinkContainer"),
-        ...ambilMenu("menuSpecialContainer") // <-- include special menu container
-      ];
-
-      // Pastikan variabel global ada (biar ga error)
-      const promo = typeof menuPromo !== "undefined" ? menuPromo : [];
-      const flipRuangan = typeof flipbookRuanganImages !== "undefined" ? flipbookRuanganImages : [];
-      const flipMenu = typeof flipbookMenuImages !== "undefined" ? flipbookMenuImages : [];
-
-      const data = {
-        namaRestoran,
-        restoAddress,
-        restoPhone,
-        logo,
-        nomorWaAdmin,
-        menuPromo: promo,
-        flipbookRuanganImages: flipRuangan,
-        flipbookMenuImages: flipMenu,
-        menu: menuData,
-        rooms: ambilSemuaRoom() // ✅ sudah dengan id unik
-      };
-
-      await saveDataToDB(data);
-      alert("✅ All data saved successfully! ");
-    } catch (err) {
-      console.error(err);
-      alert("❌ Failed to save data. View console.");
+    // --- 🔑 pastikan ada restoId ---
+    let restoIdEl = document.getElementById("restoId");
+    if (!restoIdEl) {
+      restoIdEl = document.createElement("input");
+      restoIdEl.type = "hidden";
+      restoIdEl.id = "restoId";
+      document.body.appendChild(restoIdEl);
     }
+    let restoId = restoIdEl.value.trim();
+    if (!restoId) {
+      restoId = slugify(namaRestoran) || ("resto" + Date.now());
+      restoIdEl.value = restoId;
+    }
+
+    // Ambil semua menu (termasuk special)
+    const menuData = [
+      ...ambilMenu("menuFoodContainer"),
+      ...ambilMenu("menuSnackContainer"),
+      ...ambilMenu("menuDrinkContainer"),
+      ...ambilMenu("menuSpecialContainer")
+    ];
+
+    // Pastikan variabel global ada
+    const promo = typeof menuPromo !== "undefined" ? menuPromo : [];
+    const flipRuangan = typeof flipbookRuanganImages !== "undefined" ? flipbookRuanganImages : [];
+    const flipMenu = typeof flipbookMenuImages !== "undefined" ? flipbookMenuImages : [];
+
+    const data = {
+      restoId,          // 🔑 simpan ID restoran
+      namaRestoran,
+      restoAddress,
+      restoPhone,
+      logo,
+      nomorWaAdmin,
+      menuPromo: promo,
+      flipbookRuanganImages: flipRuangan,
+      flipbookMenuImages: flipMenu,
+      menu: menuData,
+      rooms: ambilSemuaRoom()
+    };
+
+    await saveDataToDB(data);
+
+    // 🔑 tampilkan tombol share & generate link + QR
+    updateShareUI();
+
+    alert("✅ All data saved successfully! ");
+  } catch (err) {
+    console.error(err);
+    alert("❌ Failed to save data. View console.");
   }
+}
 
   async function loadData() {
     try {
@@ -1030,6 +1082,36 @@ document.getElementById("logoInput")?.addEventListener("change", async function 
     await loadData();
     tampilkanListRoom();
   });
+
+   function generateDynamicLink(baseUrl, data) {
+  try {
+    
+    const jsonData = JSON.stringify(data);
+
+    
+    const encoded = encodeURIComponent(jsonData);
+
+    
+    const link = `${baseUrl}?data=${encoded}`;
+    return link;
+  } catch (err) {
+    console.error("Gagal generate link:", err);
+    return null;
+  }
+}
+
+   async function createMenuvaLink() {
+  try {
+    const data = await loadDataFromDB(); // ambil data dari DB
+    const link = generateDynamicLink("https://menuva.github.io/view.html", data);
+    console.log("Dynamic Link:", link);
+    return link;
+  } catch (err) {
+    console.error("Error createMenuvaLink:", err);
+  }
+}
+
+
 </script>
 
 <div class="fixed-bar">
@@ -1050,6 +1132,7 @@ document.getElementById("logoInput")?.addEventListener("change", async function 
 </script>
 
 </html>
+
 
 
 
