@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard - Menuva</title>
-<style>
+  <style>
     body { margin: 0; font-family: "Segoe UI", Arial, sans-serif; background: #f5f7fa; color: #333; }
     header { background: linear-gradient(135deg, #0077cc, #003366); color: white; padding: 60px 20px; text-align: center; }
     header h1 { margin: 0; font-size: 2.5rem; }
@@ -98,30 +98,8 @@
     font-size: 16px;
   }
 }
-.old-price {
-  font-size: 1rem;
-  color: #d9534f; /* merah elegan */
-  text-decoration: line-through;
-  margin: 0;
-}
 
-.new-price {
-  font-size: 1.3rem;
-  font-weight: bold;
-  color: #2a5298;
-  margin: 5px 0 0;
-}
-    .pricing {
-  display: grid;
-  gap: 20px;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  max-width: 100%;
-  margin: 0 auto;
-  padding: 0 10px; /* kasih padding supaya card nggak nempel pinggir layar */
-  box-sizing: border-box;
-}
-
-</style>
+  </style>
 </head>
 <body>
 
@@ -154,30 +132,27 @@
       <button id="trialBtn">Start Free Trial</button>
     </div>
 
-  <div class="plan">
-  <h3>Monthly</h3>
-  <p class="old-price">IDR 99.000</p>
-  <p class="new-price">IDR 69.000 <span>/ month</span></p>
-  <p>All Features</p>
-  <button data-plan="monthly">Subscribe Monthly</button>
-</div>
+    <div class="plan">
+      <h3>Monthly</h3>
+      <p class="price">IDR 65.000 / month</p>
+      <p>All Features</p>
+      <button data-plan="monthly">Subscribe Monthly</button>
+    </div>
 
-<div class="plan">
-  <h3>Six Month</h3>
-  <p class="old-price">IDR 495.000</p>
-  <p class="new-price">IDR 345.000 <span>/ 6 months</span></p>
-  <p>All Features</p>
-  <button data-plan="6month">Subscribe 6 Months</button>
-</div>
+    <div class="plan">
+      <h3>Six Month</h3>
+      <p class="price">IDR 325.000 / 6 months</p>
+      <p>All Features</p>
+      <button data-plan="6month">Subscribe 6 Months</button>
+    </div>
 
-<div class="plan">
-  <h3>Yearly</h3>
-  <p class="old-price">IDR 1.188.000</p>
-  <p class="new-price">IDR 690.000 <span>/ year</span></p>
-  <p>All Features</p>
-  <button data-plan="yearly">Subscribe Yearly</button>
-</div>
-
+    <div class="plan">
+      <h3>Yearly</h3>
+      <p class="price">IDR 650.000 / year</p>
+      <p>All Features</p>
+      <button data-plan="yearly">Subscribe Yearly</button>
+    </div>
+  </div>
 
   <div class="login-container">
     <h3 id="countdown"></h3>
@@ -185,7 +160,7 @@
     <br><br>
     <button onclick="logout()" class="btn-logout">🚪 Logout</button>
   </div>
-   <br>
+
   <h2>Client Testimonials</h2>
   <div class="testimonials">
     <div class="testimonial">“Menuva makes orders more organized and saves time. It really helps our café business.”</div>
@@ -269,7 +244,9 @@
     location.href = "login.html";
   }
 </script>
- <footer>
+
+
+<footer>
   <p>
     📍 Jl.Ahmad Yani 34, Boyolali, Jawa Tengah | 
     📞 <a href="https://wa.me/6281234567890" target="_blank">+62 812-3456-7890</a> | 
@@ -278,16 +255,6 @@
   
   <p>&copy; 2025 Menuva | <a href="privacy-policy.html">Privacy Policy</a> | <a href="terms-of-service.html">FAQ</a></p>
 </footer>
+
 </body>
- 
 </html>
-
-
-
-
-
-
-
-
-
-
