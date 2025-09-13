@@ -1131,6 +1131,16 @@ function getCustomerLink() {
   return `${window.location.origin}/menu.html?resto=${restoId}`;
 }
 
+// ====================== HELPER GET CUSTOMER LINK ======================
+function getCustomerLink() {
+  const restoId = document.getElementById("restoId")?.value;
+  if (!restoId) return null;
+
+  // Ambil base path folder saat ini
+  const basePath = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/'));
+  return `${window.location.origin}${basePath}/menu.html?resto=${restoId}`;
+}
+
 // ====================== OPEN CUSTOMER PAGE ======================
 function openCustomerPage() {
   const link = getCustomerLink();
@@ -1222,5 +1232,6 @@ function updateShareUI() {
 </script>
 
 </html>
+
 
 
