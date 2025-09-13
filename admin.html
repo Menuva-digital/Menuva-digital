@@ -1124,23 +1124,24 @@ async function simpanData() {
     console.error("Error createMenuvaLink:", err);
   }
 }
-   // ====================== OPEN CUSTOMER PAGE ======================
-function openCustomerPage() {
+  // ====================== HELPER GET CUSTOMER LINK ======================
+function getCustomerLink() {
   const restoId = document.getElementById("restoId")?.value;
-  if (!restoId) return alert("❌ Resto ID belum tersedia");
+  if (!restoId) return null;
+  return `${window.location.origin}/menu.html?resto=${restoId}`;
+}
 
-  // pakai relative path, bukan absolute
-  const link = `menu.html?resto=${restoId}`;
+// ====================== OPEN CUSTOMER PAGE ======================
+function openCustomerPage() {
+  const link = getCustomerLink();
+  if (!link) return alert("❌ Resto ID belum tersedia");
   window.open(link, "_blank");
 }
 
 // ====================== UPDATE SHARE UI ======================
 function updateShareUI() {
-  const restoId = document.getElementById("restoId")?.value;
-  if (!restoId) return;
-
-  // relative link
-  const link = `menu.html?resto=${restoId}`;
+  const link = getCustomerLink();
+  if (!link) return;
 
   // === Tombol Copy Link ===
   const btnCopy = document.getElementById("btnSalinLink");
@@ -1180,7 +1181,7 @@ function updateShareUI() {
         btnDownload.onclick = () => {
           const a = document.createElement("a");
           a.href = canvas.toDataURL("image/png");
-          a.download = `${restoId}-QRCode.png`;
+          a.download = `Resto-${Date.now()}-QRCode.png`;
           a.click();
         };
       }
@@ -1221,4 +1222,5 @@ function updateShareUI() {
 </script>
 
 </html>
+
 
