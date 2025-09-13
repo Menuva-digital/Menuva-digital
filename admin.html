@@ -929,7 +929,16 @@ document.getElementById("logoInput")?.addEventListener("change", async function 
     document.body.removeChild(input);
   }
 
-  // ====================== SIMPAN & LOAD ======================
+  function slugify(text) {
+  return text
+    .toString()
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, "-")       // ganti spasi jadi -
+    .replace(/[^\w\-]+/g, "")   // buang karakter non-word
+    .replace(/\-\-+/g, "-");    // ganti -- jadi -
+}
+
  async function simpanData() {
   try {
     const namaRestoran = document.getElementById("namaRestoran").value.trim();
@@ -938,7 +947,7 @@ document.getElementById("logoInput")?.addEventListener("change", async function 
     const logo = document.getElementById("previewLogo").src || "";
     const nomorWaAdmin = Array.from(document.querySelectorAll(".nomor-wa")).map(i => i.value);
 
-    // --- 🔑 pastikan ada restoId ---
+  
     let restoIdEl = document.getElementById("restoId");
     if (!restoIdEl) {
       restoIdEl = document.createElement("input");
@@ -1111,6 +1120,10 @@ document.getElementById("logoInput")?.addEventListener("change", async function 
   }
 }
 
+function openCustomerPage() {
+  const restoId = document.getElementById("restoId").value || "1"; // default 1 kalau belum ada
+  window.open(`menu.html?resto=${restoId}`, "_blank");
+}
 
 </script>
 
@@ -1132,6 +1145,7 @@ document.getElementById("logoInput")?.addEventListener("change", async function 
 </script>
 
 </html>
+
 
 
 
