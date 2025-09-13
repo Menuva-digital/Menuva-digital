@@ -1124,26 +1124,23 @@ async function simpanData() {
     console.error("Error createMenuvaLink:", err);
   }
 }
-   
+   // ====================== OPEN CUSTOMER PAGE ======================
 function openCustomerPage() {
   const restoId = document.getElementById("restoId")?.value;
   if (!restoId) return alert("❌ Resto ID belum tersedia");
-  window.open(`menu.html?resto=${restoId}`, "_blank");
+
+  // pakai relative path, bukan absolute
+  const link = `menu.html?resto=${restoId}`;
+  window.open(link, "_blank");
 }
 
+// ====================== UPDATE SHARE UI ======================
 function updateShareUI() {
-  // Pastikan restoId ada
-  let restoIdElem = document.getElementById("restoId");
-  if (!restoIdElem) {
-    restoIdElem = document.createElement("input");
-    restoIdElem.type = "hidden";
-    restoIdElem.id = "restoId";
-    restoIdElem.value = "resto" + Date.now(); // default fallback
-    document.body.appendChild(restoIdElem);
-  }
-  const restoId = restoIdElem.value;
+  const restoId = document.getElementById("restoId")?.value;
+  if (!restoId) return;
 
-  const link = `${window.location.origin}/menu.html?resto=${restoId}`;
+  // relative link
+  const link = `menu.html?resto=${restoId}`;
 
   // === Tombol Copy Link ===
   const btnCopy = document.getElementById("btnSalinLink");
@@ -1224,16 +1221,4 @@ function updateShareUI() {
 </script>
 
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
 
