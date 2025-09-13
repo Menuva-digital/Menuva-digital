@@ -344,24 +344,29 @@ function loadDataFromDB(restoId) {
 
     request.onsuccess = (event) => {
       const db = event.target.result;
-      try {
-        const tx = db.transaction(STORE_NAME, "readonly");
-        const store = tx.objectStore(STORE_NAME);
+      const tx = db.transaction(STORE_NAME, "readonly");
+      const store = tx.objectStore(STORE_NAME);
 
-        const getReq = store.get(restoId); // ✅ ambil sesuai restoId
-        getReq.onsuccess = () => {
-          resolve(getReq.result || null);
-        };
-        getReq.onerror = () => reject("❌ failed read data from object store.");
-      } catch (e) {
-        reject("❌ Error: " + e.message);
-      }
+      // Ambil pakai restoId
+      let getReq = store.get(restoId);
+
+      getReq.onsuccess = () => {
+        if (getReq.result) {
+          resolve(getReq.result);
+        } else {
+          // fallback ke key lama = 1
+          const fallbackReq = store.get(1);
+          fallbackReq.onsuccess = () => resolve(fallbackReq.result || null);
+          fallbackReq.onerror = () => resolve(null);
+        }
+      };
+      getReq.onerror = () => reject("❌ failed read data.");
     };
 
     request.onupgradeneeded = (event) => {
       const db = event.target.result;
       if (!db.objectStoreNames.contains(STORE_NAME)) {
-        db.createObjectStore(STORE_NAME, { keyPath: "restoId" }); // ✅ key by restoId
+        db.createObjectStore(STORE_NAME, { keyPath: "restoId" });
       }
     };
   });
@@ -517,6 +522,7 @@ window.onload = async () => {
 </script>
 </body>
 </html>
+
 
 
 
