@@ -983,7 +983,7 @@ document.getElementById("logoInput")?.addEventListener("change", async function 
     document.getElementById("previewLogo").src = logoUrl;
   } catch (err) {
     console.error("Logo error:", err);
-    alert("❌ Gagal memproses gambar logo.");
+    alert("❌ Failed to prscess logo image.");
   }
 });
 
@@ -1114,10 +1114,10 @@ async function simpanData() {
     // 🔑 tampilkan tombol share & generate link + QR
     updateShareUI();
 
-    alert(`✅ All data saved successfully!\nPermanent restoId: ${restoId}`);
+    alert(`✅ All data saved successfully!: ${restoId}`);
   } catch (err) {
     console.error(err);
-    alert("❌ Failed to save data. View console.");
+    alert("❌ Failed to save data.");
   }
 }
 
@@ -1180,7 +1180,7 @@ async function simpanData() {
       document.body.removeChild(link);
 
       // alert sukses saja, tanpa innerHTML
-      alert(`✅ Backup successful! File ${filename} siap di-download.`);
+      alert(`✅ Backup successful! File ${filename} Ready to-download.`);
       
     } catch (err) {
       alert("❌ Backup failed: " + err.message);
@@ -1254,7 +1254,7 @@ function getCustomerLink() {
 // ====================== OPEN CUSTOMER PAGE ======================
 function openCustomerPage() {
   const link = getCustomerLink();
-  if (!link) return alert("❌ Resto ID belum tersedia");
+  if (!link) return alert("❌ Please click Save All first");
   window.open(link, "_blank");
 }
 
@@ -1342,6 +1342,7 @@ function updateShareUI() {
 </script>
 
 </html>
+
 
 
 
