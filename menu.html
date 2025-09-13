@@ -321,85 +321,89 @@ main, .container { padding-bottom: 70px; }
   
  <button class="btn-book" onclick="window.location.href='book.html'">📖 Dine-in Menu</button>
   
-<!-- ===================== Fixed Button Bar ===================== -->
 <div class="fixed-bar">
   <button class="btn-order" onclick="window.location.href='order.html'">🛒 Reserve</button>
   <button class="btn-room" onclick="window.location.href='room.html'">🏢 Room & Package</button>
 </div>
-
-
 <script>
-  const DB_NAME = "MenuvaDB";
-  const STORE_NAME = "menuvaData";
+const DB_NAME = "MenuvaDB";
+const STORE_NAME = "menuvaData";
 
-  function loadDataFromDB() {
-    return new Promise((resolve, reject) => {
-      const request = indexedDB.open(DB_NAME, 1);
+function getDataFromURL() {
+  const params = new URLSearchParams(window.location.search);
+  const restoId = params.get("resto"); // ?resto=xxx
+  return restoId;
+}
 
-      request.onerror = () => reject("❌ failed open database IndexedDB.");
 
-      request.onsuccess = (event) => {
-        const db = event.target.result;
-        try {
-          const tx = db.transaction(STORE_NAME, "readonly");
-          const store = tx.objectStore(STORE_NAME);
-          const getReq = store.get(1);
-          getReq.onsuccess = () => resolve(getReq.result || {});
-          getReq.onerror = () => reject("❌ failed read data from object store.");
-        } catch (e) {
-          reject("❌ Error: " + e.message);
-        }
-      };
+function loadDataFromDB() {
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.open(DB_NAME, 1);
 
-      request.onupgradeneeded = (event) => {
-        const db = event.target.result;
-        if (!db.objectStoreNames.contains(STORE_NAME)) {
-          db.createObjectStore(STORE_NAME, { keyPath: "id" });
-        }
-      };
-    });
+    request.onerror = () => reject("❌ failed open database IndexedDB.");
+
+    request.onsuccess = (event) => {
+      const db = event.target.result;
+      try {
+        const tx = db.transaction(STORE_NAME, "readonly");
+        const store = tx.objectStore(STORE_NAME);
+        const getReq = store.get(1);
+        getReq.onsuccess = () => {
+          const result = getReq.result;
+          if (!result) return resolve({});
+          const { id, ...data } = result; // buang id
+          resolve(data);
+        };
+        getReq.onerror = () => reject("❌ failed read data from object store.");
+      } catch (e) {
+        reject("❌ Error: " + e.message);
+      }
+    };
+
+    request.onupgradeneeded = (event) => {
+      const db = event.target.result;
+      if (!db.objectStoreNames.contains(STORE_NAME)) {
+        db.createObjectStore(STORE_NAME, { keyPath: "id" });
+      }
+    };
+  });
+}
+
+
+function renderFlipbookGallery(containerId, images, warningId) {
+  const container = document.getElementById(containerId);
+  const warning = document.getElementById(warningId);
+  container.innerHTML = "";
+  warning.textContent = "";
+
+  if (!images || images.length === 0) {
+    warning.textContent = "No pictures.";
+    return;
   }
 
-  loadDataFromDB().then(data => {
-  document.getElementById("alamatResto").innerText = `📍 Address: ${data.restoAddress || '-'}`;
-  document.getElementById("teleponResto").innerText = `📞 Telephone: ${data.restoPhone || '-'}`;
-}).catch(err => {
-  console.error("Failed load info resto:", err);
-});
-
-  function renderFlipbookGallery(containerId, images, warningId) {
-    const container = document.getElementById(containerId);
-    const warning = document.getElementById(warningId);
-    container.innerHTML = "";
-    warning.textContent = "";
-
-    if (!images || images.length === 0) {
-      warning.textContent = "No pictures.";
-      return;
-    }
-
-    images.forEach(src => {
-      const img = document.createElement("img");
-      img.src = src;
-      img.alt = "Flipbook Image";
-      img.onclick = () => openFullscreen(src);
-      container.appendChild(img);
-    });
-  }
-
-  function openFullscreen(src) {
-    const overlay = document.getElementById("fullscreenOverlay");
-    const img = document.getElementById("fullscreenImage");
+  images.forEach(src => {
+    const img = document.createElement("img");
     img.src = src;
-    overlay.style.display = "flex";
-  }
+    img.alt = "Flipbook Image";
+    img.onclick = () => openFullscreen(src);
+    container.appendChild(img);
+  });
+}
 
-  function closeFullscreen() {
-    document.getElementById("fullscreenOverlay").style.display = "none";
-    document.getElementById("fullscreenImage").src = "";
-  }
+function openFullscreen(src) {
+  const overlay = document.getElementById("fullscreenOverlay");
+  const img = document.getElementById("fullscreenImage");
+  img.src = src;
+  overlay.style.display = "flex";
+}
 
- function renderPromo(promoList) {
+function closeFullscreen() {
+  document.getElementById("fullscreenOverlay").style.display = "none";
+  document.getElementById("fullscreenImage").src = "";
+}
+
+
+function renderPromo(promoList) {
   console.log("🔥 Data promoList:", promoList);
   const promoContainer = document.getElementById("promoContainer");
   promoContainer.innerHTML = "";
@@ -411,42 +415,34 @@ main, .container { padding-bottom: 70px; }
 
   promoList.forEach((promo, index) => {
     const promoCard = document.createElement("div");
-    promoCard.className = "promo-item"; // pakai class yang sudah ada di CSS kamu
+    promoCard.className = "promo-item";
 
-    // === BADGE PROMO ===
-    if (promo.badge || true) { // kalau ada promo.badge dipakai, kalau enggak default "Promo"
-      const badge = document.createElement("div");
-      badge.className = "promo-badge";
-      badge.textContent = promo.badge ? promo.badge : "Promo";
-      promoCard.appendChild(badge);
-    }
+    const badge = document.createElement("div");
+    badge.className = "promo-badge";
+    badge.textContent = promo.badge ? promo.badge : "Promo";
+    promoCard.appendChild(badge);
 
-    // === GAMBAR ===
     const img = document.createElement("img");
     console.log("Gambar promo:", promo.image);
     img.src = promo.image;
     img.alt = promo.namaMenu;
     promoCard.appendChild(img);
 
-    // === NAMA MENU ===
     const title = document.createElement("h3");
     title.textContent = promo.namaMenu;
     promoCard.appendChild(title);
 
-    // === DESKRIPSI ===
     const desc = document.createElement("p");
     desc.textContent = promo.deskripsi;
     promoCard.appendChild(desc);
 
-    // === HARGA ===
     const price = document.createElement("div");
     price.className = "promo-price";
     price.textContent = ` ${parseInt(promo.harga).toLocaleString("id-ID")}`;
     promoCard.appendChild(price);
 
-    // === COUNTDOWN ===
     const countdown = document.createElement("div");
-    countdown.className = "countdown"; // pakai class countdown dari CSS kamu
+    countdown.className = "countdown";
     countdown.id = `countdown-${index}`;
     promoCard.appendChild(countdown);
 
@@ -460,7 +456,6 @@ main, .container { padding-bottom: 70px; }
   });
 }
 
-  
 function startCountdown(tanggalAkhir, elementId) {
   function updateCountdown() {
     const deadline = new Date(tanggalAkhir).getTime();
@@ -483,50 +478,51 @@ function startCountdown(tanggalAkhir, elementId) {
     el.textContent = `Ends in : ${days}.d ${hours}.h ${minutes}.m ${seconds}.s`;
   }
 
-  updateCountdown(); // run immediately
+  updateCountdown();
   setInterval(updateCountdown, 1000);
 }
 
+// =====================
+// Window onload
+// =====================
+window.onload = async () => {
+  const restoId = getDataFromURL();
+  if (!restoId) {
+    console.warn("⚠️ restoId tidak ditemukan di URL");
+    return;
+  }
 
-  window.onload = async () => {
-    try {
-      const data = await loadDataFromDB();
+  try {
+    const data = await loadDataFromDB();
 
-      const logoElem = document.getElementById("logoResto");
-      if (data.logo) {
-        logoElem.src = data.logo;
-        logoElem.style.display = "block";
-      } else {
-        logoElem.style.display = "none";
-      }
-      document.getElementById("namaRestoDisplay").textContent = data.namaRestoran || "Menu Restoran";
-
-      renderPromo(data.menuPromo);
-      renderFlipbookGallery("flipbookRuanganGallery", data.flipbookRuanganImages, "ruanganWarning");
-      renderFlipbookGallery("flipbookMenuGallery", data.flipbookMenuImages, "menuWarning");
-    } catch (err) {
-      console.error(err);
-      alert("Gagal load data menu.");
+    if (!data || data.restoId !== restoId) {
+      console.warn("⚠️ Data untuk restoId ini tidak ditemukan");
+      return;
     }
-  };
-</script>
 
+    const logoElem = document.getElementById("logoResto");
+    if (data.logo) {
+      logoElem.src = data.logo;
+      logoElem.style.display = "block";
+    } else {
+      logoElem.style.display = "none";
+    }
+
+    document.getElementById("namaRestoDisplay").textContent = data.namaRestoran || "Menu Restoran";
+    document.getElementById("alamatResto").innerText = `📍 Address: ${data.restoAddress || '-'}`;
+    document.getElementById("teleponResto").innerText = `📞 Telephone: ${data.restoPhone || '-'}`;
+
+    renderPromo(data.menuPromo);
+    renderFlipbookGallery("flipbookRuanganGallery", data.flipbookRuanganImages, "ruanganWarning");
+    renderFlipbookGallery("flipbookMenuGallery", data.flipbookMenuImages, "menuWarning");
+
+  } catch (err) {
+    console.error(err);
+    alert("Gagal load data menu.");
+  }
+};
+</script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
