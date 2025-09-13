@@ -329,14 +329,14 @@ main, .container { padding-bottom: 70px; }
 const DB_NAME = "MenuvaDB";
 const STORE_NAME = "menuvaData";
 
+// ====================== Ambil restoId dari URL ======================
 function getDataFromURL() {
   const params = new URLSearchParams(window.location.search);
-  const restoId = params.get("resto"); // ?resto=xxx
-  return restoId;
+  return params.get("resto"); // ?resto=xxx
 }
 
-
-function loadDataFromDB() {
+// ====================== Ambil data dari IndexedDB ======================
+function loadDataFromDB(restoId) {
   return new Promise((resolve, reject) => {
     const request = indexedDB.open(DB_NAME, 1);
 
@@ -347,12 +347,10 @@ function loadDataFromDB() {
       try {
         const tx = db.transaction(STORE_NAME, "readonly");
         const store = tx.objectStore(STORE_NAME);
-        const getReq = store.get(1);
+
+        const getReq = store.get(restoId); // ✅ ambil sesuai restoId
         getReq.onsuccess = () => {
-          const result = getReq.result;
-          if (!result) return resolve({});
-          const { id, ...data } = result; // buang id
-          resolve(data);
+          resolve(getReq.result || null);
         };
         getReq.onerror = () => reject("❌ failed read data from object store.");
       } catch (e) {
@@ -363,13 +361,13 @@ function loadDataFromDB() {
     request.onupgradeneeded = (event) => {
       const db = event.target.result;
       if (!db.objectStoreNames.contains(STORE_NAME)) {
-        db.createObjectStore(STORE_NAME, { keyPath: "id" });
+        db.createObjectStore(STORE_NAME, { keyPath: "restoId" }); // ✅ key by restoId
       }
     };
   });
 }
 
-
+// ====================== Render fungsi yg sudah ada ======================
 function renderFlipbookGallery(containerId, images, warningId) {
   const container = document.getElementById(containerId);
   const warning = document.getElementById(warningId);
@@ -402,9 +400,7 @@ function closeFullscreen() {
   document.getElementById("fullscreenImage").src = "";
 }
 
-
 function renderPromo(promoList) {
-  console.log("🔥 Data promoList:", promoList);
   const promoContainer = document.getElementById("promoContainer");
   promoContainer.innerHTML = "";
 
@@ -419,11 +415,10 @@ function renderPromo(promoList) {
 
     const badge = document.createElement("div");
     badge.className = "promo-badge";
-    badge.textContent = promo.badge ? promo.badge : "Promo";
+    badge.textContent = promo.badge || "Promo";
     promoCard.appendChild(badge);
 
     const img = document.createElement("img");
-    console.log("Gambar promo:", promo.image);
     img.src = promo.image;
     img.alt = promo.namaMenu;
     promoCard.appendChild(img);
@@ -482,9 +477,7 @@ function startCountdown(tanggalAkhir, elementId) {
   setInterval(updateCountdown, 1000);
 }
 
-// =====================
-// Window onload
-// =====================
+// ====================== Window onload ======================
 window.onload = async () => {
   const restoId = getDataFromURL();
   if (!restoId) {
@@ -493,10 +486,10 @@ window.onload = async () => {
   }
 
   try {
-    const data = await loadDataFromDB();
+    const data = await loadDataFromDB(restoId);
 
-    if (!data || data.restoId !== restoId) {
-      console.warn("⚠️ Data untuk restoId ini tidak ditemukan");
+    if (!data) {
+      console.warn("⚠️ Data untuk restoId ini tidak ditemukan di DB");
       return;
     }
 
@@ -524,5 +517,6 @@ window.onload = async () => {
 </script>
 </body>
 </html>
+
 
 
