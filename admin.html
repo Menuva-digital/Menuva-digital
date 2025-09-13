@@ -950,7 +950,7 @@ async function simpanData() {
     const logo = document.getElementById("previewLogo").src || "";
     const nomorWaAdmin = Array.from(document.querySelectorAll(".nomor-wa")).map(i => i.value);
 
-    // === Generate restoId unik ===
+    // === Generate restoId permanen dari phone ===
     let restoIdEl = document.getElementById("restoId");
     if (!restoIdEl) {
       restoIdEl = document.createElement("input");
@@ -961,8 +961,12 @@ async function simpanData() {
 
     let restoId = restoIdEl.value.trim();
     if (!restoId) {
-      // slug + timestamp supaya unik
-      restoId = `${slugify(namaRestoran)}-${Date.now()}`;
+      if (!restoPhone) {
+        console.error("Phone number is required to generate permanent restoId.");
+        alert("❌ Please input the restaurant phone number before saving!");
+        return; // stop proses simpan kalau no hp kosong
+      }
+      restoId = restoPhone;   // gunakan no hp sebagai restoId permanen
       restoIdEl.value = restoId;
     }
 
@@ -980,7 +984,7 @@ async function simpanData() {
     const flipMenu = typeof flipbookMenuImages !== "undefined" ? flipbookMenuImages : [];
 
     const data = {
-      restoId,          // 🔑 simpan ID restoran unik
+      restoId,          // 🔑 pakai no hp sebagai ID permanen
       namaRestoran,
       restoAddress,
       restoPhone,
@@ -998,7 +1002,7 @@ async function simpanData() {
     // 🔑 tampilkan tombol share & generate link + QR
     updateShareUI();
 
-    alert(`✅ All data saved successfully!\nData tersimpan di DB dengan restoId: ${restoId}`);
+    alert(`✅ All data saved successfully!\nPermanent restoId: ${restoId}`);
   } catch (err) {
     console.error(err);
     alert("❌ Failed to save data. View console.");
@@ -1124,13 +1128,6 @@ async function simpanData() {
     console.error("Error createMenuvaLink:", err);
   }
 }
-  // ====================== HELPER GET CUSTOMER LINK ======================
-function getCustomerLink() {
-  const restoId = document.getElementById("restoId")?.value;
-  if (!restoId) return null;
-  return `${window.location.origin}/menu.html?resto=${restoId}`;
-}
-
 // ====================== HELPER GET CUSTOMER LINK ======================
 function getCustomerLink() {
   const restoId = document.getElementById("restoId")?.value;
@@ -1138,8 +1135,9 @@ function getCustomerLink() {
 
   // Ambil base path folder saat ini
   const basePath = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/'));
-  return `${window.location.origin}${basePath}/menu.html?resto=${restoId}`;
+  return `${window.location.origin}${basePath}/menu.html?resto=${encodeURIComponent(restoId)}`;
 }
+
 
 // ====================== OPEN CUSTOMER PAGE ======================
 function openCustomerPage() {
@@ -1232,6 +1230,7 @@ function updateShareUI() {
 </script>
 
 </html>
+
 
 
 
