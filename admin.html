@@ -931,17 +931,18 @@ document.getElementById("logoInput")?.addEventListener("change", async function 
     document.body.removeChild(input);
   }
 
-  function slugify(text) {
+   // Fungsi slugify sederhana (untuk bikin URL-friendly)
+function slugify(text) {
   return text
     .toString()
     .toLowerCase()
     .trim()
-    .replace(/\s+/g, "-")       // ganti spasi jadi -
-    .replace(/[^\w\-]+/g, "")   // buang karakter non-word
-    .replace(/\-\-+/g, "-");    // ganti -- jadi -
+    .replace(/\s+/g, '-')       // ganti spasi dengan "-"
+    .replace(/[^\w\-]+/g, '')   // hapus karakter non-alphanumeric
+    .replace(/\-\-+/g, '-');    // ganti "--" menjadi "-"
 }
 
- async function simpanData() {
+async function simpanData() {
   try {
     const namaRestoran = document.getElementById("namaRestoran").value.trim();
     const restoAddress = document.getElementById("restoAddress").value.trim();
@@ -949,7 +950,7 @@ document.getElementById("logoInput")?.addEventListener("change", async function 
     const logo = document.getElementById("previewLogo").src || "";
     const nomorWaAdmin = Array.from(document.querySelectorAll(".nomor-wa")).map(i => i.value);
 
-  
+    // === Generate restoId unik ===
     let restoIdEl = document.getElementById("restoId");
     if (!restoIdEl) {
       restoIdEl = document.createElement("input");
@@ -957,9 +958,11 @@ document.getElementById("logoInput")?.addEventListener("change", async function 
       restoIdEl.id = "restoId";
       document.body.appendChild(restoIdEl);
     }
+
     let restoId = restoIdEl.value.trim();
     if (!restoId) {
-      restoId = slugify(namaRestoran) || ("resto" + Date.now());
+      // slug + timestamp supaya unik
+      restoId = `${slugify(namaRestoran)}-${Date.now()}`;
       restoIdEl.value = restoId;
     }
 
@@ -977,7 +980,7 @@ document.getElementById("logoInput")?.addEventListener("change", async function 
     const flipMenu = typeof flipbookMenuImages !== "undefined" ? flipbookMenuImages : [];
 
     const data = {
-      restoId,          // 🔑 simpan ID restoran
+      restoId,          // 🔑 simpan ID restoran unik
       namaRestoran,
       restoAddress,
       restoPhone,
@@ -995,7 +998,7 @@ document.getElementById("logoInput")?.addEventListener("change", async function 
     // 🔑 tampilkan tombol share & generate link + QR
     updateShareUI();
 
-    alert("✅ All data saved successfully! ");
+    alert(`✅ All data saved successfully!\nData tersimpan di DB dengan restoId: ${restoId}`);
   } catch (err) {
     console.error(err);
     alert("❌ Failed to save data. View console.");
@@ -1230,6 +1233,7 @@ function openCustomerPage() {
 </script>
 
 </html>
+
 
 
 
