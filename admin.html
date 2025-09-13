@@ -1125,6 +1125,38 @@ function openCustomerPage() {
   window.open(`menu.html?resto=${restoId}`, "_blank");
 }
 
+   function updateShareUI() {
+  // pastikan restoId ada di DOM, kalau belum buat default
+  let restoIdElem = document.getElementById("restoId");
+  if (!restoIdElem) {
+    restoIdElem = document.createElement("input");
+    restoIdElem.type = "hidden";
+    restoIdElem.id = "restoId";
+    restoIdElem.value = "1"; // default id
+    document.body.appendChild(restoIdElem);
+  }
+
+  const restoId = restoIdElem.value;
+
+  const btnCopy = document.getElementById("btnSalinLink");
+  if (btnCopy) {
+    btnCopy.style.display = "inline-block";
+    btnCopy.onclick = () => {
+      const link = `${window.location.origin}/menu.html?resto=${restoId}`;
+      navigator.clipboard.writeText(link)
+        .then(() => alert("✅ Link copied to clipboard"))
+        .catch(err => alert("❌ Failed to copy link: " + err));
+    };
+  }
+
+  // update tombol See Customer Page (kalau mau dinamis)
+  const btnSee = document.querySelector("button[onclick='openCustomerPage()']");
+  if (btnSee) {
+    btnSee.onclick = () => window.open(`menu.html?resto=${restoId}`, "_blank");
+  }
+}
+
+
 </script>
 
 <div class="fixed-bar">
@@ -1145,6 +1177,7 @@ function openCustomerPage() {
 </script>
 
 </html>
+
 
 
 
