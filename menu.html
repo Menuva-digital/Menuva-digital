@@ -485,19 +485,21 @@ function startCountdown(tanggalAkhir, elementId) {
 // ====================== Window onload ======================
 window.onload = async () => {
   const restoId = getDataFromURL();
-  if (!restoId) {
-    console.warn("⚠️ restoId tidak ditemukan di URL");
-    return;
-  }
-
   try {
-    const data = await loadDataFromDB(restoId);
+    const data = await loadDataFromDB();
 
+    // 🔥 Fallback biar data lama tetap kebaca
     if (!data) {
-      console.warn("⚠️ Data untuk restoId ini tidak ditemukan di DB");
+      console.warn("⚠️ IndexedDB kosong, gak ada data.");
       return;
     }
 
+    if (restoId && data.restoId && data.restoId !== restoId) {
+      console.warn("⚠️ Data untuk restoId ini tidak ditemukan, fallback ke data lama.");
+      // tetap pakai data lama
+    }
+
+    // Render logo & info resto
     const logoElem = document.getElementById("logoResto");
     if (data.logo) {
       logoElem.src = data.logo;
@@ -519,9 +521,11 @@ window.onload = async () => {
     alert("Gagal load data menu.");
   }
 };
+
 </script>
 </body>
 </html>
+
 
 
 
