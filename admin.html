@@ -1123,12 +1123,11 @@ document.getElementById("logoInput")?.addEventListener("change", async function 
 }
 
 function openCustomerPage() {
-  const restoId = document.getElementById("restoId").value || "1"; // default 1 kalau belum ada
+  const restoId = document.getElementById("restoId").value || "1"; 
   window.open(`menu.html?resto=${restoId}`, "_blank");
 }
 
-   function updateShareUI() {
-  // pastikan restoId ada di DOM, kalau belum buat default
+  function updateShareUI() {
   let restoIdElem = document.getElementById("restoId");
   if (!restoIdElem) {
     restoIdElem = document.createElement("input");
@@ -1151,12 +1150,31 @@ function openCustomerPage() {
     };
   }
 
-  // update tombol See Customer Page (kalau mau dinamis)
-  const btnSee = document.querySelector("button[onclick='openCustomerPage()']");
+
+  const btnSee = document.getElementById("btnOpenCustomer");
   if (btnSee) {
     btnSee.onclick = () => window.open(`menu.html?resto=${restoId}`, "_blank");
   }
+
+  // === Generate QR Code ===
+  const qrContainer = document.getElementById("qrcodePreview");
+  if (qrContainer) {
+    qrContainer.innerHTML = ""; // bersihkan dulu
+    QRCode.toCanvas(
+      `${window.location.origin}/menu.html?resto=${restoId}`,
+      { width: 128 },
+      function (error, canvas) {
+        if (error) {
+          console.error(error);
+          qrContainer.textContent = "❌ Failed to generate QR";
+          return;
+        }
+        qrContainer.appendChild(canvas);
+      }
+    );
+  }
 }
+
 function openCustomerPage() {
   const restoId = document.getElementById("restoId").value;
   if (!restoId) return alert("Resto ID belum tersedia");
@@ -1184,6 +1202,7 @@ function openCustomerPage() {
 </script>
 
 </html>
+
 
 
 
