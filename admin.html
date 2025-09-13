@@ -391,8 +391,10 @@
     <button class="btn-simpan" onclick="simpanData()">💾 Save All</button>
    
     <input type="hidden" id="restoId" />
-    <button id="btnOpenCustomer" class="btn-orange" onclick="openCustomerPage()">👁️ See Customer Page</button>
-    <div id="qrcodePreview" style="margin-top:10px;"></div>
+   <button id="btnOpenCustomer" class="btn-orange" onclick="openCustomerPage()">👁️ See Customer Page</button>
+   <button id="btnSalinLink" style="display:none;">📋 Copy Link to Share with Customers</button>
+   <div id="qrcodePreview" style="margin-top:10px;"></div>
+
 
 
     <div class="section">
@@ -1155,6 +1157,11 @@ function openCustomerPage() {
     btnSee.onclick = () => window.open(`menu.html?resto=${restoId}`, "_blank");
   }
 }
+function openCustomerPage() {
+  const restoId = document.getElementById("restoId").value;
+  if (!restoId) return alert("Resto ID belum tersedia");
+  window.open(`menu.html?resto=${restoId}`, "_blank");
+}
 
 
 </script>
@@ -1177,6 +1184,7 @@ function openCustomerPage() {
 </script>
 
 </html>
+
 
 
 
